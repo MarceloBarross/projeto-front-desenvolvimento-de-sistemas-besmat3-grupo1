@@ -10,7 +10,7 @@ export class LoginService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string) {
+  login(email: string, password: string): Observable<{ token: string; roles: string[] }> {
     return this.http.post<{ token: string, roles: string[] }>('/api/login', { email, password });
 
   // caso queira simular o login sem backend, descomente o código abaixo e comente a linha do http.post acima
