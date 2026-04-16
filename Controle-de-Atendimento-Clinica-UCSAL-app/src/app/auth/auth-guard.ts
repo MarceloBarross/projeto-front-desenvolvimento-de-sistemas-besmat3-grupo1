@@ -23,7 +23,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const userRoles = authService.getRoles();
 
   // checa se as roles do ususario estao inclusas nas roles exigidas pela rota
-  const hasRole = rolesRequired.some(role => userRoles.includes(role))
+  const hasRole = rolesRequired.some(role => userRoles.includes(role));
 
   // se sim retorna true, se nn redireciona para unauthorized
   if(hasRole) {
