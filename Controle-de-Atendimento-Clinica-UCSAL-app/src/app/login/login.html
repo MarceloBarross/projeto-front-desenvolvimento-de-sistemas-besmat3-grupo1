@@ -1,0 +1,69 @@
+<div class="login-page">
+    <div class="login-card">
+        
+        <div class="left-panel">
+            <div class="form-container">
+                
+                <div class="header-text">
+                    <h1>Clínica Médica da UCSAL</h1>
+                    <p>Por favor, insira seus dados para acessar o sistema.</p>
+                </div>
+    
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+                    
+                    <div class="form-field">
+                        <label for="email">E-mail</label>
+                        <input 
+                            pInputText 
+                            id="email" 
+                            formControlName="email" 
+                            type="email" 
+                            placeholder="exemplo@dominio.com" 
+                            class="p-inputtext-sm" 
+                        />
+                        
+                        @if (loginForm.controls.email.invalid && loginForm.controls.email.touched) {
+                            <small class="p-error">Insira um e-mail válido.</small>
+                        }
+                    </div>
+    
+                    <div class="form-field">
+                        <label for="password">Senha</label>
+                        <p-password 
+                            id="password" 
+                            formControlName="password" 
+                            [toggleMask]="true" 
+                            [feedback]="false" 
+                            placeholder="Sua senha" 
+                            [style]="{'width': '100%'}" 
+                            [inputStyle]="{'width': '100%'}">
+                        </p-password>
+                        
+                        @if (loginForm.controls.password.invalid && loginForm.controls.password.touched) {
+                            <small class="p-error">A senha é obrigatória.</small>
+                        }
+                    </div>
+    
+                    <div class="submit-container">
+                        <p-button 
+                            label="Entrar" 
+                            type="submit" 
+                            [loading]="loading" 
+                            icon="pi pi-sign-in" 
+                            iconPos="right">
+                        </p-button>
+                    </div>
+
+                    @if(errMessage) {
+                        <p-message severity="error">{{errMessage}}</p-message>
+                    }
+    
+                </form>
+            </div>
+        </div>
+    
+        <div class="right-panel">
+            </div>
+    
+    </div>
+</div>

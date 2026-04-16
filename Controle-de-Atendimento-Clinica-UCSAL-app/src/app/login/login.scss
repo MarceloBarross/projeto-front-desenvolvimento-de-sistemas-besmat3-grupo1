@@ -1,0 +1,171 @@
+// login.component.scss
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem; // Espaço de respiro para o balão não encostar nas bordas em telas médias
+  background-color: #f8fafc; // Um fundo bem claro para destacar o branco do balão
+}
+
+.login-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  max-width: 1400px; // Largura ideal para um card horizontal
+  min-height: 800px; // Altura fixa para manter a proporção de balão
+  
+  background-color: #ffffff;
+  border-radius: 24px; // O border-radius que você pediu
+  overflow: hidden;    // CRUCIAL: Faz a imagem respeitar as bordas arredondadas
+  
+  // Sombra suave para dar profundidade (efeito flutuante)
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  @media (min-width: 992px) {
+    grid-template-columns: 45% 55%;
+  }
+}
+
+:host {
+  display: block;
+
+  // 1. Layout Principal (Grid Responsivo)
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1fr; // Mobile-first: apenas 1 coluna
+    min-height: 100vh;
+    background-color: #ffffff;
+
+    // A partir de 992px (Desktop), divide a tela em 40% esquerda e 60% direita
+    @media (min-width: 992px) {
+      grid-template-columns: 40% 60%;
+    }
+  }
+
+  // 2. Painel Esquerdo (Formulário)
+  .left-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 400px; // Limita a largura do form para não esticar demais
+  }
+
+  .header-text {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: #111827; // Cinza muito escuro
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #6b7280; // Cinza médio
+      font-size: 0.95rem;
+    }
+  }
+
+  // 3. Estrutura dos Campos
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+  }
+
+  .error-message {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+
+  .submit-container {
+    margin-top: 1rem;
+  }
+
+  // 4. Painel Direito (Imagem)
+  .right-panel {
+    display: none; // Esconde a imagem no mobile
+    background-color: #f3f4f6; // Cor de fallback
+    
+    // Substitua o URL abaixo pela imagem do seu projeto (ex: assets/bg-login.jpg)
+    background-image: url('/imagens/Gemini_Generated_Image_rvzxr3rvzxr3rvzx.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+
+    
+    @media (min-width: 992px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    // Camada verde elegante por cima da imagem para unificar a paleta
+   
+
+    .overlay-content {
+      position: relative; // Para ficar acima do ::before
+      z-index: 1;
+      text-align: center;
+      color: #ffffff;
+      padding: 2rem;
+
+      h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  // 5. Ajustes Internos do PrimeNG (usando ::ng-deep)
+  ::ng-deep {
+    .full-width-input,
+    .full-width-password,
+    .full-width-password .p-password-input,
+    .full-width-button,
+    .full-width-button .p-button {
+      width: 100%;
+    }
+
+    // Suavizando o contorno (outline) para um visual mais elegante
+
+    // Estilo do botão
+    .p-button {
+      padding: 0.75rem 1rem;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+        width: 100%;
+     
+    }
+
+    .p-password {
+        width: 100%;
+    }
+  }
+}
