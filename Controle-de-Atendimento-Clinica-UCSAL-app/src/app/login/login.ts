@@ -50,7 +50,6 @@ export class Login implements OnInit {
       next: (resp) => {
         this.authService.setSession(resp.token, resp.roles);
         this.router.navigate(['/dashboard']);
-        console.log('Login bem-sucedido! Token armazenado.')
       },
       error: (err) => {
         this.errMessage = 'Falha no login. Verifique suas credenciais e tente novamente.';
