@@ -1,0 +1,48 @@
+<div class="profile-container">
+  <p-card header="Meu Perfil" subheader="Gerencie suas informacoes">
+    <form [formGroup]="profileForm" class="form" (ngSubmit)="updateProfile()">
+      <div class="field">
+        <label>Nome</label>
+        <input pInputText formControlName="name" />
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input pInputText formControlName="email" />
+      </div>
+
+      <div class="field">
+        <label>Perfil</label>
+        <input pInputText [value]="role" disabled />
+      </div>
+
+      <div class="actions">
+        <button pButton type="submit" label="Salvar" icon="pi pi-check"></button>
+      </div>
+    </form>
+  </p-card>
+
+  <p-card header="Seguranca" subheader="Atualize sua senha" styleClass="security-card">
+    <form [formGroup]="passwordForm" class="form" (ngSubmit)="updatePassword()">
+      <div class="field">
+        <label>Senha atual</label>
+        <input pPassword formControlName="currentPassword" [feedback]="false" />
+      </div>
+
+      <div class="field">
+        <label>Nova senha</label>
+        <input pPassword formControlName="newPassword" [feedback]="true" />
+      </div>
+
+      <div class="field">
+        <label>Confirmar senha</label>
+        <input pPassword formControlName="confirmPassword" [feedback]="false" />
+      </div>
+
+      <div class="actions">
+        <button pButton type="submit" label="Alterar Senha" icon="pi pi-lock" severity="warn"></button>
+      </div>
+    </form>
+  </p-card>
+
+</div>

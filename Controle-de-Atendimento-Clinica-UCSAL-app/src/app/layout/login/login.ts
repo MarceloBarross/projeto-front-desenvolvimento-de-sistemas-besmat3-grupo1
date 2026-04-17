@@ -5,10 +5,10 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
-import { LoginService } from './service/login.service';
+import { LoginService } from '../../services/login.service';
 import { MessageModule } from 'primeng/message';
 import { finalize } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
 
@@ -49,7 +49,7 @@ export class Login implements OnInit {
     .subscribe({
       next: (resp) => {
         this.authService.setSession(resp.token, resp.roles);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/main-layout/dashboard']);
       },
       error: (err) => {
         this.errMessage = 'Falha no login. Verifique suas credenciais e tente novamente.';

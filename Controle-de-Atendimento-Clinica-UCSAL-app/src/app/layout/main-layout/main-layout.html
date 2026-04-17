@@ -1,0 +1,62 @@
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>UCSAL</h2>
+      <span>SANTAS VITAS</span>
+    </div>
+
+    <ul class="menu">
+      <li routerLink="/main-layout/dashboard" routerLinkActive="active">
+        <i class="pi pi-home"></i>
+        <span>Dashboard</span>
+      </li>
+
+      <li routerLink="/profissionais" routerLinkActive="active">
+        <i class="pi pi-users"></i>
+        <span>Profissionais</span>
+      </li>
+
+      <li routerLink="/pacientes" routerLinkActive="active">
+        <i class="pi pi-user"></i>
+        <span>Pacientes</span>
+      </li>
+
+      <li routerLink="/consultas" routerLinkActive="active">
+        <i class="pi pi-calendar"></i>
+        <span>Consultas</span>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main">
+
+    <!-- NAVBAR -->
+    <header class="topbar p-shadow-2">
+      <div class="left">
+        <span class="title">Sistema Clínico</span>
+      </div>
+
+      <div class="right">
+
+        <p-menu #menu [popup]="true" [model]="items"></p-menu>
+        <p-avatar
+          label="MS"
+          shape="circle"
+          size="normal"
+          (click)="menu.toggle($event)"
+          style="cursor: pointer;"
+        ></p-avatar>
+      </div>
+    </header>
+
+    <!-- CONTEÚDO DINÂMICO -->
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>

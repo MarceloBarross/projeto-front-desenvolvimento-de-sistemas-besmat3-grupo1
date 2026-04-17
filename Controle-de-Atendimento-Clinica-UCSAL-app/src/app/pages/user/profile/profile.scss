@@ -1,0 +1,48 @@
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  h2 {
+    margin: 0;
+  }
+
+  span {
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem;
+    border-radius: 8px;
+    background: #f5f5f5;
+
+    .label {
+      font-weight: 600;
+    }
+
+    .value {
+      color: #333;
+    }
+  }
+}
+
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}

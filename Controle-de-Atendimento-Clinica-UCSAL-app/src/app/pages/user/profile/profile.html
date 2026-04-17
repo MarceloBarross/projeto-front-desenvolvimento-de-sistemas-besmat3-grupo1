@@ -1,0 +1,39 @@
+<div class="profile-container">
+
+  <p-card header="Meu Perfil">
+
+    <div class="profile-header">
+      <p-avatar label="MS" size="large" shape="circle"></p-avatar>
+
+      <div class="info">
+        <h2>{{ user.name }}</h2>
+        <span>{{ user.role }}</span>
+      </div>
+    </div>
+
+    <div class="profile-details">
+
+      <div class="item">
+        <span class="label">Email</span>
+        <span class="value">{{ user.email }}</span>
+      </div>
+
+      <div class="item">
+        <span class="label">Perfil</span>
+        <span class="value">{{ user.role }}</span>
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button 
+        pButton 
+        label="Editar Perfil" 
+        icon="pi pi-pencil"
+        routerLink="/main-layout/edit-profile"
+      ></button>
+    </div>
+
+  </p-card>
+
+</div>
