@@ -6,7 +6,7 @@ import { PatientDTO } from '../../../models/patient/patient-dto';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { Route, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MessageModule } from 'primeng/message';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ToastModule } from 'primeng/toast';
@@ -26,7 +26,7 @@ export class PatientCreate implements OnInit {
   fb = inject(NonNullableFormBuilder);
   errMessage: string = '';
 
-  formPacient = this.fb.group({
+  formPaciente = this.fb.group({
     name: ['', Validators.required],
     cpf: ['', Validators.required],
     phone: ['', Validators.required],
@@ -37,13 +37,13 @@ export class PatientCreate implements OnInit {
      private messageService: MessageService, private route: ActivatedRoute) {}
 
   save(){
-    if (this.formPacient.invalid) {
+    if (this.formPaciente.invalid) {
       this.errMessage = 'Por favor, preencha todos os campos obrigatórios.';
       this.dtr.markForCheck();
       return;
     }
 
-    const newPatient: PatientDTO = {...this.formPacient.getRawValue()};
+    const newPatient: PatientDTO = {...this.formPaciente.getRawValue()};
     const id = this.route.snapshot.paramMap.get('id');
 
     const request = id
@@ -80,7 +80,7 @@ export class PatientCreate implements OnInit {
   loadPatient(id: number) {
     this.patientService.finById(id).subscribe({
       next: (patient) => {
-        this.formPacient.patchValue(patient!);
+        this.formPaciente.patchValue(patient!);
         this.dtr.markForCheck();
       },
       error: (err) => {

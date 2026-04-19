@@ -24,7 +24,7 @@ export class PatientService {
     return this.http.get<Patient[]>('/api/patients');
   }
 
-  finById(id: number) {
+  finById(id: number): Observable<Patient | undefined> {
     if (this.isMock) {
       return of(this.patientsMock.find(p => p.id === id)).pipe(delay(500));
     }
@@ -58,7 +58,7 @@ export class PatientService {
 
   deletarPaciente(id: number): Observable<void> {
     if (this.isMock) {
-      this.patientsMock = this.patientsMock.filter(patint => patint.id !== id);
+      this.patientsMock = this.patientsMock.filter(patient => patient.id !== id);
       return of(void 0).pipe(delay(500));
     }
     return this.http.delete<void>(`/api/patients/${id}`);
