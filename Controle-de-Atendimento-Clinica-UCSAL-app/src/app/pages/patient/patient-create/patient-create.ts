@@ -34,7 +34,7 @@ export class PatientCreate implements OnInit {
   })
 
   constructor(private patientService: PatientService, private router: Router, private dtr: ChangeDetectorRef,
-     private MessageService: MessageService, private route: ActivatedRoute) {}
+     private messageService: MessageService, private route: ActivatedRoute) {}
 
   save(){
     if (this.formPacient.invalid) {
@@ -54,7 +54,7 @@ export class PatientCreate implements OnInit {
     request.subscribe({
       next: () => {
         console.log('Paciente cadastrado com sucesso!');
-        this.MessageService.add({
+        this.messageService.add({
           severity:'success',
           summary: 'Sucesso',
           detail: id 
