@@ -1,6 +1,6 @@
 <p-card header="Novo Paciente">
 
-  <form [formGroup]="formPacient" class="form">
+  <form [formGroup]="formPaciente" class="form">
 
     <div class="field">
       <p-floatLabel>
@@ -8,7 +8,7 @@
         <label for="name">Nome</label>
       </p-floatLabel>
 
-      @if(formPacient.get('name')?.invalid && formPacient.get('name')?.touched){
+      @if(formPaciente.get('name')?.invalid && formPaciente.get('name')?.touched){
         <small class="p-error">O nome é obrigatório.</small>
       }
     </div>
@@ -19,7 +19,7 @@
         <label for="cpf">CPF</label>
       </p-floatLabel>
 
-      @if(formPacient.get('cpf')?.invalid && formPacient.get('cpf')?.touched){
+      @if(formPaciente.get('cpf')?.invalid && formPaciente.get('cpf')?.touched){
         <small class="p-error">O CPF é obrigatório.</small>
       }
     </div>
@@ -30,7 +30,7 @@
         <label for="phone">Telefone</label>
       </p-floatLabel>
 
-      @if(formPacient.get('phone')?.invalid && formPacient.get('phone')?.touched){
+      @if(formPaciente.get('phone')?.invalid && formPaciente.get('phone')?.touched){
         <small class="p-error">O telefone é obrigatório.</small>
       }
     </div>
@@ -41,7 +41,7 @@
         <label for="email">Email</label>
       </p-floatLabel>
 
-      @if(formPacient.get('email')?.invalid && formPacient.get('email')?.touched){
+      @if(formPaciente.get('email')?.invalid && formPaciente.get('email')?.touched){
         <small class="p-error">O email é obrigatório.</small>
       }
     </div>

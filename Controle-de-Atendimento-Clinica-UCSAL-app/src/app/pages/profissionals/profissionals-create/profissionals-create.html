@@ -1,0 +1,67 @@
+<p-card header="Novo Profissional">
+  <form [formGroup]="formProfissionals" class="form">
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="name" formControlName="name" />
+        <label for="name">Nome</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('name')?.invalid && formProfissionals.get('name')?.touched){
+      <small class="p-error">O nome e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="specialty" formControlName="specialty" />
+        <label for="specialty">Especialidade</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('specialty')?.invalid && formProfissionals.get('specialty')?.touched){
+      <small class="p-error">A especialidade e obrigatoria.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="council" formControlName="council" />
+        <label for="council">Conselho</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('council')?.invalid && formProfissionals.get('council')?.touched){
+      <small class="p-error">O conselho e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <p-inputMask mask="(99) 99999-9999" formControlName="phone" placeholder="Telefone"></p-inputMask>
+        <label for="phone">Telefone</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('phone')?.invalid && formProfissionals.get('phone')?.touched){
+      <small class="p-error">O telefone e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="email" formControlName="email" />
+        <label for="email">Email</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('email')?.invalid && formProfissionals.get('email')?.touched){
+      <small class="p-error">Email invalido.</small>
+      }
+    </div>
+
+    @if(errMessage){
+    <p-message severity="error" [text]="errMessage"></p-message>
+    }
+
+    <div class="buttons">
+      <p-button label="Salvar" icon="pi pi-check" (click)="save()"></p-button>
+      <p-button severity="danger" label="Cancelar" icon="pi pi-times" (click)="cancel()"></p-button>
+    </div>
+  </form>
+</p-card>
