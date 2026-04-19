@@ -5,9 +5,11 @@ import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth-interceptor';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    MessageService,
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(

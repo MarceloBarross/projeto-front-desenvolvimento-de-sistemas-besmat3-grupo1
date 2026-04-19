@@ -27,12 +27,26 @@ export const routes: Routes = [
           loadComponent: () =>
             import('./pages/user/profile/profile').then(m => m.Profile)
         },
-      //   {
-      //     path: 'profissionais',
-      //     loadComponent: () =>
-      //       import('./pages/profissionais/profissionais')
-      //         .then(m => m.ProfissionaisComponent)
-      //   },
+        {
+          path: 'pacientes',
+          children: [
+            {
+              path: '',
+              loadComponent: () =>
+                import('./pages/patient/patient-list/patient-list').then(m => m.PatientList)
+            },
+            {
+              path: 'create',
+              loadComponent: () =>
+                import('./pages/patient/patient-create/patient-create').then(m => m.PatientCreate)
+            },
+            {
+              path: 'update/:id',
+              loadComponent: () =>
+                import('./pages/patient/patient-create/patient-create').then(m => m.PatientCreate)
+            }
+          ]
+        },
         {
           path: '',
           redirectTo: 'dashboard',
