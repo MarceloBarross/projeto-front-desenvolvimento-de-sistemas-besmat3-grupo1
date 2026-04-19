@@ -48,6 +48,26 @@ export const routes: Routes = [
           ]
         },
         {
+          path: 'profissionals',
+          children: [
+            {
+              path: '',
+              loadComponent: () =>
+                import('./pages/profissionals/profissionals-list/profissionals-list').then(m => m.ProfissionalsList)
+            },
+            {
+              path: 'create',
+              loadComponent: () =>
+                import('./pages/profissionals/profissionals-create/profissionals-create').then(m => m.ProfissionalsCreate)
+            },
+            {
+              path: 'update/:id',
+              loadComponent: () =>
+                import('./pages/profissionals/profissionals-create/profissionals-create').then(m => m.ProfissionalsCreate)
+            }
+          ]
+        },
+        {
           path: '',
           redirectTo: 'dashboard',
           pathMatch: 'full'
