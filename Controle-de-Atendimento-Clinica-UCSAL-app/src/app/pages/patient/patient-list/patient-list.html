@@ -1,0 +1,53 @@
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
+
+<p-card header="Pacientes">
+
+  <div class="table-header">
+    <button 
+      pButton 
+      label="Novo Paciente"
+      icon="pi pi-plus"
+      [routerLink]="['/main-layout', 'pacientes', 'create']"
+    ></button>
+  </div>
+
+  <p-table [value]="patients" responsiveLayout="scroll">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Telefone</th>
+        <th>Email</th>
+        <th>Ações</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-p>
+      <tr>
+        <td>{{ p.name }}</td>
+        <td>{{ p.cpf }}</td>
+        <td>{{ p.phone }}</td>
+        <td>{{ p.email }}</td>
+        <td>
+          <button 
+            pButton 
+            icon="pi pi-pencil" 
+            class="p-button-text"
+            (click)="editarPaciente(p.id)"
+          ></button>
+          <button 
+            pButton 
+            icon="pi pi-trash" 
+            class="p-button-text p-button-danger"
+            (click)="deletePaciente(p.id)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+
+</p-card>
