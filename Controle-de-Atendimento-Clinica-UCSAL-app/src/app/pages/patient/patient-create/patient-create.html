@@ -1,0 +1,69 @@
+<p-card header="Novo Paciente">
+
+  <form [formGroup]="formPacient" class="form">
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="name" formControlName="name" />
+        <label for="name">Nome</label>
+      </p-floatLabel>
+
+      @if(formPacient.get('name')?.invalid && formPacient.get('name')?.touched){
+        <small class="p-error">O nome é obrigatório.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <p-inputMask mask="999.999.999-99" formControlName="cpf" placeholder="CPF"></p-inputMask>
+        <label for="cpf">CPF</label>
+      </p-floatLabel>
+
+      @if(formPacient.get('cpf')?.invalid && formPacient.get('cpf')?.touched){
+        <small class="p-error">O CPF é obrigatório.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <p-inputMask mask="(99) 99999-9999"  formControlName="phone" placeholder="Telefone"></p-inputMask>
+        <label for="phone">Telefone</label>
+      </p-floatLabel>
+
+      @if(formPacient.get('phone')?.invalid && formPacient.get('phone')?.touched){
+        <small class="p-error">O telefone é obrigatório.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="email" formControlName="email" />
+        <label for="email">Email</label>
+      </p-floatLabel>
+
+      @if(formPacient.get('email')?.invalid && formPacient.get('email')?.touched){
+        <small class="p-error">O email é obrigatório.</small>
+      }
+    </div>
+
+    @if(errMessage){
+      <p-message severity="error" [text]="errMessage"></p-message>
+    }
+
+    <div class="buttons">
+      <p-button 
+        label="Salvar"
+        icon="pi pi-check"
+        (click)="save()"
+      ></p-button>
+      <p-button 
+        severity="danger"
+        label="Cancelar"
+        icon="pi pi-times"
+        (click)="cancel()"
+      ></p-button>
+    </div>
+
+  </form>
+
+</p-card>

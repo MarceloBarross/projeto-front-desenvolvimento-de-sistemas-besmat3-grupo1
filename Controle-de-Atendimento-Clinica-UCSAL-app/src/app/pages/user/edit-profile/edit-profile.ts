@@ -5,8 +5,8 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { UserService } from '../../../services/user.service';
-import { UpdateUserDTO } from '../../../models/update-user.dto';
-import { UpdatePasswordDTO } from '../../../models/update-password.dto';
+import { UpdateUserDTO } from '../../../models/user/update-user.dto';
+import { UpdatePasswordDTO } from '../../../models/user/update-password.dto';
 
 @Component({
   selector: 'app-edit-profile',

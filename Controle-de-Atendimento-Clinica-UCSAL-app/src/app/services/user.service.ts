@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { delay, Observable, of } from 'rxjs';
-import { User } from '../models/user-interface';
-import { UpdateUserDTO } from '../models/update-user.dto';
+import { User } from '../models/user/user-interface';
+import { UpdateUserDTO } from '../models/user/update-user.dto';
 import { HttpClient } from '@angular/common/http';
-import { UpdatePasswordDTO } from '../models/update-password.dto';
+import { UpdatePasswordDTO } from '../models/user/update-password.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +34,7 @@ export class UserService {
       this.userMock = {
         ...data,
         role: 'ADMIN'
-      }
+      };
       
       return of (this.userMock).pipe(delay(1000));
     }

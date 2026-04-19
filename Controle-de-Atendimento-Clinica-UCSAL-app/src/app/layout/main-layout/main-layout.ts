@@ -6,10 +6,11 @@ import { DrawerModule } from 'primeng/drawer';
 import { MenuModule } from 'primeng/menu';
 
 import { AuthService } from '../../services/auth.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [AvatarModule, RouterOutlet, DrawerModule, ButtonModule, MenuModule, RouterModule],
+  imports: [AvatarModule, RouterOutlet, DrawerModule, ButtonModule, MenuModule, RouterModule, ToastModule],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })
