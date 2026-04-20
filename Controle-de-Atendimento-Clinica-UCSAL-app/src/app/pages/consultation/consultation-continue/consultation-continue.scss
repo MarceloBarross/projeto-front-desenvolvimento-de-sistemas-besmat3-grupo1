@@ -1,0 +1,32 @@
+.consultation {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+textarea {
+  width: 100%;
+}
+
+.save {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
