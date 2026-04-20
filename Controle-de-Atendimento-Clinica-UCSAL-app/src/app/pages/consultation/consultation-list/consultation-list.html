@@ -1,0 +1,143 @@
+<div class="appointments">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h2>Agenda de Consultas</h2>
+      <span class="date">
+        <i class="pi pi-calendar"></i>
+        24 de Outubro, 2024
+      </span>
+    </div>
+
+    <button 
+      pButton 
+      label="Novo Agendamento"
+      icon="pi pi-plus"
+      class="p-button-success"
+      (click)="novoAgendamento()"
+    ></button>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards">
+
+    <p-card>
+      <div class="card-content">
+        <i class="pi pi-users"></i>
+        <div>
+          <span>{{appointments.length}}</span>
+          <small>Total Hoje</small>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card>
+      <div class="card-content">
+        <i class="pi pi-clock"></i>
+        <div>
+          <span>{{appointments.filter(a => a.status === 'Aguardando').length}}</span>
+          <small>Aguardando</small>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card>
+      <div class="card-content">
+        <i class="pi pi-times-circle"></i>
+        <div>
+          <span>{{appointments.filter(a => a.status === 'Finalizado' || a.status === 'Cancelado').length}}</span>
+          <small>Concluídas</small>
+        </div>
+      </div>
+    </p-card>
+
+  </div>
+
+  <!-- FILTROS -->
+  <div class="tabs">
+    <span class="active">Todos</span>
+    <span>Manhã</span>
+    <span>Tarde</span>
+    <span>Noite</span>
+  </div>
+
+  <!-- TABELA -->
+  <p-card>
+
+    <p-table [value]="appointments">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Horário</th>
+          <th>Paciente</th>
+          <th>Tipo</th>
+          <th>Profissional</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-a>
+        <tr>
+          <td>{{ a.time }}</td>
+          <td>{{ a.patient.name }}</td>
+          <td>{{ a.type }}</td>
+          <td>{{ a.professional.name }}</td>
+
+          <td>
+            <span class="status" [ngClass]="a.status">
+              {{ a.status | titlecase }}
+            </span>
+          </td>
+
+          <td>
+            <button 
+              pButton 
+              label="Continuar"
+              size="small"
+              class="p-button-sm"
+                (click)="continuarAtendimento(a.id)"
+            ></button>
+
+            @if (a.status === 'Finalizado') {
+              <button
+                pButton
+                label="Prontuário"
+                size="small"
+                class="p-button-sm p-button-secondary"
+                (click)="abrirProntuario(a)"
+                style=" margin-left: 7px;"
+              ></button>
+            }
+            
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+  </p-card>
+
+  <p-dialog
+    header="Prontuário da Consulta"
+    [(visible)]="prontuarioDialogVisible"
+    [modal]="true"
+    [closable]="true"
+    [style]="{ width: '35rem' }"
+    (onHide)="fecharProntuario()"
+  >
+    @if (prontuarioSelecionado) {
+      <div class="prontuario-dialog">
+        <p><strong>Paciente:</strong> {{ prontuarioSelecionado.patient.name }}</p>
+        <p><strong>Profissional:</strong> {{ prontuarioSelecionado.professional.name }}</p>
+        <p><strong>Status:</strong> {{ prontuarioSelecionado.status | titlecase }}</p>
+        <p><strong>Prontuário:</strong></p>
+        <div class="prontuario-texto">
+          {{ prontuarioSelecionado.notes || 'Nenhuma anotação registrada para esta consulta.' }}
+        </div>
+      </div>
+    }
+  </p-dialog>
+
+</div>

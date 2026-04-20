@@ -1,0 +1,65 @@
+<div class="consultation">
+
+  <p-toast></p-toast>
+
+  <!-- HEADER -->
+  <div class="header">
+    <h2>Atendimento em Andamento</h2>
+
+    <div class="actions">
+      <p-button 
+        label="Finalizar"
+        icon="pi pi-check"
+        severity="success"
+        (click)="finalizarAtendimento()"
+      ></p-button>
+
+      <p-button 
+        label="Cancelar"
+        icon="pi pi-times"
+        severity="danger"
+        (click)="cancelarAtendimento()"
+      ></p-button>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="info-grid">
+
+    <p-card header="Paciente">
+      <p><strong>Nome:</strong> {{ consultation.patient.name }}</p>
+      <p><strong>CPF:</strong> {{ consultation.patient.cpf }}</p>
+      <p><strong>Telefone:</strong> {{ consultation.patient.phone }}</p>
+    </p-card>
+
+    <p-card header="Consulta">
+      <p><strong>Profissional:</strong> {{ consultation.professional.name }}</p>
+      <p><strong>Data:</strong> {{ consultation.time }}</p>
+      <p><strong>Status:</strong> {{ consultation.status }}</p>
+    </p-card>
+
+  </div>
+
+  <!-- PRONTUÁRIO -->
+  <p-card header="Prontuário">
+
+    <textarea 
+      pInputTextarea 
+      [(ngModel)]="notes"
+      rows="6"
+      placeholder="Digite observações da consulta..."
+    ></textarea>
+
+    <div class="save">
+      <p-button 
+        label="Salvar Anotações"
+        icon="pi pi-save"
+        [loading]="salvandoNotas"
+        [disabled]="salvandoNotas"
+        (click)="salvarNotas()"
+      ></p-button>
+    </div>
+
+  </p-card>
+
+</div>

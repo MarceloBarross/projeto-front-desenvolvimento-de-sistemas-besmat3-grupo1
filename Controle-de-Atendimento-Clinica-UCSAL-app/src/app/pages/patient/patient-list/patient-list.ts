@@ -38,7 +38,7 @@ export class PatientList implements OnInit {
   }
 
   editarPaciente(id: number) {
-    this.router.navigate(['/main-layout/pacientes/update/', id]);
+    this.router.navigate(['/main-layout/patients/update/', id]);
   }
 
   deletePaciente(id: number){

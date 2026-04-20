@@ -1,0 +1,72 @@
+<p-card header="Nova Consulta">
+	<form [formGroup]="formConsulta" class="form">
+		<div class="field">
+			<p-floatLabel>
+				<input pInputText id="time" formControlName="time" />
+				<label for="time">Horário</label>
+			</p-floatLabel>
+
+			@if(formConsulta.get('time')?.invalid && formConsulta.get('time')?.touched){
+			<small class="p-error">O horário é obrigatório.</small>
+			}
+		</div>
+
+		<div class="field">
+			<label for="patient">Paciente</label>
+			<select
+				id="patient"
+				class="p-inputtext p-component w-full"
+				formControlName="patient"
+				[compareWith]="compareById"
+			>
+				<option [ngValue]="null">Selecione um paciente</option>
+				@for(patient of patients; track patient.id){
+				<option [ngValue]="patient">{{ patient.name }}</option>
+				}
+			</select>
+
+			@if(formConsulta.get('patient')?.invalid && formConsulta.get('patient')?.touched){
+			<small class="p-error">O paciente é obrigatório.</small>
+			}
+		</div>
+
+		<div class="field">
+			<p-floatLabel>
+				<input pInputText id="type" formControlName="type" />
+				<label for="type">Tipo</label>
+			</p-floatLabel>
+
+			@if(formConsulta.get('type')?.invalid && formConsulta.get('type')?.touched){
+			<small class="p-error">O tipo é obrigatório.</small>
+			}
+		</div>
+
+		<div class="field">
+			<label for="professional">Profissional</label>
+			<select
+				id="professional"
+				class="p-inputtext p-component w-full"
+				formControlName="professional"
+				[compareWith]="compareById"
+			>
+				<option [ngValue]="null">Selecione um profissional</option>
+				@for(profissional of profissionals; track profissional.id){
+				<option [ngValue]="profissional">{{ profissional.name }} - {{ profissional.specialty }}</option>
+				}
+			</select>
+
+			@if(formConsulta.get('professional')?.invalid && formConsulta.get('professional')?.touched){
+			<small class="p-error">O profissional é obrigatório.</small>
+			}
+		</div>
+
+		@if(errMessage){
+		<p-message severity="error" [text]="errMessage"></p-message>
+		}
+
+		<div class="buttons">
+			<p-button label="Salvar" icon="pi pi-check" (click)="save()"></p-button>
+			<p-button severity="danger" label="Cancelar" icon="pi pi-times" (click)="cancel()"></p-button>
+		</div>
+	</form>
+</p-card>

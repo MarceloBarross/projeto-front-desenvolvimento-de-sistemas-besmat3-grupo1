@@ -1,0 +1,36 @@
+ :host {
+	display: flex;
+	justify-content: center;
+	padding: 2rem;
+}
+
+p-card {
+	width: 100%;
+	max-width: 600px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	margin-top: 1rem;
+}
+
+.field {
+	width: 100%;
+}
+
+:host ::ng-deep .p-float-label {
+	width: 100%;
+}
+
+:host ::ng-deep .p-inputtext {
+	width: 100%;
+	padding: 0.75rem;
+	font-size: 0.95rem;
+}
+
+.buttons {
+	display: flex;
+	gap: 1rem;
+}

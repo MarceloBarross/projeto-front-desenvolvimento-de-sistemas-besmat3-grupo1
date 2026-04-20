@@ -1,0 +1,90 @@
+.appointments {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+  }
+
+  .date {
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+  gap: 3rem;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  margin: 20px;
+
+  i {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+  }
+
+  span {
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+
+  small {
+    display: block;
+    color: #777;
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+
+  span {
+    cursor: pointer;
+    padding-bottom: 4px;
+  }
+
+  .active {
+    border-bottom: 2px solid var(--primary-color);
+    font-weight: bold;
+  }
+}
+
+.status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+
+.status.Finalizado {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status.Em-Atendimento {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.status.Aguardando {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.status.Cancelado {
+  background: #ffebee;
+  color: #c62828;
+}
