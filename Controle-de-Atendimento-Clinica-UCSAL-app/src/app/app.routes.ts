@@ -28,7 +28,27 @@ export const routes: Routes = [
             import('./pages/user/profile/profile').then(m => m.Profile)
         },
         {
-          path: 'pacientes',
+          path: 'profissionals',
+          children: [
+            {
+              path: '',
+              loadComponent: () =>
+                import('./pages/profissionals/profissionals-list/profissionals-list').then(m => m.ProfissionalsList)
+            },
+            {
+              path: 'create',
+              loadComponent: () =>
+                import('./pages/profissionals/profissionals-create/profissionals-create').then(m => m.ProfissionalsCreate)
+            },
+            {
+              path: 'update/:id',
+              loadComponent: () =>
+                import('./pages/profissionals/profissionals-create/profissionals-create').then(m => m.ProfissionalsCreate)
+            }
+          ]
+        },
+        {
+          path: 'patients',
           children: [
             {
               path: '',
@@ -48,22 +68,22 @@ export const routes: Routes = [
           ]
         },
         {
-          path: 'profissionals',
+          path: 'consultations',
           children: [
             {
               path: '',
               loadComponent: () =>
-                import('./pages/profissionals/profissionals-list/profissionals-list').then(m => m.ProfissionalsList)
+                import('./pages/consultation/consultation-list/consultation-list').then(m => m.ConsultationList)
             },
             {
               path: 'create',
               loadComponent: () =>
-                import('./pages/profissionals/profissionals-create/profissionals-create').then(m => m.ProfissionalsCreate)
+                import('./pages/consultation/consultation-create/consultation-create').then(m => m.ConsultationCreate)
             },
             {
-              path: 'update/:id',
+              path: 'continue/:id',
               loadComponent: () =>
-                import('./pages/profissionals/profissionals-create/profissionals-create').then(m => m.ProfissionalsCreate)
+                import('./pages/consultation/consultation-continue/consultation-continue').then(m => m.ConsultationContinue)
             }
           ]
         },

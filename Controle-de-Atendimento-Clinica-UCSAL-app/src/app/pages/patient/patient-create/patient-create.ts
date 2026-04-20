@@ -61,7 +61,7 @@ export class PatientCreate implements OnInit {
           ?'Paciente editado com sucesso'
           :'Paciente criado com sucesso'
         });
-        this.router.navigate(['/main-layout/pacientes']);
+        this.router.navigate(['/main-layout/patients']);
         this.dtr.markForCheck();
       },
       error: (err) => {
@@ -73,7 +73,7 @@ export class PatientCreate implements OnInit {
   }
 
   cancel(){
-    this.router.navigate(['/main-layout/pacientes']);
+    this.router.navigate(['/main-layout/patients']);
   }
   
 
