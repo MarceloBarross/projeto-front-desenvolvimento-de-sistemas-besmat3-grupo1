@@ -1,0 +1,34 @@
+<p-card header="Nova IES">
+  <form [formGroup]="formIes" class="form">
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="name" formControlName="name" />
+        <label for="name">Nome</label>
+      </p-floatLabel>
+
+      @if(formIes.get('name')?.invalid && formIes.get('name')?.touched){
+      <small class="p-error">O nome e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="sigla" formControlName="sigla" />
+        <label for="sigla">Sigla</label>
+      </p-floatLabel>
+
+      @if(formIes.get('sigla')?.invalid && formIes.get('sigla')?.touched){
+      <small class="p-error">A sigla e obrigatoria.</small>
+      }
+    </div>
+
+    @if(errMessage){
+    <p-message severity="error" [text]="errMessage"></p-message>
+    }
+
+    <div class="buttons">
+      <p-button label="Salvar" icon="pi pi-check" (click)="save()"></p-button>
+      <p-button severity="danger" label="Cancelar" icon="pi pi-times" (click)="cancel()"></p-button>
+    </div>
+  </form>
+</p-card>
