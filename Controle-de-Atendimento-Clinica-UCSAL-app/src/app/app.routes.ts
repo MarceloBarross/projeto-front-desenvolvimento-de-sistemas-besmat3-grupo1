@@ -88,6 +88,26 @@ export const routes: Routes = [
           ]
         },
         {
+          path: 'ies',
+          children: [
+            {
+              path: '',
+              loadComponent: () =>
+                import('./pages/ies/ies-list/ies-list').then(m => m.IesList)
+            },
+            {
+              path: 'create',
+              loadComponent: () =>
+                import('./pages/ies/ies-create/ies-create').then(m => m.IesCreate)
+            },
+            {
+              path: 'update/:id',
+              loadComponent: () =>
+                import('./pages/ies/ies-create/ies-create').then(m => m.IesCreate)
+            }
+          ]
+        },
+        {
           path: '',
           redirectTo: 'dashboard',
           pathMatch: 'full'
