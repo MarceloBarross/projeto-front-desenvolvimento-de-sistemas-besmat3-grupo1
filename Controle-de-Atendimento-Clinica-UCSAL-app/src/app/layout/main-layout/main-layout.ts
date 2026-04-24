@@ -36,7 +36,7 @@ export class MainLayout implements OnInit {
     if (window.innerWidth > 768) {
       this.sidebarVisible = true;
     }
-    this.role = this.authService.getRoles()[0].toUpperCase();
+    this.role = this.authService.getRoles().toUpperCase();
   }
 
   editUser() {

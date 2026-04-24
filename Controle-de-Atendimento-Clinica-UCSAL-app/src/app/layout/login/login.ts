@@ -10,6 +10,7 @@ import { MessageModule } from 'primeng/message';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { LoginResponse } from '../../models/login/login-interface';
 
 
 @Component({
@@ -47,8 +48,8 @@ export class Login implements OnInit {
       }
     ))
     .subscribe({
-      next: (resp) => {
-        this.authService.setSession(resp.token, resp.roles);
+      next: (resp: LoginResponse) => {
+        this.authService.setSession(resp.token, resp.role);
         this.router.navigate(['/main-layout/dashboard']);
       },
       error: (err) => {
