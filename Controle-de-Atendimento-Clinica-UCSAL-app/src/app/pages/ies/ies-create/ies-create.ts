@@ -33,7 +33,7 @@ export class IesCreate implements OnInit {
 	errMessage: string = '';
 
 	formIes = this.fb.group({
-		name: ['', Validators.required],
+		nome: ['', Validators.required],
 		sigla: ['', Validators.required]
 	});
 
@@ -56,7 +56,7 @@ export class IesCreate implements OnInit {
 		const id = this.route.snapshot.paramMap.get('id');
 
 		const request = id
-			? this.iesService.editarIes(+id, data)
+			? this.iesService.alterarStatusIes(+id)
 			: this.iesService.cadastrarIes(data);
 
 		request.subscribe({

@@ -18,7 +18,7 @@ export class IesUnitService {
       id: 1,
       unitName: 'Unidade Salvador Centro',
       representativeName: 'Maria Oliveira',
-      ies: { id: 1, name: 'Universidade Catolica do Salvador', sigla: 'UCSAL' },
+      ies: { id: 1, nome: 'Universidade Catolica do Salvador', sigla: 'UCSAL' },
       isAtivo: true,
     },
   ]);
@@ -48,7 +48,7 @@ export class IesUnitService {
       representativeName: payload.representativeName,
       ies: {
         id: nextId,
-        name: payload.iesName,
+        nome: payload.iesName,
         sigla: this.toSigla(payload.iesName),
       },
       isAtivo: payload.isAtivo,
@@ -72,7 +72,7 @@ export class IesUnitService {
       representativeName: payload.representativeName,
       ies: {
         ...units[index].ies,
-        name: payload.iesName,
+        nome: payload.iesName,
         sigla: this.toSigla(payload.iesName),
       },
       isAtivo: payload.isAtivo,
@@ -102,7 +102,7 @@ export class IesUnitService {
     return this.updateUnit(id, {
       unitName: unit.unitName,
       representativeName: unit.representativeName,
-      iesName: unit.ies.name,
+      iesName: unit.ies.nome,
       isAtivo: !unit.isAtivo,
     });
   }

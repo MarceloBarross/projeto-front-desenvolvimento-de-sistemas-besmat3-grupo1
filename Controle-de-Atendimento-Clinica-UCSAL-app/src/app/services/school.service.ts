@@ -18,7 +18,7 @@ export class SchoolService {
       id: 1,
       name: 'Escola A',
       coordenador: 'Joao Silva',
-      ies: { id: 1, name: 'UCSAL', sigla: 'UCSAL' },
+      ies: { id: 1, nome: 'UCSAL', sigla: 'UCSAL' },
       isAtivo: true,
     },
   ]);
@@ -48,7 +48,7 @@ export class SchoolService {
       coordenador: payload.coordenador,
       ies: {
         id: nextId,
-        name: payload.iesName,
+        nome: payload.iesName,
         sigla: this.toSigla(payload.iesName),
       },
       isAtivo: payload.isAtivo,
@@ -72,7 +72,7 @@ export class SchoolService {
       coordenador: payload.coordenador,
       ies: {
         ...schools[index].ies,
-        name: payload.iesName,
+        nome: payload.iesName,
         sigla: this.toSigla(payload.iesName),
       },
       isAtivo: payload.isAtivo,
@@ -102,7 +102,7 @@ export class SchoolService {
     return this.updateSchool(id, {
       name: school.name,
       coordenador: school.coordenador,
-      iesName: school.ies.name,
+      iesName: school.ies.nome,
       isAtivo: !school.isAtivo,
     });
   }

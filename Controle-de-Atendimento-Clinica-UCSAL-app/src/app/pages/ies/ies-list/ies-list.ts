@@ -41,28 +41,28 @@ export class IesList implements OnInit {
     });
   }
 
-  deleteIes(id: number) {
+  alterarStatusIes(id: number) {
     this.confirmationService.confirm({
-      message: 'Tem certeza que deseja deletar esta IES?',
+      message: 'Tem certeza que deseja alterar o status desta IES?',
       header: 'Confirmacao',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sim',
       rejectLabel: 'Nao',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        this.iesService.deletarIes(id).subscribe({
+        this.iesService.alterarStatusIes(id).subscribe({
           next: () => {
             this.listarIes();
             this.messageService.add({
-              severity: 'success',
+              severity: 'warn',
               summary: 'Sucesso',
-              detail: 'IES deletada com sucesso'
+              detail: 'IES alterada com sucesso',
             });
           }
         });
       },
       reject: () => {
-        console.log('Acao de exclusao cancelada');
+        console.log('Acao de alteracao de status cancelada');
       }
     });
   }

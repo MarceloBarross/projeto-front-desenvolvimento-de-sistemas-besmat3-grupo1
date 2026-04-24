@@ -15,23 +15,22 @@
       <tr>
         <th>Nome</th>
         <th>Sigla</th>
+        <th>Status</th>
         <th>Acoes</th>
       </tr>
     </ng-template>
 
     <ng-template pTemplate="body" let-i>
       <tr>
-        <td>{{ i.name }}</td>
+        <td>{{ i.nome }}</td>
         <td>{{ i.sigla }}</td>
-        <td>
-
-          <button
+        <td>{{ i.status }}</td>
+        <td><button
             pButton
-            icon="pi pi-trash"
+            icon="pi pi-refresh"
             class="p-button-text p-button-danger"
-            (click)="deleteIes(i.id)"
-          ></button>
-        </td>
+            (click)="alterarStatusIes(i.id)"
+          ></button></td>
       </tr>
     </ng-template>
   </p-table>

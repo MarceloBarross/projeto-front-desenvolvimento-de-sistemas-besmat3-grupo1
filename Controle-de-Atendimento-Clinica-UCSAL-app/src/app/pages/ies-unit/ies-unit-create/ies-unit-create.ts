@@ -85,7 +85,7 @@ export class IesUnitCreate implements OnInit {
       this.unitForm.patchValue({
         unitName: unit.unitName,
         representativeName: unit.representativeName,
-        iesName: unit.ies.name,
+        iesName: unit.ies.nome,
         isAtivo: unit.isAtivo,
       });
     });
