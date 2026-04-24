@@ -2,11 +2,11 @@
   <form [formGroup]="formIes" class="form">
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="name" formControlName="name" />
-        <label for="name">Nome</label>
+        <input pInputText id="nome" formControlName="nome" />
+        <label for="nome">Nome</label>
       </p-floatLabel>
 
-      @if(formIes.get('name')?.invalid && formIes.get('name')?.touched){
+      @if(formIes.get('nome')?.invalid && formIes.get('nome')?.touched){
       <small class="p-error">O nome e obrigatorio.</small>
       }
     </div>

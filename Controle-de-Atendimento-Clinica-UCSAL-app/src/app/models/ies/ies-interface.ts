@@ -1,6 +1,6 @@
 export interface Ies {
     id: number;
-    name: string;
+    nome: string;
     sigla: string;
-    
+
 }

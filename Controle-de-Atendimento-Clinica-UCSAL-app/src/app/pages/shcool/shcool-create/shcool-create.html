@@ -42,7 +42,7 @@
         <select id="ies" formControlName="iesName" class="select-input">
           <option value="">Selecione uma IES</option>
           @for (ies of iesList; track ies.id) {
-            <option [value]="ies.name">{{ ies.name }} ({{ ies.sigla }})</option>
+            <option [value]="ies.nome">{{ ies.nome }} ({{ ies.sigla }})</option>
           }
         </select>
         <label for="ies">IES</label>

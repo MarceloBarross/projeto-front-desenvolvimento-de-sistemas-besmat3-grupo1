@@ -85,7 +85,7 @@ export class ShcoolCreate implements OnInit {
       this.schoolForm.patchValue({
         name: school.name,
         coordenador: school.coordenador,
-        iesName: school.ies.name,
+        iesName: school.ies.nome,
         isAtivo: school.isAtivo,
       });
     });
