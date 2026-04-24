@@ -2,6 +2,17 @@
   <form [formGroup]="formProfissionals" class="form">
     <div class="field">
       <p-floatLabel>
+        <input pInputText id="professionalCode" formControlName="professionalCode" />
+        <label for="professionalCode">Identificacao do Profissional</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('professionalCode')?.invalid && formProfissionals.get('professionalCode')?.touched){
+      <small class="p-error">A identificacao e obrigatoria.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
         <input pInputText id="name" formControlName="name" />
         <label for="name">Nome</label>
       </p-floatLabel>
@@ -24,34 +35,75 @@
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="council" formControlName="council" />
-        <label for="council">Conselho</label>
+        <input pInputText id="attendanceDays" formControlName="attendanceDays" />
+        <label for="attendanceDays">Dias de Atendimento</label>
       </p-floatLabel>
 
-      @if(formProfissionals.get('council')?.invalid && formProfissionals.get('council')?.touched){
-      <small class="p-error">O conselho e obrigatorio.</small>
+      @if(formProfissionals.get('attendanceDays')?.invalid && formProfissionals.get('attendanceDays')?.touched){
+      <small class="p-error">Os dias de atendimento sao obrigatorios.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <p-inputMask mask="(99) 99999-9999" formControlName="phone" placeholder="Telefone"></p-inputMask>
-        <label for="phone">Telefone</label>
+        <input pInputText id="attendanceShifts" formControlName="attendanceShifts" />
+        <label for="attendanceShifts">Turnos de Atendimento</label>
       </p-floatLabel>
 
-      @if(formProfissionals.get('phone')?.invalid && formProfissionals.get('phone')?.touched){
-      <small class="p-error">O telefone e obrigatorio.</small>
+      @if(formProfissionals.get('attendanceShifts')?.invalid && formProfissionals.get('attendanceShifts')?.touched){
+      <small class="p-error">Os turnos de atendimento sao obrigatorios.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="email" formControlName="email" />
-        <label for="email">Email</label>
+        <select id="regionalCouncil" class="p-inputtext p-component w-full" formControlName="regionalCouncil">
+          @for(council of regionalCouncilOptions; track council){
+          <option [value]="council">{{ council }}</option>
+          }
+        </select>
+        <label for="regionalCouncil">Conselho Regional</label>
       </p-floatLabel>
 
-      @if(formProfissionals.get('email')?.invalid && formProfissionals.get('email')?.touched){
-      <small class="p-error">Email invalido.</small>
+      @if(formProfissionals.get('regionalCouncil')?.invalid && formProfissionals.get('regionalCouncil')?.touched){
+      <small class="p-error">O conselho regional e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="councilRegistrationNumber" formControlName="councilRegistrationNumber" />
+        <label for="councilRegistrationNumber">Numero de Registro no Conselho</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('councilRegistrationNumber')?.invalid && formProfissionals.get('councilRegistrationNumber')?.touched){
+      <small class="p-error">O numero de registro e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="registrationDate" type="date" formControlName="registrationDate" />
+        <label for="registrationDate">Data de Cadastramento</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('registrationDate')?.invalid && formProfissionals.get('registrationDate')?.touched){
+      <small class="p-error">A data de cadastramento e obrigatoria.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <select id="status" class="p-inputtext p-component w-full" formControlName="status">
+          @for(status of statusOptions; track status){
+          <option [value]="status">{{ status }}</option>
+          }
+        </select>
+        <label for="status">Status</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('status')?.invalid && formProfissionals.get('status')?.touched){
+      <small class="p-error">O status e obrigatorio.</small>
       }
     </div>
 

@@ -25,12 +25,16 @@ export class PatientCreate implements OnInit {
 
   fb = inject(NonNullableFormBuilder);
   errMessage: string = '';
+  categories: PatientDTO['category'][] = ['Unidade', 'Escola', 'Aluno', 'Externo'];
+  statusOptions: PatientDTO['status'][] = ['Ativo', 'Inativo'];
 
   formPaciente = this.fb.group({
     name: ['', Validators.required],
-    cpf: ['', Validators.required],
-    phone: ['', Validators.required],
+    category: ['Aluno' as PatientDTO['category'], Validators.required],
+    cellphone: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
+    registrationDate: ['', Validators.required],
+    status: ['Ativo' as PatientDTO['status'], Validators.required],
   })
 
   constructor(private patientService: PatientService, private router: Router, private dtr: ChangeDetectorRef,
@@ -93,6 +97,10 @@ export class PatientCreate implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+
+    if (!id) {
+      this.formPaciente.patchValue({ registrationDate: new Date().toISOString().split('T')[0] });
+    }
 
     if (id) {
       this.loadPatient(Number(+id));

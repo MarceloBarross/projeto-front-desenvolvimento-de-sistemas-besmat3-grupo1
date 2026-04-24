@@ -1,0 +1,43 @@
+<p-card header="Relatorio de Centros de Custo">
+  <div class="report-header">
+    <p-button label="Exportar" icon="pi pi-download"></p-button>
+  </div>
+
+  <p-table
+    [value]="groupedReportData"
+    rowGroupMode="subheader"
+    groupRowsBy="centroCusto"
+    sortField="centroCusto"
+    [sortOrder]="1"
+    responsiveLayout="scroll"
+  >
+
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nome do Paciente</th>
+        <th>Data da Consulta</th>
+        <th>Profissional</th>
+      </tr>
+    </ng-template>
+
+    <!-- GRUPO -->
+    <ng-template pTemplate="groupheader" let-rowData>
+      <tr class="group-row">
+        <td colspan="3">
+          <strong>{{ rowData.centroCusto }}</strong>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- BODY -->
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>{{ item.paciente }}</td>
+        <td>{{ item.data }}</td>
+        <td>{{ item.profissional }}</td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</p-card>

@@ -15,23 +15,27 @@
 
     <div class="field">
       <p-floatLabel>
-        <p-inputMask mask="999.999.999-99" formControlName="cpf" placeholder="CPF"></p-inputMask>
-        <label for="cpf">CPF</label>
+        <select id="category" class="p-inputtext p-component w-full" formControlName="category">
+          @for(category of categories; track category){
+            <option [value]="category">{{ category }}</option>
+          }
+        </select>
+        <label for="category">Categoria</label>
       </p-floatLabel>
 
-      @if(formPaciente.get('cpf')?.invalid && formPaciente.get('cpf')?.touched){
-        <small class="p-error">O CPF é obrigatório.</small>
+      @if(formPaciente.get('category')?.invalid && formPaciente.get('category')?.touched){
+        <small class="p-error">A categoria é obrigatória.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <p-inputMask mask="(99) 99999-9999"  formControlName="phone" placeholder="Telefone"></p-inputMask>
-        <label for="phone">Telefone</label>
+        <p-inputMask mask="(99) 99999-9999"  formControlName="cellphone" placeholder="Celular (WhatsApp)"></p-inputMask>
+        <label for="cellphone">Celular (WhatsApp)</label>
       </p-floatLabel>
 
-      @if(formPaciente.get('phone')?.invalid && formPaciente.get('phone')?.touched){
-        <small class="p-error">O telefone é obrigatório.</small>
+      @if(formPaciente.get('cellphone')?.invalid && formPaciente.get('cellphone')?.touched){
+        <small class="p-error">O celular (WhatsApp) é obrigatório.</small>
       }
     </div>
 
@@ -43,6 +47,32 @@
 
       @if(formPaciente.get('email')?.invalid && formPaciente.get('email')?.touched){
         <small class="p-error">O email é obrigatório.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="registrationDate" type="date" formControlName="registrationDate" />
+        <label for="registrationDate">Data de Cadastramento</label>
+      </p-floatLabel>
+
+      @if(formPaciente.get('registrationDate')?.invalid && formPaciente.get('registrationDate')?.touched){
+        <small class="p-error">A data de cadastramento é obrigatória.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <select id="status" class="p-inputtext p-component w-full" formControlName="status">
+          @for(status of statusOptions; track status){
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+        <label for="status">Status</label>
+      </p-floatLabel>
+
+      @if(formPaciente.get('status')?.invalid && formPaciente.get('status')?.touched){
+        <small class="p-error">O status é obrigatório.</small>
       }
     </div>
 

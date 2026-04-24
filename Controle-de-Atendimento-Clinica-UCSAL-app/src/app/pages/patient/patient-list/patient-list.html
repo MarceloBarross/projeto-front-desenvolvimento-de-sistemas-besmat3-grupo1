@@ -3,8 +3,8 @@
 <p-card header="Pacientes">
 
   <div class="table-header">
-    <button 
-      pButton 
+    <button
+      pButton
       label="Novo Paciente"
       icon="pi pi-plus"
       [routerLink]="['/main-layout/patients/create']"
@@ -16,9 +16,11 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Nome</th>
-        <th>CPF</th>
-        <th>Telefone</th>
+        <th>Categoria</th>
+        <th>Celular (WhatsApp)</th>
         <th>Email</th>
+        <th>Data de Cadastramento</th>
+        <th>Status</th>
         <th>Ações</th>
       </tr>
     </ng-template>
@@ -26,19 +28,28 @@
     <ng-template pTemplate="body" let-p>
       <tr>
         <td>{{ p.name }}</td>
-        <td>{{ p.cpf }}</td>
-        <td>{{ p.phone }}</td>
+        <td>{{ p.category }}</td>
+        <td>{{ p.cellphone }}</td>
         <td>{{ p.email }}</td>
+        <td>{{ p.registrationDate }}</td>
+        <td>{{ p.status }}</td>
         <td>
-          <button 
-            pButton 
-            icon="pi pi-pencil" 
+          <button
+            pButton
+            icon="pi pi-file-edit"
+            class="p-button-text p-button-info"
+            pTooltip="Prontuários"
+            (click)="abrirProntuarios(p)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-pencil"
             class="p-button-text"
             (click)="editarPaciente(p.id)"
           ></button>
-          <button 
-            pButton 
-            icon="pi pi-trash" 
+          <button
+            pButton
+            icon="pi pi-trash"
             class="p-button-text p-button-danger"
             (click)="deletePaciente(p.id)"
           ></button>
@@ -48,5 +59,31 @@
 
   </p-table>
 
-
 </p-card>
+
+<!-- DIALOG PRONTUÁRIOS -->
+<p-dialog
+  [header]="'Prontuários — ' + (pacienteSelecionado?.name ?? '')"
+  [(visible)]="prontuariosDialogVisible"
+  [modal]="true"
+  [style]="{ width: '45rem' }"
+>
+  @if (prontuariosPaciente.length === 0) {
+    <p>Nenhum prontuário finalizado encontrado para este paciente.</p>
+  }
+
+  @for (c of prontuariosPaciente; track c.id) {
+    <p-card [header]="(c.dataInicio | date:'dd/MM/yyyy HH:mm') + ' — ' + c.tipo" styleClass="mb-3">
+      <p><strong>Status:</strong> {{ c.status }}</p>
+      <p><strong>Sintomas:</strong> {{ c.sintomas }}</p>
+      <p><strong>Diagnóstico:</strong> {{ c.diagnostico }}</p>
+      @if (c.medicacao) {
+        <p><strong>Medicação:</strong> {{ c.medicacao }}</p>
+        <p><strong>Dosagem:</strong> {{ c.dosagem }}</p>
+      }
+      @if (c.tratamento) {
+        <p><strong>Tratamento:</strong> {{ c.tratamento }}</p>
+      }
+    </p-card>
+  }
+</p-dialog>

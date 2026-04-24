@@ -1,32 +1,23 @@
-.consultation {
+.container {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.header {
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.field {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .actions {
   display: flex;
-  gap: 0.5rem;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-textarea {
-  width: 100%;
-}
-
-.save {
-  margin-top: 1rem;
-  display: flex;
   justify-content: flex-end;
+  gap: 0.5rem;
 }

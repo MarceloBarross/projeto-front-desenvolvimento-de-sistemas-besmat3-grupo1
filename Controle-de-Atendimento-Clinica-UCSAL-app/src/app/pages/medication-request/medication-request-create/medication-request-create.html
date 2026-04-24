@@ -1,0 +1,46 @@
+<p-card header="Nova Solicitacao de Medicamento">
+  <form [formGroup]="requestForm" class="form">
+    <div class="field">
+      <p-floatLabel>
+        <select id="medicationSelect" class="select-input" (change)="onMedicationChange($event)">
+          <option value="">Selecione uma medicacao</option>
+          @for (medication of medications; track medication.id) {
+            <option [value]="medication.id">{{ medication.id }} - {{ medication.name }}</option>
+          }
+        </select>
+        <label for="medicationSelect">Identificacao da Medicacao</label>
+      </p-floatLabel>
+
+      @if (requestForm.controls.medicationId.invalid && requestForm.controls.medicationId.touched) {
+        <small class="p-error">Selecione uma medicacao valida.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="medicationName" formControlName="medicationName" readonly />
+        <label for="medicationName">Nome do Medicamento</label>
+      </p-floatLabel>
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <select id="requestPriority" formControlName="requestPriority" class="select-input">
+          <option value="URGENTE">URGENTE - estoque zerado</option>
+          <option value="CRITICO">CRITICO - estoque muito baixo</option>
+          <option value="PREVENTIVO">PREVENTIVO - planejamento de consumo</option>
+        </select>
+        <label for="requestPriority">Carater da Solicitacao</label>
+      </p-floatLabel>
+    </div>
+
+    @if (errMessage) {
+      <p-message severity="error" [text]="errMessage"></p-message>
+    }
+
+    <div class="buttons">
+      <p-button label="Salvar" icon="pi pi-check" (click)="save()"></p-button>
+      <p-button severity="danger" label="Cancelar" icon="pi pi-times" (click)="cancel()"></p-button>
+    </div>
+  </form>
+</p-card>

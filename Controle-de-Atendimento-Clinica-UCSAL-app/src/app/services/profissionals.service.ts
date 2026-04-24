@@ -11,19 +11,27 @@ export class ProfissionalsService {
   profissionalsMock: Profissionals[] = [
     {
       id: 1,
+      professionalCode: 'PROF-001',
       name: 'Ana Lima',
       specialty: 'Cardiologia',
-      council: 'CRM-BA 12345',
-      phone: '(71) 99999-0001',
-      email: 'ana.lima@clinica.com'
+      attendanceDays: 'Segunda, Quarta e Sexta',
+      attendanceShifts: 'Matutino',
+      regionalCouncil: 'CRM-BA',
+      councilRegistrationNumber: '12345',
+      registrationDate: '2026-04-10',
+      status: 'Ativo'
     },
     {
       id: 2,
+      professionalCode: 'PROF-002',
       name: 'Carlos Santos',
       specialty: 'Pediatria',
-      council: 'CRM-BA 67890',
-      phone: '(71) 99999-0002',
-      email: 'carlos.santos@clinica.com'
+      attendanceDays: 'Terca e Quinta',
+      attendanceShifts: 'Vespertino',
+      regionalCouncil: 'CRM-BA',
+      councilRegistrationNumber: '67890',
+      registrationDate: '2026-04-11',
+      status: 'Inativo'
     }
   ];
 

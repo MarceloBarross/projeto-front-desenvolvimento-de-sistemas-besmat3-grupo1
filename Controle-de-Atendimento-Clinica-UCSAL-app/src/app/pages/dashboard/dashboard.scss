@@ -1,0 +1,146 @@
+.dashboard {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: #f6fbf8;
+
+  .header {
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1b4332;
+    }
+
+    span {
+      color: #6c757d;
+      font-size: 13px;
+    }
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .metric-card {
+
+  .card-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    span {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.5px; // deixa número mais elegante
+      margin-bottom: 2px;
+    }
+
+    small {
+      font-size: 12px;
+      color: #6c757d;
+    }
+  }
+}
+
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* GRÁFICO */
+  .bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    span {
+      font-size: 12px;
+      width: 110px;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 14px;
+      background: #e9f5ee;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+
+      &.aguardando { background: #f4a261; }
+      &.andamento { background: #2a9d8f; }
+      &.finalizado { background: #2b9348; }
+    }
+  }
+
+  /* AGENDA */
+  .agenda-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #edf3ee;
+
+    .agenda-time {
+      width: 50px;
+      font-size: 12px;
+      color: #6c757d;
+    }
+
+    .agenda-info {
+      flex: 1;
+      font-size: 14px;
+    }
+
+    .status {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+
+      &.Aguardando {
+        background: #ffe8cc;
+        color: #9c6644;
+      }
+
+      &.Em-Atendimento {
+        background: #d8f3dc;
+        color: #2d6a4f;
+      }
+
+      &.Finalizado {
+        background: #c7f9cc;
+        color: #1b4332;
+      }
+    }
+  }
+
+  .empty {
+    text-align: center;
+    color: #888;
+    padding: 1rem;
+  }
+}

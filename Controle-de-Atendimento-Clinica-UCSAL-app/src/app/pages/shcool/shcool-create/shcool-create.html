@@ -1,0 +1,100 @@
+<p-card [header]="isEditMode ? 'Editar Escola' : 'Nova Escola'">
+  <form [formGroup]="schoolForm" class="form">
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="name" formControlName="name" />
+        <label for="name">Nome da Escola</label>
+      </p-floatLabel>
+
+      @if (schoolForm.controls.name.invalid && schoolForm.controls.name.touched) {
+        <small class="p-error">Nome da escola e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field coordinator-field">
+      <div class="coordinator-row">
+        <p-floatLabel class="coordinator-select">
+          <select id="coordenador" formControlName="coordenador" class="select-input">
+            <option value="">Selecione um coordenador</option>
+            @for (coordenador of coordenadores; track coordenador) {
+              <option [value]="coordenador">{{ coordenador }}</option>
+            }
+          </select>
+          <label for="coordenador">Coordenador</label>
+        </p-floatLabel>
+
+        <p-button
+          type="button"
+          label="Cadastrar coordenador"
+          icon="pi pi-user-plus"
+          severity="secondary"
+          (click)="openCoordenadorDialog()"
+        ></p-button>
+      </div>
+
+      @if (schoolForm.controls.coordenador.invalid && schoolForm.controls.coordenador.touched) {
+        <small class="p-error">Coordenador e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <select id="ies" formControlName="iesName" class="select-input">
+          <option value="">Selecione uma IES</option>
+          @for (ies of iesList; track ies.id) {
+            <option [value]="ies.name">{{ ies.name }} ({{ ies.sigla }})</option>
+          }
+        </select>
+        <label for="ies">IES</label>
+      </p-floatLabel>
+
+      @if (schoolForm.controls.iesName.invalid && schoolForm.controls.iesName.touched) {
+        <small class="p-error">IES e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field checkbox-field">
+      <input id="isAtivo" type="checkbox" formControlName="isAtivo" />
+      <label for="isAtivo">Escola ativa</label>
+    </div>
+
+    @if (errMessage) {
+      <p-message severity="error" [text]="errMessage"></p-message>
+    }
+
+    <div class="buttons">
+      <p-button label="Salvar" icon="pi pi-check" (click)="save()"></p-button>
+      <p-button
+        severity="danger"
+        label="Cancelar"
+        icon="pi pi-times"
+        (click)="cancel()"
+      ></p-button>
+    </div>
+  </form>
+</p-card>
+
+<p-dialog
+  header="Cadastrar Coordenador"
+  [(visible)]="coordenadorDialogVisible"
+  [modal]="true"
+  [style]="{ width: '420px' }"
+>
+  <form [formGroup]="coordenadorForm" class="form">
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="coordenadorName" formControlName="name" />
+        <label for="coordenadorName">Nome do Coordenador</label>
+      </p-floatLabel>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancelar"
+      severity="secondary"
+      (click)="coordenadorDialogVisible = false"
+    ></p-button>
+    <p-button label="Salvar" icon="pi pi-check" (click)="saveCoordenador()"></p-button>
+  </ng-template>
+</p-dialog>

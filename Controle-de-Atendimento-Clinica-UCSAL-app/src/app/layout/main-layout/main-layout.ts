@@ -19,6 +19,7 @@ export class MainLayout implements OnInit {
   constructor( private authService: AuthService, private router: Router) {}
 
   sidebarVisible: boolean = false;
+  role: string = '';
 
   items = [
     { label: 'Opcoes', 
@@ -35,6 +36,7 @@ export class MainLayout implements OnInit {
     if (window.innerWidth > 768) {
       this.sidebarVisible = true;
     }
+    this.role = this.authService.getRoles()[0].toUpperCase();
   }
 
   editUser() {

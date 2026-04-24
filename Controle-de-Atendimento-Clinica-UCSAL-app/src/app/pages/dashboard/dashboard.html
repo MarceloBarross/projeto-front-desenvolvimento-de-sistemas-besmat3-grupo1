@@ -1,1 +1,121 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h2>Olá, {{ nomeUsuario }}</h2>
+      <span>{{ hoje | date:'EEEE, dd MMMM yyyy' }}</span>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards-grid">
+
+    <p-card class="metric-card green">
+      <div class="card-content">
+        <i class="pi pi-users"></i>
+        <div>
+          <span>{{ totalPacientes }}</span>
+          <small>Pacientes</small>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card class="metric-card teal">
+      <div class="card-content">
+        <i class="pi pi-briefcase"></i>
+        <div>
+          <span>{{ totalProfissionais }}</span>
+          <small>Profissionais</small>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card class="metric-card lime">
+      <div class="card-content">
+        <i class="pi pi-calendar"></i>
+        <div>
+          <span>{{ consultasHoje.length }}</span>
+          <small>Consultas hoje</small>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card class="metric-card emerald">
+      <div class="card-content">
+        <i class="pi pi-heart"></i>
+        <div>
+          <span>{{ totalMedicamentos }}</span>
+          <small>Medicamentos</small>
+        </div>
+      </div>
+    </p-card>
+
+  </div>
+
+  <!-- GRID -->
+  <div class="bottom-grid">
+
+    <!-- GRÁFICO -->
+    <p-card header="Consultas por status" class="chart-card">
+      <div class="bar-chart">
+
+        <div class="bar-row">
+          <span>Aguardando</span>
+          <div class="bar-track">
+            <div class="bar-fill aguardando"
+              [style.width.%]="consultasHoje.length ? (aguardando / consultasHoje.length) * 100 : 0">
+            </div>
+          </div>
+          <span>{{ aguardando }}</span>
+        </div>
+
+        <div class="bar-row">
+          <span>Em andamento</span>
+          <div class="bar-track">
+            <div class="bar-fill andamento"
+              [style.width.%]="consultasHoje.length ? (emAtendimento / consultasHoje.length) * 100 : 0">
+            </div>
+          </div>
+          <span>{{ emAtendimento }}</span>
+        </div>
+
+        <div class="bar-row">
+          <span>Finalizado</span>
+          <div class="bar-track">
+            <div class="bar-fill finalizado"
+              [style.width.%]="consultasHoje.length ? (finalizadas / consultasHoje.length) * 100 : 0">
+            </div>
+          </div>
+          <span>{{ finalizadas }}</span>
+        </div>
+
+      </div>
+    </p-card>
+
+    <!-- AGENDA -->
+    <p-card header="Agenda de hoje" class="agenda-card">
+
+      @if (consultasHoje.length === 0) {
+        <p class="empty">Sem consultas hoje</p>
+      }
+
+      @for (c of consultasHoje; track c.id) {
+        <div class="agenda-item">
+          <span class="agenda-time">{{ c.dataInicio | date:'HH:mm' }}</span>
+
+          <div class="agenda-info">
+            <strong>{{ c.tipo }}</strong>
+          </div>
+
+          <span class="status" [ngClass]="c.status">
+            {{ c.status }}
+          </span>
+        </div>
+      }
+
+    </p-card>
+
+  </div>
+
+</div>

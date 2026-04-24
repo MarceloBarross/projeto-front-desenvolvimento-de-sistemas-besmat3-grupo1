@@ -31,13 +31,19 @@ import { ProfissionalsDTO } from '../../../models/profissionals/profissionals-dt
 export class ProfissionalsCreate implements OnInit {
   fb = inject(NonNullableFormBuilder);
   errMessage: string = '';
+  statusOptions: ProfissionalsDTO['status'][] = ['Ativo', 'Inativo'];
+  regionalCouncilOptions: string[] = ['CRM', 'COREN', 'CREFITO', 'CRP', 'CRO', 'CFF'];
 
   formProfissionals = this.fb.group({
+    professionalCode: ['', Validators.required],
     name: ['', Validators.required],
     specialty: ['', Validators.required],
-    council: ['', Validators.required],
-    phone: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]]
+    attendanceDays: ['', Validators.required],
+    attendanceShifts: ['', Validators.required],
+    regionalCouncil: ['CRM', Validators.required],
+    councilRegistrationNumber: ['', Validators.required],
+    registrationDate: ['', Validators.required],
+    status: ['Ativo' as ProfissionalsDTO['status'], Validators.required]
   });
 
   constructor(
@@ -107,6 +113,10 @@ export class ProfissionalsCreate implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+
+    if (!id) {
+      this.formProfissionals.patchValue({ registrationDate: new Date().toISOString().split('T')[0] });
+    }
 
     if (id) {
       this.loadProfissional(+id);

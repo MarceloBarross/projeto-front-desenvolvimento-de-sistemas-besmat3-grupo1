@@ -6,7 +6,7 @@
   <aside class="sidebar">
     <div class="logo">
       <h2>UCSAL</h2>
-      <span>SANTAS VITAS</span>
+      <span>CLINICA MEDICA</span>
     </div>
 
     <ul class="menu">
@@ -15,11 +15,12 @@
         <span>Dashboard</span>
       </li>
 
+      @if(role === 'ADMIN') {
       <li routerLink="/main-layout/profissionals" routerLinkActive="active">
         <i class="pi pi-users"></i>
         <span>Profissionais</span>
       </li>
-
+      }
       <li routerLink="/main-layout/patients" routerLinkActive="active">
         <i class="pi pi-user"></i>
         <span>Pacientes</span>
@@ -30,10 +31,43 @@
         <span>Consultas</span>
       </li>
 
-      <li routerLink="/main-layout/ies" routerLinkActive="active">
-        <i class="pi pi-building"></i>
-        <span>IES</span>
+      @if (role === 'ADMIN') {
+        <li routerLink="/main-layout/ies" routerLinkActive="active">
+          <i class="pi pi-building"></i>
+          <span>IES</span>
+        </li>
+      }
+
+      @if(role === 'ADMIN') {
+        <li routerLink="/main-layout/ies-units" routerLinkActive="active">
+          <i class="pi pi-sitemap"></i>
+          <span>Unidades IES</span>
+        </li>
+      }
+
+      <li routerLink="/main-layout/medications" routerLinkActive="active">
+        <i class="pi pi-heart"></i>
+        <span>Medicacoes</span>
       </li>
+
+      <li routerLink="/main-layout/medication-requests" routerLinkActive="active">
+        <i class="pi pi-shopping-cart"></i>
+        <span>Solicitacoes de Medicacao</span>
+      </li>
+
+      @if(role === 'ADMIN') {
+        <li routerLink="/main-layout/shcools" routerLinkActive="active">
+          <i class="pi pi-book"></i>
+          <span>Escolas</span>
+        </li>
+      }
+      
+      @if(role === 'ADMIN') {
+        <li routerLink="/main-layout/reports/cost-center" routerLinkActive="active">
+          <i class="pi pi-file-pdf"></i>
+          <span>Relatorios</span>
+        </li>
+      }
     </ul>
   </aside>
 
@@ -51,12 +85,14 @@
 
         <p-menu #menu [popup]="true" [model]="items"></p-menu>
         <p-avatar
-          label="MS"
+          label=""
           shape="circle"
           size="normal"
           (click)="menu.toggle($event)"
           style="cursor: pointer;"
-        ></p-avatar>
+        >
+        <i class="pi pi-user"></i>
+      </p-avatar>
       </div>
     </header>
 
