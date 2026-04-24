@@ -6,12 +6,13 @@ import { Router, RouterModule } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { TagModule } from 'primeng/tag';
 import { Profissionals } from '../../../models/profissionals/profissionals-interface';
 import { ProfissionalsService } from '../../../services/profissionals.service';
 
 @Component({
   selector: 'app-profissionals-list',
-  imports: [CardModule, TableModule, ButtonModule, RouterModule, ConfirmDialogModule, ToastModule],
+  imports: [CardModule, TableModule, ButtonModule, RouterModule, ConfirmDialogModule, ToastModule, TagModule],
   templateUrl: './profissionals-list.html',
   styleUrl: './profissionals-list.scss',
   providers: [ConfirmationService]

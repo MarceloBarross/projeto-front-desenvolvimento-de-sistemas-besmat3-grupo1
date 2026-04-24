@@ -1,0 +1,77 @@
+<p-confirmDialog></p-confirmDialog>
+
+<p-card header="Medicacoes">
+  <div class="actions">
+    @if(role === 'ADMIN') {
+      <p-button
+        label="Nova Medicacao"
+        icon="pi pi-plus"
+        [routerLink]="['/main-layout/medications/create']"
+      ></p-button>
+    }
+  </div>
+
+  <p-table [value]="medications" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nome</th>
+        <th>Fornecedor</th>
+        <th>Armazenamento</th>
+        <th>Quantidade</th>
+        <th>Validade</th>
+        <th>Aquisicao</th>
+        <th>Status</th>
+        <th>Acoes</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-m>
+      <tr>
+        <td>{{ m.name }}</td>
+        <td>{{ m.supplier }}</td>
+        <td>{{ getStorageLabel(m.storageType) }}</td>
+        <td>{{ m.quantity }}</td>
+        <td>{{ m.expirationDate }}</td>
+        <td>{{ m.acquisitionDate }}</td>
+        <td>
+          <p-tag
+            [value]="m.isAtivo ? 'Ativo' : 'Inativo'"
+            [severity]="m.isAtivo ? 'success' : 'danger'"
+          ></p-tag>
+        </td>
+        <td class="actions-column">
+          <button
+            pButton
+            icon="pi pi-info-circle"
+            class="p-button-text"
+            (click)="openDescription(m)"
+          ></button>
+          @if(role === 'ADMIN') {
+            <button
+              pButton
+              [icon]="m.isAtivo ? 'pi pi-eye-slash' : 'pi pi-eye'"
+              class="p-button-text"
+              (click)="toggleStatus(m.id)"
+            ></button>
+            <button
+              pButton
+              icon="pi pi-trash"
+              class="p-button-text p-button-danger"
+              (click)="deleteMedication(m.id)"
+            ></button>
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-dialog
+  header="Descricao do Medicamento"
+  [(visible)]="descriptionDialogVisible"
+  [modal]="true"
+  [style]="{ width: '520px' }"
+>
+  <p><strong>Medicacao:</strong> {{ selectedMedication?.name }}</p>
+  <p>{{ selectedMedication?.description || 'Sem descricao cadastrada.' }}</p>
+</p-dialog>

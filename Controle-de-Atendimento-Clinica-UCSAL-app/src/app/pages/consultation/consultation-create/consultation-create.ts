@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -9,7 +9,6 @@ import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ConsultationService } from '../../../services/consultation.service';
-import { ConsultationDto } from '../../../models/consultation/consultation-dto';
 import { Patient } from '../../../models/patient/patient-interface';
 import { Profissionals } from '../../../models/profissionals/profissionals-interface';
 import { PatientService } from '../../../services/patient.service';
@@ -17,21 +16,40 @@ import { ProfissionalsService } from '../../../services/profissionals.service';
 
 @Component({
   selector: 'app-consultation-create',
-  imports: [CardModule, ReactiveFormsModule, FloatLabelModule, InputTextModule, ButtonModule, RouterModule, MessageModule, ToastModule],
+  standalone: true,
+  imports: [
+    CardModule,
+    ReactiveFormsModule,
+    FloatLabelModule,
+    InputTextModule,
+    ButtonModule,
+    RouterModule,
+    MessageModule,
+    ToastModule
+  ],
   templateUrl: './consultation-create.html',
   styleUrl: './consultation-create.scss',
 })
-export class ConsultationCreate {
+export class ConsultationCreate implements OnInit {
+
   fb = inject(FormBuilder);
-  errMessage: string = '';
+
+  errMessage = '';
   patients: Patient[] = [];
   profissionals: Profissionals[] = [];
 
-  formConsulta = this.fb.group({
-    time: ['', [Validators.required]],
-    patient: [null as Patient | null, [Validators.required]],
-    type: ['', [Validators.required]],
-    professional: [null as Profissionals | null, [Validators.required]]
+  tipos = [
+    { label: 'Urgência', value: 'URGENTE' },
+    { label: 'Emergência', value: 'EMERGENCIA' },
+    { label: 'Consulta', value: 'CONSULTA' },
+    { label: 'Revisão', value: 'REVISAO' }
+  ];
+
+  form = this.fb.group({
+    patientId: [null as number | null, Validators.required],
+    professionalId: [null as number | null, Validators.required],
+    tipo: ['CONSULTA', Validators.required],
+    dataInicio: [new Date(), Validators.required]
   });
 
   constructor(
@@ -41,60 +59,43 @@ export class ConsultationCreate {
     private router: Router,
     private dtr: ChangeDetectorRef,
     private messageService: MessageService
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.carregarPacientes();
     this.carregarProfissionais();
   }
 
   carregarPacientes() {
     this.patientService.listarPacientes().subscribe({
-      next: (data) => {
-        this.patients = data;
-      },
-      error: () => {
-        this.errMessage = 'Erro ao carregar pacientes.';
-      }
+      next: (data) => this.patients = data,
+      error: () => this.errMessage = 'Erro ao carregar pacientes.'
     });
   }
 
   carregarProfissionais() {
     this.profissionalsService.listarProfissionals().subscribe({
-      next: (data) => {
-        this.profissionals = data;
-      },
-      error: () => {
-        this.errMessage = 'Erro ao carregar profissionais.';
-      }
+      next: (data) => this.profissionals = data,
+      error: () => this.errMessage = 'Erro ao carregar profissionais.'
     });
   }
 
-  compareById<T extends { id: number }>(a: T | null, b: T | null): boolean {
-    return a?.id === b?.id;
-  }
-
   save() {
-    if (this.formConsulta.invalid) {
-      this.errMessage = 'Por favor, preencha todos os campos obrigatorios.';
-      this.dtr.markForCheck();
+    if (this.form.invalid) {
+      this.errMessage = 'Preencha todos os campos obrigatórios.';
       return;
     }
 
-    const rawValue = this.formConsulta.getRawValue();
+    const raw = this.form.getRawValue();
 
-    if (!rawValue.patient || !rawValue.professional) {
-      this.errMessage = 'Paciente e profissional sao obrigatorios.';
-      this.dtr.markForCheck();
-      return;
-    }
-
-    const data: ConsultationDto = {
-      time: rawValue.time ?? '',
-      type: rawValue.type ?? '',
-      patient: rawValue.patient,
-      professional: rawValue.professional
+    const data = {
+      patientId: Number(raw.patientId),
+      professionalId: Number(raw.professionalId),
+      tipo: raw.tipo as any,
+      dataInicio: raw.dataInicio ?? undefined
     };
 
-    this.consultationService.criarConsulta(data).subscribe({
+    this.consultationService.criar(data).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -103,12 +104,10 @@ export class ConsultationCreate {
         });
 
         this.router.navigate(['/main-layout/consultations']);
-        this.dtr.markForCheck();
       },
       error: (err) => {
-        console.error('Erro ao criar consulta.', err);
-        this.errMessage = 'Ocorreu um erro ao criar a consulta. Tente novamente.';
-        this.dtr.markForCheck();
+        console.error(err);
+        this.errMessage = 'Erro ao criar consulta.';
       }
     });
   }

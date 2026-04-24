@@ -1,44 +1,94 @@
 <div class="profile-container">
-  <p-card header="Meu Perfil" subheader="Gerencie suas informacoes">
+
+  <!-- PERFIL -->
+  <p-card header="Meu Perfil" subheader="Gerencie suas informações">
     <form [formGroup]="profileForm" class="form" (ngSubmit)="updateProfile()">
       <div class="field">
         <label>Nome</label>
         <input pInputText formControlName="name" />
       </div>
-
       <div class="field">
         <label>Email</label>
         <input pInputText formControlName="email" />
       </div>
-
       <div class="field">
         <label>Perfil</label>
         <input pInputText [value]="role" disabled />
       </div>
-
       <div class="actions">
         <button pButton type="submit" label="Salvar" icon="pi pi-check"></button>
       </div>
     </form>
   </p-card>
 
-  <p-card header="Seguranca" subheader="Atualize sua senha" styleClass="security-card">
+  <!-- DADOS PROFISSIONAIS — só aparece para role PROFISSIONAL -->
+  @if (role === 'PROFISSIONAL') {
+    <p-card header="Dados Profissionais" subheader="Complemente seu cadastro">
+      <form [formGroup]="professionalForm" class="form" (ngSubmit)="updateProfessionalInfo()">
+
+        <div class="field">
+          <label>Formação</label>
+          <input pInputText formControlName="formacao" placeholder="Ex: Medicina - UFBA" />
+          @if (professionalForm.get('formacao')?.invalid && professionalForm.get('formacao')?.touched) {
+            <small class="p-error">Formação é obrigatória.</small>
+          }
+        </div>
+
+        <div class="field">
+          <label>Conselho Regional</label>
+          <input pInputText formControlName="conselhoRegional" placeholder="Ex: CRM-BA 12345" />
+          @if (professionalForm.get('conselhoRegional')?.invalid && professionalForm.get('conselhoRegional')?.touched) {
+            <small class="p-error">Conselho Regional é obrigatório.</small>
+          }
+        </div>
+
+        <div class="field">
+          <label>Especialidade</label>
+          <input pInputText formControlName="especialidade" placeholder="Ex: Cardiologia" />
+          @if (professionalForm.get('especialidade')?.invalid && professionalForm.get('especialidade')?.touched) {
+            <small class="p-error">Especialidade é obrigatória.</small>
+          }
+        </div>
+
+        <div class="field">
+          <label>Dias de Atendimento</label>
+          <input pInputText formControlName="diasAtendimento" placeholder="Ex: Segunda, Quarta e Sexta" />
+          @if (professionalForm.get('diasAtendimento')?.invalid && professionalForm.get('diasAtendimento')?.touched) {
+            <small class="p-error">Dias de atendimento são obrigatórios.</small>
+          }
+        </div>
+
+        <div class="field">
+          <label>Horários de Atendimento</label>
+          <input pInputText formControlName="horariosAtendimento" placeholder="Ex: 08:00 às 12:00" />
+          @if (professionalForm.get('horariosAtendimento')?.invalid && professionalForm.get('horariosAtendimento')?.touched) {
+            <small class="p-error">Horários de atendimento são obrigatórios.</small>
+          }
+        </div>
+
+        <div class="actions">
+          <button pButton type="submit" label="Salvar Dados Profissionais" icon="pi pi-id-card"></button>
+        </div>
+
+      </form>
+    </p-card>
+  }
+
+  <!-- SEGURANÇA -->
+  <p-card header="Segurança" subheader="Atualize sua senha" styleClass="security-card">
     <form [formGroup]="passwordForm" class="form" (ngSubmit)="updatePassword()">
       <div class="field">
         <label>Senha atual</label>
         <input pPassword formControlName="currentPassword" [feedback]="false" />
       </div>
-
       <div class="field">
         <label>Nova senha</label>
         <input pPassword formControlName="newPassword" [feedback]="true" />
       </div>
-
       <div class="field">
         <label>Confirmar senha</label>
         <input pPassword formControlName="confirmPassword" [feedback]="false" />
       </div>
-
       <div class="actions">
         <button pButton type="submit" label="Alterar Senha" icon="pi pi-lock" severity="warn"></button>
       </div>

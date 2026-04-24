@@ -1,0 +1,57 @@
+<p-confirmDialog></p-confirmDialog>
+
+<p-card header="Escolas">
+  <div class="actions">
+    <p-button
+      label="Nova Escola"
+      icon="pi pi-plus"
+      [routerLink]="['/main-layout/shcools/create']"
+    ></p-button>
+  </div>
+
+  <p-table [value]="schools" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nome</th>
+        <th>Coordenador</th>
+        <th>IES</th>
+        <th>Status</th>
+        <th>Acoes</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-s>
+      <tr>
+        <td>{{ s.name }}</td>
+        <td>{{ s.coordenador }}</td>
+        <td>{{ s.ies.name }}</td>
+        <td>
+          <p-tag
+            [value]="s.isAtivo ? 'Ativo' : 'Inativo'"
+            [severity]="s.isAtivo ? 'success' : 'danger'"
+          ></p-tag>
+        </td>
+        <td class="actions-column">
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-text"
+            (click)="editSchool(s.id)"
+          ></button>
+          <button
+            pButton
+            [icon]="s.isAtivo ? 'pi pi-eye-slash' : 'pi pi-eye'"
+            class="p-button-text"
+            (click)="toggleStatus(s.id)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-text p-button-danger"
+            (click)="deleteSchool(s.id)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

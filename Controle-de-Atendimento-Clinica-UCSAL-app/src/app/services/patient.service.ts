@@ -10,8 +10,24 @@ import { PatientDTO } from '../models/patient/patient-dto';
 export class PatientService {
 
   patientsMock: Patient[] = [
-     { id: 1, name: 'João Silva', cpf: '12345678900', phone: '71-99999-9999', email: 'joao.silva@email.com' },
-    { id: 2, name: 'Maria Souza', cpf: '98765432100', phone: '71-98888-8888', email: 'maria.souza@email.com' }
+    {
+      id: 1,
+      name: 'João Silva',
+      category: 'Aluno',
+      cellphone: '(71) 99999-9999',
+      email: 'joao.silva@email.com',
+      registrationDate: '2026-04-10',
+      status: 'Ativo'
+    },
+    {
+      id: 2,
+      name: 'Maria Souza',
+      category: 'Escola',
+      cellphone: '(71) 98888-8888',
+      email: 'maria.souza@email.com',
+      registrationDate: '2026-04-12',
+      status: 'Ativo'
+    }
   ];
   isMock: boolean = true;
 

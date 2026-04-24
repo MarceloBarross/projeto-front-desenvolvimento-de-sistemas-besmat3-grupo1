@@ -1,0 +1,83 @@
+<p-card header="Nova Medicacao">
+  <form [formGroup]="medicationForm" class="form">
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="name" formControlName="name" />
+        <label for="name">Nome da Medicacao</label>
+      </p-floatLabel>
+      @if (medicationForm.controls.name.invalid && medicationForm.controls.name.touched) {
+        <small class="p-error">Nome da medicacao e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="description">Descricao Completa</label>
+      <textarea id="description" formControlName="description" class="text-area"></textarea>
+      @if (medicationForm.controls.description.invalid && medicationForm.controls.description.touched) {
+        <small class="p-error">Descricao da medicacao e obrigatoria.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="supplier" formControlName="supplier" />
+        <label for="supplier">Fornecedor / Fabricacao</label>
+      </p-floatLabel>
+      @if (medicationForm.controls.supplier.invalid && medicationForm.controls.supplier.touched) {
+        <small class="p-error">Fornecedor e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <select id="storageType" formControlName="storageType" class="select-input">
+          <option value="AMBIENTE">Temperatura ambiente</option>
+          <option value="REFRIGERACAO">Refrigeracao</option>
+        </select>
+        <label for="storageType">Forma de Armazenamento</label>
+      </p-floatLabel>
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="quantity" type="number" min="1" formControlName="quantity" />
+        <label for="quantity">Quantidade em Estoque</label>
+      </p-floatLabel>
+      @if (medicationForm.controls.quantity.invalid && medicationForm.controls.quantity.touched) {
+        <small class="p-error">Quantidade deve ser maior que zero.</small>
+      }
+    </div>
+
+    <div class="field two-columns">
+      <div>
+        <label for="expirationDate">Data de Validade</label>
+        <input id="expirationDate" type="date" formControlName="expirationDate" class="date-input" />
+        @if (medicationForm.controls.expirationDate.invalid && medicationForm.controls.expirationDate.touched) {
+          <small class="p-error">Data de validade e obrigatoria.</small>
+        }
+      </div>
+
+      <div>
+        <label for="acquisitionDate">Data de Aquisicao</label>
+        <input id="acquisitionDate" type="date" formControlName="acquisitionDate" class="date-input" />
+        @if (medicationForm.controls.acquisitionDate.invalid && medicationForm.controls.acquisitionDate.touched) {
+          <small class="p-error">Data de aquisicao e obrigatoria.</small>
+        }
+      </div>
+    </div>
+
+    <div class="field checkbox-field">
+      <input id="isAtivo" type="checkbox" formControlName="isAtivo" />
+      <label for="isAtivo">Cadastro ativo</label>
+    </div>
+
+    @if (errMessage) {
+      <p-message severity="error" [text]="errMessage"></p-message>
+    }
+
+    <div class="buttons">
+      <p-button label="Salvar" icon="pi pi-check" (click)="save()"></p-button>
+      <p-button severity="danger" label="Cancelar" icon="pi pi-times" (click)="cancel()"></p-button>
+    </div>
+  </form>
+</p-card>

@@ -1,0 +1,59 @@
+<p-confirmDialog></p-confirmDialog>
+
+<p-card header="Unidades de IES">
+  <div class="actions">
+    <p-button
+      label="Nova Unidade"
+      icon="pi pi-plus"
+      [routerLink]="['/main-layout/ies-units/create']"
+    ></p-button>
+  </div>
+
+  <p-table [value]="units" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Nome da Unidade</th>
+        <th>Representante</th>
+        <th>IES Vinculada</th>
+        <th>Status</th>
+        <th>Acoes</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-u>
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.unitName }}</td>
+        <td>{{ u.representativeName }}</td>
+        <td>{{ u.ies.name }}</td>
+        <td>
+          <p-tag
+            [value]="u.isAtivo ? 'Ativo' : 'Inativo'"
+            [severity]="u.isAtivo ? 'success' : 'danger'"
+          ></p-tag>
+        </td>
+        <td class="actions-column">
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-text"
+            (click)="editUnit(u.id)"
+          ></button>
+          <button
+            pButton
+            [icon]="u.isAtivo ? 'pi pi-eye-slash' : 'pi pi-eye'"
+            class="p-button-text"
+            (click)="toggleStatus(u.id)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-text p-button-danger"
+            (click)="deleteUnit(u.id)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

@@ -1,0 +1,98 @@
+<p-card [header]="isEditMode ? 'Editar Unidade de IES' : 'Nova Unidade de IES'">
+  <form [formGroup]="unitForm" class="form">
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="unitName" formControlName="unitName" />
+        <label for="unitName">Nome da Unidade</label>
+      </p-floatLabel>
+
+      @if (unitForm.controls.unitName.invalid && unitForm.controls.unitName.touched) {
+        <small class="p-error">Nome da unidade e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field representative-field">
+      <div class="representative-row">
+        <p-floatLabel class="representative-select">
+          <select id="representativeName" formControlName="representativeName" class="select-input">
+            <option value="">Selecione um responsavel</option>
+            @for (representative of representatives; track representative) {
+              <option [value]="representative">{{ representative }}</option>
+            }
+          </select>
+        </p-floatLabel>
+
+        <p-button
+          type="button"
+          label="Cadastrar responsavel"
+          icon="pi pi-user-plus"
+          severity="secondary"
+          (click)="openRepresentativeDialog()"
+        ></p-button>
+      </div>
+
+      @if (unitForm.controls.representativeName.invalid && unitForm.controls.representativeName.touched) {
+        <small class="p-error">Representante e obrigatorio.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <select id="ies" formControlName="iesName" class="select-input">
+          <option value="">Selecione uma IES</option>
+          @for (ies of iesList; track ies.id) {
+            <option [value]="ies.name">{{ ies.name }} ({{ ies.sigla }})</option>
+          }
+        </select>
+      </p-floatLabel>
+
+      @if (unitForm.controls.iesName.invalid && unitForm.controls.iesName.touched) {
+        <small class="p-error">IES vinculada e obrigatoria.</small>
+      }
+    </div>
+
+    <div class="field checkbox-field">
+      <input id="isAtivo" type="checkbox" formControlName="isAtivo" />
+      <label for="isAtivo">Unidade ativa</label>
+    </div>
+
+    @if (errMessage) {
+      <p-message severity="error" [text]="errMessage"></p-message>
+    }
+
+    <div class="buttons">
+      <p-button label="Salvar" icon="pi pi-check" (click)="save()"></p-button>
+      <p-button
+        severity="danger"
+        label="Cancelar"
+        icon="pi pi-times"
+        (click)="cancel()"
+      ></p-button>
+    </div>
+  </form>
+</p-card>
+
+<p-dialog
+  header="Cadastrar Responsavel"
+  [(visible)]="representativeDialogVisible"
+  [modal]="true"
+  [style]="{ width: '420px' }"
+>
+  <form [formGroup]="representativeForm" class="form">
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="representativeNameDialog" formControlName="name" />
+        <label for="representativeNameDialog">Nome do Responsavel</label>
+      </p-floatLabel>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancelar"
+      severity="secondary"
+      (click)="representativeDialogVisible = false"
+    ></p-button>
+    <p-button label="Salvar" icon="pi pi-check" (click)="saveRepresentative()"></p-button>
+  </ng-template>
+</p-dialog>

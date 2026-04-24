@@ -1,8 +1,12 @@
 export interface Profissionals {
   id: number;
+  professionalCode: string;
   name: string;
   specialty: string;
-  council: string;
-  phone: string;
-  email: string;
+  attendanceDays: string;
+  attendanceShifts: string;
+  regionalCouncil: string;
+  councilRegistrationNumber: string;
+  registrationDate: string;
+  status: 'Ativo' | 'Inativo';
 }

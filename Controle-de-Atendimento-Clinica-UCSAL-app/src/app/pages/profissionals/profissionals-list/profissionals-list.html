@@ -13,22 +13,35 @@
   <p-table [value]="profissionals" responsiveLayout="scroll">
     <ng-template pTemplate="header">
       <tr>
+        <th>Identificacao</th>
         <th>Nome</th>
         <th>Especialidade</th>
-        <th>Conselho</th>
-        <th>Telefone</th>
-        <th>Email</th>
+        <th>Dias de Atendimento</th>
+        <th>Turnos de Atendimento</th>
+        <th>Conselho Regional</th>
+        <th>Registro no Conselho</th>
+        <th>Data de Cadastramento</th>
+        <th>Status</th>
         <th>Acoes</th>
       </tr>
     </ng-template>
 
     <ng-template pTemplate="body" let-p>
       <tr>
+        <td>{{ p.professionalCode }}</td>
         <td>{{ p.name }}</td>
         <td>{{ p.specialty }}</td>
-        <td>{{ p.council }}</td>
-        <td>{{ p.phone }}</td>
-        <td>{{ p.email }}</td>
+        <td>{{ p.attendanceDays }}</td>
+        <td>{{ p.attendanceShifts }}</td>
+        <td>{{ p.regionalCouncil }}</td>
+        <td>{{ p.councilRegistrationNumber }}</td>
+        <td>{{ p.registrationDate }}</td>
+        <td>
+          <p-tag
+            [value]="p.status"
+            [severity]="p.status === 'Ativo' ? 'success' : 'danger'"
+          ></p-tag>
+        </td>
         <td>
           <button
             pButton

@@ -1,6 +1,8 @@
 export interface PatientDTO {
     name: string;
-    cpf: string;
-    phone: string;
+    category: 'Unidade' | 'Escola' | 'Aluno' | 'Externo';
+    cellphone: string;
     email: string;
+    registrationDate: string;
+    status: 'Ativo' | 'Inativo';
 }

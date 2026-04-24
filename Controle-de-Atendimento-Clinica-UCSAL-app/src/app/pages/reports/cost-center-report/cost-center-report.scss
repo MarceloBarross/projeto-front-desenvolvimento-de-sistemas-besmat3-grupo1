@@ -1,0 +1,56 @@
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  gap: 0.5rem;
+
+  .title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+  }
+}
+
+:host ::ng-deep .p-card {
+  border-radius: 12px;
+}
+
+:host ::ng-deep .p-table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.group-row td {
+  background: #f1f5f9;
+  border-left: 4px solid #2563eb;
+  font-weight: 600;
+  color: #1e3a8a;
+  padding: 0.75rem 1rem;
+
+  transition: background 0.2s ease;
+}
+
+/* Hover nas linhas */
+:host ::ng-deep .p-table tbody tr:not(.group-row):hover {
+  background: #f8fafc;
+}
+
+/* Espaçamento das células */
+:host ::ng-deep .p-table td,
+:host ::ng-deep .p-table th {
+  padding: 0.75rem 1rem;
+}
+
+/* Header da tabela */
+:host ::ng-deep .p-table thead th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* Bordas suaves */
+:host ::ng-deep .p-table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+}

@@ -1,65 +1,93 @@
-<div class="consultation">
+<p-card header="Atendimento / Prontuário">
 
-  <p-toast></p-toast>
+  <form [formGroup]="form" class="container">
 
-  <!-- HEADER -->
-  <div class="header">
-    <h2>Atendimento em Andamento</h2>
+    <!-- BLOCO 1 -->
+    <div class="grid">
 
+      <div class="field">
+        <label>Tipo de Atendimento</label>
+        <p-select 
+          [options]="tiposAtendimento"
+          formControlName="tipo"
+          placeholder="Selecione"
+        ></p-select>
+      </div>
+
+      <div class="field">
+        <label>Data/Hora Início</label>
+        <p-date-picker 
+          formControlName="dataInicio"
+        ></p-date-picker>
+      </div>
+
+      <div class="field">
+        <label>Data/Hora Fim</label>
+        <p-date-picker 
+          formControlName="dataFim"
+
+        ></p-date-picker>
+      </div>
+
+    </div>
+
+    <!-- BLOCO 2 -->
+    <p-card header="Atendimento">
+
+      <div class="field">
+        <label>Sintomas</label>
+        <textarea pInputTextarea formControlName="sintomas" rows="3"></textarea>
+        @if(form.get('sintomas')?.invalid && form.get('sintomas')?.touched){
+          <small class="p-error">Sintomas são obrigatórios.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label>Diagnóstico</label>
+        <textarea pInputTextarea formControlName="diagnostico" rows="3"></textarea>
+        @if(form.get('diagnostico')?.invalid && form.get('diagnostico')?.touched){
+          <small class="p-error">Diagnóstico é obrigatório.</small>
+        }
+      </div>
+
+    </p-card>
+
+    <!-- BLOCO 3 -->
+    <p-card header="Prescrição">
+
+      <div class="grid">
+
+        <div class="field">
+          <label>Medicação</label>
+          <p-autocomplete
+            formControlName="medicacao"
+            [suggestions]="medicacoesFiltradas"
+            (completeMethod)="filtrarMedicacao($event)"
+            placeholder="Digite para buscar..."
+            [dropdown]="true"
+          ></p-autocomplete>
+        </div>
+
+        <div class="field">
+          <label>Dosagem</label>
+          <input pInputText formControlName="dosagem" />
+        </div>
+
+      </div>
+
+      <div class="field">
+        <label>Tratamento</label>
+        <textarea pInputTextarea formControlName="tratamento" rows="3"></textarea>
+      </div>
+
+    </p-card>
+
+    <!-- BOTÕES -->
     <div class="actions">
-      <p-button 
-        label="Finalizar"
-        icon="pi pi-check"
-        severity="success"
-        (click)="finalizarAtendimento()"
-      ></p-button>
-
-      <p-button 
-        label="Cancelar"
-        icon="pi pi-times"
-        severity="danger"
-        (click)="cancelarAtendimento()"
-      ></p-button>
-    </div>
-  </div>
-
-  <!-- INFO -->
-  <div class="info-grid">
-
-    <p-card header="Paciente">
-      <p><strong>Nome:</strong> {{ consultation.patient.name }}</p>
-      <p><strong>CPF:</strong> {{ consultation.patient.cpf }}</p>
-      <p><strong>Telefone:</strong> {{ consultation.patient.phone }}</p>
-    </p-card>
-
-    <p-card header="Consulta">
-      <p><strong>Profissional:</strong> {{ consultation.professional.name }}</p>
-      <p><strong>Data:</strong> {{ consultation.time }}</p>
-      <p><strong>Status:</strong> {{ consultation.status }}</p>
-    </p-card>
-
-  </div>
-
-  <!-- PRONTUÁRIO -->
-  <p-card header="Prontuário">
-
-    <textarea 
-      pInputTextarea 
-      [(ngModel)]="notes"
-      rows="6"
-      placeholder="Digite observações da consulta..."
-    ></textarea>
-
-    <div class="save">
-      <p-button 
-        label="Salvar Anotações"
-        icon="pi pi-save"
-        [loading]="salvandoNotas"
-        [disabled]="salvandoNotas"
-        (click)="salvarNotas()"
-      ></p-button>
+      <p-button label="Cancelar" severity="secondary" (click)="cancelar()"></p-button>
+      <p-button label="Finalizar" severity="success" icon="pi pi-check" (click)="finalizar()"></p-button>
     </div>
 
-  </p-card>
+  </form>
 
-</div>
+</p-card>
