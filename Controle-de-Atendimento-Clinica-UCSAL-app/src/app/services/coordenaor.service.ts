@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
-export interface Coordenador {
-  id?: number;
-  nome: string;
-  email: string;
-  telefone: string;
-  status: 'ATIVO' | 'INATIVO';
-}
+import { map, Observable } from 'rxjs';
+import { Coordenador } from '../models/cordeador/cordenador';
+import { CoordenadorDTO } from '../models/cordeador/coordenadorDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -18,12 +12,12 @@ export class CoordenadorService {
 
   constructor(private http: HttpClient) {}
 
-  listCoordenadores(): Observable<Coordenador[]> {
+  listarCoordenadores(): Observable<Coordenador[]> {
     return this.http.get<Coordenador[]>(this.apiUrl);
   }
 
-  cadastrar(data: Coordenador): Observable<Coordenador> {
-    return this.http.post<Coordenador>(this.apiUrl, data);
+  cadastrar(coordenador: CoordenadorDTO): Observable<Coordenador> {
+    return this.http.post<Coordenador>(this.apiUrl, coordenador);
   }
 
   modificarStatus(id: number): Observable<void> {

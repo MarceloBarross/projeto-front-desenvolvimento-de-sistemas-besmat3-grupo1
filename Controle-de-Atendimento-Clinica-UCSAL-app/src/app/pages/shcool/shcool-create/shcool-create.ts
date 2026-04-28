@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -10,6 +10,13 @@ import { MessageModule } from 'primeng/message';
 import { SchoolService } from '../../../services/school.service';
 import { IesService } from '../../../services/ies.service';
 import { Ies } from '../../../models/ies/ies-interface';
+import { CoordenadorService } from '../../../services/coordenaor.service';
+import { CoordenadorDTO } from '../../../models/cordeador/coordenadorDTO';
+import { Coordenador } from '../../../models/cordeador/cordenador';
+import { Observable } from 'rxjs/internal/Observable';
+import { AsyncPipe } from '@angular/common';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-shcool-create',
@@ -22,6 +29,10 @@ import { Ies } from '../../../models/ies/ies-interface';
     RouterModule,
     DialogModule,
     MessageModule,
+    AsyncPipe,
+    InputGroupModule,
+    InputGroupAddonModule
+
   ],
   templateUrl: './shcool-create.html',
   styleUrl: './shcool-create.scss',
@@ -30,7 +41,8 @@ export class ShcoolCreate implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
 
   coordenadorDialogVisible = false;
-  coordenadores: string[] = [];
+  coordenadores = new Observable<Coordenador[]>();
+  coordenadoresDTO: CoordenadorDTO[] = [];
   iesList: Ies[] = [];
   errMessage = '';
   isEditMode = false;
@@ -44,7 +56,9 @@ export class ShcoolCreate implements OnInit {
   });
 
   coordenadorForm = this.fb.group({
-    name: ['', Validators.required],
+    nome: ['', Validators.required],
+    email: [''],
+    telefone: [''],
   });
 
   constructor(
@@ -52,13 +66,11 @@ export class ShcoolCreate implements OnInit {
     private readonly iesService: IesService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
+    private readonly coordenadorService: CoordenadorService
   ) {}
 
   ngOnInit(): void {
-    this.schoolService.listCoordenadores().subscribe((coordenadores) => {
-      this.coordenadores = coordenadores;
-    });
-
+    this.carregarCoordenador();
     this.iesService.listarIes().subscribe({
       next: (ies) => {
         this.iesList = ies;
@@ -95,21 +107,33 @@ export class ShcoolCreate implements OnInit {
     this.coordenadorDialogVisible = true;
     this.coordenadorForm.reset();
   }
+  carregarCoordenador(): void {
+    this.coordenadores = this.coordenadorService.listarCoordenadores();
+  }
 
   saveCoordenador(): void {
-    const value = this.coordenadorForm.getRawValue();
-    const name = value.name.trim();
-
-    if (!name) {
-      this.errMessage = 'Informe o nome do coordenador.';
+    if (this.coordenadorForm.invalid) {
+      this.coordenadorForm.markAllAsTouched();
+      this.errMessage = 'Por favor, preencha todos os campos obrigatórios corretamente.';
       return;
     }
 
-    this.schoolService.addCoordenador(name).subscribe((coordenadores) => {
-      this.coordenadores = coordenadores;
-      this.schoolForm.patchValue({ coordenador: name });
-      this.coordenadorDialogVisible = false;
-      this.errMessage = '';
+    const dadosCoordenador = this.coordenadorForm.getRawValue();
+
+    this.coordenadorService.cadastrar(dadosCoordenador).subscribe({
+      next: (coordenadorSalvo) => {
+        this.coordenadoresDTO = [...this.coordenadoresDTO, coordenadorSalvo];
+
+        this.coordenadorDialogVisible = false;
+        this.errMessage = '';
+
+        // Feedback opcional
+        console.log('Coordenador salvo com sucesso!');
+      },
+      error: (err) => {
+        console.error('Erro ao salvar coordenador:', err);
+        this.errMessage = 'Ocorreu um erro ao salvar o coordenador no servidor.';
+      },
     });
   }
 
