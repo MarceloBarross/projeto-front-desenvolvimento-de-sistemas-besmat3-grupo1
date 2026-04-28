@@ -8,7 +8,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { IesUnitService } from '../../../services/ies-unit.service';
-import { IesUnit } from '../../../models/ies-unit/ies-unit-interface';
+import { IesResponse } from '../../../models/ies-unit/ies-unit-Response';
 
 @Component({
   selector: 'app-ies-unit-list',
@@ -26,7 +26,7 @@ import { IesUnit } from '../../../models/ies-unit/ies-unit-interface';
   providers: [ConfirmationService],
 })
 export class IesUnitList implements OnInit {
-  units: IesUnit[] = [];
+  units: IesResponse[] = [];
 
   constructor(
     private readonly iesUnitService: IesUnitService,

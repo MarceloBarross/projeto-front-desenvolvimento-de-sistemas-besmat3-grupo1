@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { IesUnit } from '../models/ies-unit/ies-unit-interface';
+import { IesResponse } from '../models/ies-unit/ies-unit-Response';
 
 type IesUnitPayload = {
   unitName: string;
@@ -13,39 +13,49 @@ type IesUnitPayload = {
   providedIn: 'root',
 })
 export class IesUnitService {
-  private readonly iesUnitsSubject = new BehaviorSubject<IesUnit[]>([
+  private readonly iesUnitsSubject = new BehaviorSubject<IesResponse[]>([
     {
       id: 1,
       unitName: 'Unidade Salvador Centro',
-      representativeName: 'Maria Oliveira',
+      representative: {
+        id: 5,
+        nome: 'Responsavel Reitoria',
+        email: 'reitoria@ucsal.com',
+        telefone: '(71) 4000-2001',
+        status: 'ATIVO',
+      },
       ies: { id: 1, nome: 'Universidade Catolica do Salvador', sigla: 'UCSAL' },
       isAtivo: true,
     },
   ]);
 
-  private readonly representativesSubject = new BehaviorSubject<string[]>([
-    'Maria Oliveira',
-  ]);
+  private readonly representativesSubject = new BehaviorSubject<string[]>(['Maria Oliveira']);
 
-  listUnits(): Observable<IesUnit[]> {
+  listUnits(): Observable<IesResponse[]> {
     return this.iesUnitsSubject.asObservable();
   }
 
-  findById(id: number): Observable<IesUnit | undefined> {
+  findById(id: number): Observable<IesResponse | undefined> {
     const found = this.iesUnitsSubject.value.find((unit) => unit.id === id);
     return of(found);
   }
 
-  createUnit(payload: IesUnitPayload): Observable<IesUnit> {
+  createUnit(payload: IesUnitPayload): Observable<IesResponse> {
     const nextId =
       this.iesUnitsSubject.value.length > 0
         ? Math.max(...this.iesUnitsSubject.value.map((unit) => unit.id)) + 1
         : 1;
 
-    const newUnit: IesUnit = {
+    const newUnit: IesResponse = {
       id: nextId,
       unitName: payload.unitName,
-      representativeName: payload.representativeName,
+      representative: {
+        id: nextId,
+        nome: payload.representativeName,
+        email: '',
+        telefone: '',
+        status: 'ATIVO',
+      },
       ies: {
         id: nextId,
         nome: payload.iesName,
@@ -58,7 +68,7 @@ export class IesUnitService {
     return of(newUnit);
   }
 
-  updateUnit(id: number, payload: IesUnitPayload): Observable<IesUnit | undefined> {
+  updateUnit(id: number, payload: IesUnitPayload): Observable<IesResponse | undefined> {
     const units = this.iesUnitsSubject.value;
     const index = units.findIndex((unit) => unit.id === id);
 
@@ -66,10 +76,13 @@ export class IesUnitService {
       return of(undefined);
     }
 
-    const updatedUnit: IesUnit = {
+    const updatedUnit: IesResponse = {
       ...units[index],
       unitName: payload.unitName,
-      representativeName: payload.representativeName,
+      representative: {
+        ...units[index].representative,
+        nome: payload.representativeName,
+      },
       ies: {
         ...units[index].ies,
         nome: payload.iesName,
@@ -92,7 +105,7 @@ export class IesUnitService {
     return of(removed);
   }
 
-  toggleUnitStatus(id: number): Observable<IesUnit | undefined> {
+  toggleUnitStatus(id: number): Observable<IesResponse | undefined> {
     const unit = this.iesUnitsSubject.value.find((item) => item.id === id);
 
     if (!unit) {
@@ -101,7 +114,7 @@ export class IesUnitService {
 
     return this.updateUnit(id, {
       unitName: unit.unitName,
-      representativeName: unit.representativeName,
+      representativeName: unit.representative.nome,
       iesName: unit.ies.nome,
       isAtivo: !unit.isAtivo,
     });

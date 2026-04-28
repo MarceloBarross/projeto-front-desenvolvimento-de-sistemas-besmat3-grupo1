@@ -15,12 +15,11 @@
       <div class="coordinator-row">
         <p-floatLabel class="coordinator-select">
           <select id="coordenador" formControlName="coordenador" class="select-input">
-            <option value="">Selecione um coordenador</option>
-            @for (coordenador of coordenadores; track coordenador) {
-              <option [value]="coordenador">{{ coordenador }}</option>
+            @for (coordenador of coordenadores | async; track coordenador) {
+              <option [value]="coordenador">{{ coordenador.nome }}</option>
             }
           </select>
-          <label for="coordenador">Coordenador</label>
+          <label for="coordenador">Selecione um coordenador</label>
         </p-floatLabel>
 
         <p-button
@@ -40,12 +39,11 @@
     <div class="field">
       <p-floatLabel>
         <select id="ies" formControlName="iesName" class="select-input">
-          <option value="">Selecione uma IES</option>
           @for (ies of iesList; track ies.id) {
             <option [value]="ies.nome">{{ ies.nome }} ({{ ies.sigla }})</option>
           }
         </select>
-        <label for="ies">IES</label>
+        <label for="ies">Selecione uma IES</label>
       </p-floatLabel>
 
       @if (schoolForm.controls.iesName.invalid && schoolForm.controls.iesName.touched) {
@@ -75,26 +73,60 @@
 </p-card>
 
 <p-dialog
-  header="Cadastrar Coordenador"
+  header="Cadastrar Responsável"
   [(visible)]="coordenadorDialogVisible"
   [modal]="true"
-  [style]="{ width: '420px' }"
+  [style]="{ width: '450px' }"
+  [contentStyle]="{ padding: '20px' }"
+  styleClass="p-fluid"
 >
-  <form [formGroup]="coordenadorForm" class="form">
-    <div class="field">
-      <p-floatLabel>
-        <input pInputText id="coordenadorName" formControlName="name" />
-        <label for="coordenadorName">Nome do Coordenador</label>
-      </p-floatLabel>
+  <form
+    [formGroup]="coordenadorForm"
+    class="flex flex-column gap-4 mt-3"
+    style="margin: 10px;"
+  >
+
+    <div class="field flex gap-4" style="margin-bottom: 20px;">
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-user"></i>
+        </p-inputgroup-addon>
+          <input pInputText id="nome" formControlName="nome" placeholder="Nome Completo" />
+      </p-inputgroup>
     </div>
+
+    <div class="field" style="margin-bottom: 20px;">
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-envelope mr-2"></i>
+        </p-inputgroup-addon>
+        <input pInputText id="email" formControlName="email" type="email" placeholder="E-mail Profissional"/>
+      </p-inputgroup>
+    </div>
+
+    <div class="field" style="margin-bottom: 20px;">
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-phone mr-2"></i>
+        </p-inputgroup-addon>
+        <input pInputText id="telefone" formControlName="telefone" placeholder="Telefone / WhatsApp"/>
+      </p-inputgroup>
+    </div>
+
   </form>
 
   <ng-template pTemplate="footer">
     <p-button
       label="Cancelar"
       severity="secondary"
-      (click)="coordenadorDialogVisible = false"
+      icon="pi pi-times"
+      [style]="{ 'margin-right': '10px' }"
+      (onClick)="coordenadorDialogVisible = false"
     ></p-button>
-    <p-button label="Salvar" icon="pi pi-check" (click)="saveCoordenador()"></p-button>
+    <p-button
+      label="Salvar Coordenador"
+      icon="pi pi-check"
+      (onClick)="saveCoordenador()"
+    ></p-button>
   </ng-template>
 </p-dialog>

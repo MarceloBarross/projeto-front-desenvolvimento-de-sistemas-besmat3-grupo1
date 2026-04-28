@@ -14,17 +14,12 @@
     <div class="field representative-field">
       <div class="representative-row">
         <p-floatLabel class="representative-select">
-          <select id="representativeName" formControlName="representativeName" class="select-input">
-            <option value="">Selecione um responsavel</option>
-            @for (representative of representatives; track representative) {
-              <option [value]="representative">{{ representative }}</option>
-            }
-          </select>
+          <p-select [options]="representatives | async" formControlName="representativeName" optionLabel="nome" placeholder="Selecione um representante" class="w-full md:w-56" />
         </p-floatLabel>
 
         <p-button
           type="button"
-          label="Cadastrar responsavel"
+          label="Cadastrar representante"
           icon="pi pi-user-plus"
           severity="secondary"
           (click)="openRepresentativeDialog()"
@@ -38,12 +33,7 @@
 
     <div class="field">
       <p-floatLabel>
-        <select id="ies" formControlName="iesName" class="select-input">
-          <option value="">Selecione uma IES</option>
-          @for (ies of iesList; track ies.id) {
-            <option [value]="ies.nome">{{ ies.nome }} ({{ ies.sigla }})</option>
-          }
-        </select>
+        <p-select [options]="iesList | async" formControlName="iesName" optionLabel="nome" placeholder="Selecione a IES vinculada" class="w-full md:w-56" />
       </p-floatLabel>
 
       @if (unitForm.controls.iesName.invalid && unitForm.controls.iesName.touched) {
@@ -61,38 +51,72 @@
     }
 
     <div class="buttons">
-      <p-button label="Salvar" icon="pi pi-check" (click)="save()"></p-button>
+      <p-button label="Salvar" icon="pi pi-check" ></p-button>
       <p-button
         severity="danger"
         label="Cancelar"
         icon="pi pi-times"
-        (click)="cancel()"
+
       ></p-button>
     </div>
   </form>
 </p-card>
 
 <p-dialog
-  header="Cadastrar Responsavel"
+  header="Cadastrar Responsável"
   [(visible)]="representativeDialogVisible"
   [modal]="true"
-  [style]="{ width: '420px' }"
+  [style]="{ width: '450px' }"
+  [contentStyle]="{ padding: '20px' }"
+  styleClass="p-fluid"
 >
-  <form [formGroup]="representativeForm" class="form">
-    <div class="field">
-      <p-floatLabel>
-        <input pInputText id="representativeNameDialog" formControlName="name" />
-        <label for="representativeNameDialog">Nome do Responsavel</label>
-      </p-floatLabel>
+  <form
+    [formGroup]="representativeForm"
+    class="flex flex-column gap-4 mt-3"
+    style="margin: 10px;"
+  >
+
+    <div class="field flex gap-4" style="margin-bottom: 20px;">
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-user"></i>
+        </p-inputgroup-addon>
+          <input pInputText id="nome" formControlName="nome" placeholder="Nome Completo" />
+      </p-inputgroup>
     </div>
+
+    <div class="field" style="margin-bottom: 20px;">
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-envelope mr-2"></i>
+        </p-inputgroup-addon>
+        <input pInputText id="email" formControlName="email" type="email" placeholder="E-mail Profissional"/>
+      </p-inputgroup>
+    </div>
+
+    <div class="field" style="margin-bottom: 20px;">
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-phone mr-2"></i>
+        </p-inputgroup-addon>
+        <input pInputText id="telefone" formControlName="telefone" placeholder="Telefone / WhatsApp"/>
+      </p-inputgroup>
+    </div>
+
   </form>
 
   <ng-template pTemplate="footer">
     <p-button
       label="Cancelar"
       severity="secondary"
-      (click)="representativeDialogVisible = false"
+      icon="pi pi-times"
+      [style]="{ 'margin-right': '10px' }"
+      (onClick)="representativeDialogVisible = false"
     ></p-button>
-    <p-button label="Salvar" icon="pi pi-check" (click)="saveRepresentative()"></p-button>
+    <p-button
+      label="Salvar Coordenador"
+      icon="pi pi-check"
+      (onClick)="saveRepresentative()"
+    ></p-button>
   </ng-template>
 </p-dialog>
