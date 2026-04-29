@@ -18,6 +18,8 @@ import { AsyncPipe } from '@angular/common';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { SelectModule } from 'primeng/select';
+import { SchoolResponse } from '../../../models/ schools/school-Response';
+import { SchoolRequest } from '../../../models/ schools/school-Request';
 
 @Component({
   selector: 'app-shcool-create',
@@ -41,18 +43,19 @@ import { SelectModule } from 'primeng/select';
 export class ShcoolCreate implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
 
-  coordenadorDialogVisible = false;
-  coordenadores = new Observable<Coordenador[]>();
-  coordenadoresDTO: CoordenadorDTO[] = [];
+  escolas: Observable<SchoolResponse[]> = new Observable<SchoolResponse[]>();
+  coordenadores: Observable<Coordenador[]> = new Observable<Coordenador[]>();
   iesList: Observable<Ies[]> = new Observable<Ies[]>();
+
+  coordenadorDialogVisible = false;
+  coordenadoresDTO: CoordenadorDTO[] = [];
   errMessage = '';
   isEditMode = false;
-  schoolId: number | null = null;
 
   schoolForm = this.fb.group({
     name: ['', Validators.required],
-    coordenador: ['', Validators.required],
-    iesName: ['', Validators.required],
+    coordenador: [null as Coordenador | null, Validators.required],
+    ies: [null as Ies | null, Validators.required],
     isAtivo: [true],
   });
 
@@ -73,28 +76,7 @@ export class ShcoolCreate implements OnInit {
   ngOnInit(): void {
     this.carregarCoordenador();
     this.carregarIes();
-
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      return;
-    }
-
-    this.schoolId = Number(id);
-    this.isEditMode = true;
-
-    this.schoolService.findById(this.schoolId).subscribe((school) => {
-      if (!school) {
-        this.errMessage = 'Escola nao encontrada.';
-        return;
-      }
-
-      this.schoolForm.patchValue({
-        name: school.name,
-        coordenador: school.coordenador,
-        iesName: school.ies.nome,
-        isAtivo: school.isAtivo,
-      });
-    });
+    this.carregarEscola();
   }
 
   openCoordenadorDialog(): void {
@@ -106,13 +88,18 @@ export class ShcoolCreate implements OnInit {
   }
 
   carregarIes(): void {
-     this.iesList = this.iesService.listarIes();
+    this.iesList = this.iesService.listarIes();
+  }
+
+  carregarEscola(): void {
+    this.escolas = this.schoolService.listarTodas();
   }
 
   saveCoordenador(): void {
     if (this.coordenadorForm.invalid) {
       this.coordenadorForm.markAllAsTouched();
       this.errMessage = 'Preencha todos os campos do coordenador.';
+      return;
     }
 
     const value = this.coordenadorForm.getRawValue();
@@ -126,7 +113,7 @@ export class ShcoolCreate implements OnInit {
     this.coordenadorService.cadastrar(novoCoordenador).subscribe({
       next: (criado) => {
         this.coordenadoresDTO = [...this.coordenadoresDTO, criado];
-        this.schoolForm.patchValue({ coordenador: criado.nome });
+        this.schoolForm.patchValue({ coordenador: criado });
         this.coordenadorDialogVisible = false;
         this.errMessage = '';
         this.carregarCoordenador();
@@ -138,6 +125,8 @@ export class ShcoolCreate implements OnInit {
   }
 
   save(): void {
+
+
     if (this.schoolForm.invalid) {
       this.schoolForm.markAllAsTouched();
       this.errMessage = 'Preencha os campos obrigatorios.';
@@ -146,9 +135,18 @@ export class ShcoolCreate implements OnInit {
 
     const payload = this.schoolForm.getRawValue();
 
-    const request = this.schoolId
-      ? this.schoolService.updateSchool(this.schoolId, payload)
-      : this.schoolService.createSchool(payload);
+
+
+    const novaEscola: SchoolRequest = {
+      nome: payload.name.trim(),
+      coordenador_id: payload.coordenador?.id!,
+      ies_id: payload.ies?.id!,
+      status: payload.isAtivo ? 'ATIVO' : 'INATIVO',
+    };
+
+    console.log(novaEscola);
+
+    const request = this.schoolService.cadastrar(novaEscola);
 
     request.subscribe((result) => {
       if (!result) {
