@@ -9,7 +9,7 @@
     ></p-button>
   </div>
 
-  <p-table [value]="schools" responsiveLayout="scroll">
+  <p-table [value]="(schools | async) ?? []" responsiveLayout="scroll">
     <ng-template pTemplate="header">
       <tr>
         <th>Nome</th>
@@ -22,34 +22,28 @@
 
     <ng-template pTemplate="body" let-s>
       <tr>
-        <td>{{ s.name }}</td>
-        <td>{{ s.coordenador }}</td>
-        <td>{{ s.ies.name }}</td>
+        <td>{{ s.nome }}</td>
+        <td>{{ s.coordenadorResponsavel?.nome }}</td>
+        <td>{{ s.ies?.nome }}</td>
         <td>
           <p-tag
-            [value]="s.isAtivo ? 'Ativo' : 'Inativo'"
-            [severity]="s.isAtivo ? 'success' : 'danger'"
+            [value]="s.status"
+            [severity]="s.status === 'ATIVO' ? 'success' : 'danger'"
           ></p-tag>
         </td>
         <td class="actions-column">
           <button
             pButton
-            icon="pi pi-pencil"
-            class="p-button-text"
-            (click)="editSchool(s.id)"
-          ></button>
-          <button
-            pButton
-            [icon]="s.isAtivo ? 'pi pi-eye-slash' : 'pi pi-eye'"
+            [icon]="s.status === 'Ativo' ? 'pi pi-eye-slash' : 'pi pi-eye'"
             class="p-button-text"
             (click)="toggleStatus(s.id)"
           ></button>
-          <button
+          <!-- <button
             pButton
             icon="pi pi-trash"
             class="p-button-text p-button-danger"
             (click)="deleteSchool(s.id)"
-          ></button>
+          ></button> -->
         </td>
       </tr>
     </ng-template>

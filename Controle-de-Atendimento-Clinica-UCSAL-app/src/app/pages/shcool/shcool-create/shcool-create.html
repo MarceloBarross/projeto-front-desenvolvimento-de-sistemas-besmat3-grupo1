@@ -14,7 +14,7 @@
     <div class="field coordinator-field">
       <div class="coordinator-row">
         <p-floatLabel class="coordinator-select">
-          <p-select [options]="coordenadores | async" formControlName="representativeName" optionLabel="nome" placeholder="Selecione um coordenador" class="w-full md:w-56" />
+          <p-select [options]="coordenadores | async" formControlName="coordenador" dataKey="id" optionLabel="nome" placeholder="Selecione um coordenador" class="w-full md:w-56" />
         </p-floatLabel>
 
         <p-button
@@ -33,10 +33,10 @@
 
     <div class="field">
       <p-floatLabel>
-        <p-select [options]="iesList | async" formControlName="iesName" optionLabel="nome" placeholder="Selecione a IES vinculada" class="w-full md:w-56" />
+        <p-select [options]="iesList | async" formControlName="ies" optionLabel="nome" placeholder="Selecione a IES vinculada" class="w-full md:w-56" />
       </p-floatLabel>
 
-      @if (schoolForm.controls.iesName.invalid && schoolForm.controls.iesName.touched) {
+      @if (schoolForm.controls.ies.invalid && schoolForm.controls.ies.touched) {
         <small class="p-error">IES e obrigatorio.</small>
       }
     </div>

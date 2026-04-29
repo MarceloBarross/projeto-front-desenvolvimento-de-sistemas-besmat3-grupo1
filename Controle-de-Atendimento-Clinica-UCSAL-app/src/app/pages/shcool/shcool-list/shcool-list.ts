@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { SchoolService } from '../../../services/school.service';
+import { SchoolResponse } from '../../../models/ schools/school-Response';
+import { Observable } from 'rxjs';
 import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { SchoolService } from '../../../services/school.service';
-import { School } from '../../../models/ schools/school-interface';
-
+import { AsyncPipe } from '@angular/common';
+// ... outros imports
 
 @Component({
   selector: 'app-shcool-list',
@@ -21,19 +23,20 @@ import { School } from '../../../models/ schools/school-interface';
     RouterModule,
     ConfirmDialogModule,
     ToastModule,
+    AsyncPipe
   ],
   templateUrl: './shcool-list.html',
   styleUrl: './shcool-list.scss',
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, MessageService],
 })
 export class ShcoolList implements OnInit {
-  schools: School[] = [];
+  schools: Observable<SchoolResponse[]> = new Observable();
 
   constructor(
     private readonly schoolService: SchoolService,
-    private readonly router: Router,
     private readonly confirmationService: ConfirmationService,
     private readonly messageService: MessageService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -41,13 +44,7 @@ export class ShcoolList implements OnInit {
   }
 
   loadSchools(): void {
-    this.schoolService.listSchools().subscribe((schools) => {
-      this.schools = schools;
-    });
-  }
-
-  editSchool(id: number): void {
-    this.router.navigate(['/main-layout/shcools/update', id]);
+    this.schools = this.schoolService.listarTodas();
   }
 
   deleteSchool(id: number): void {
@@ -59,32 +56,21 @@ export class ShcoolList implements OnInit {
       rejectLabel: 'Nao',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        this.schoolService.deleteSchool(id).subscribe((removed) => {
-          if (!removed) {
-            return;
-          }
-
+        this.schoolService.excluir(id).subscribe(() => {
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso',
             detail: 'Escola excluida com sucesso',
           });
+          this.loadSchools();
         });
       },
     });
   }
 
   toggleStatus(id: number): void {
-    this.schoolService.toggleSchoolStatus(id).subscribe((school) => {
-      if (!school) {
-        return;
-      }
-
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Status atualizado',
-        detail: school.isAtivo ? 'Escola ativada' : 'Escola inativada',
-      });
+    this.schoolService.alternarStatus(id).subscribe(() => {
+      this.loadSchools();
     });
   }
 }
