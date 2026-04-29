@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { AsyncPipe } from '@angular/common';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-shcool-create',
@@ -31,8 +32,8 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
     MessageModule,
     AsyncPipe,
     InputGroupModule,
-    InputGroupAddonModule
-
+    InputGroupAddonModule,
+    SelectModule,
   ],
   templateUrl: './shcool-create.html',
   styleUrl: './shcool-create.scss',
@@ -43,7 +44,7 @@ export class ShcoolCreate implements OnInit {
   coordenadorDialogVisible = false;
   coordenadores = new Observable<Coordenador[]>();
   coordenadoresDTO: CoordenadorDTO[] = [];
-  iesList: Ies[] = [];
+  iesList: Observable<Ies[]> = new Observable<Ies[]>();
   errMessage = '';
   isEditMode = false;
   schoolId: number | null = null;
@@ -66,19 +67,12 @@ export class ShcoolCreate implements OnInit {
     private readonly iesService: IesService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly coordenadorService: CoordenadorService
+    private readonly coordenadorService: CoordenadorService,
   ) {}
 
   ngOnInit(): void {
     this.carregarCoordenador();
-    this.iesService.listarIes().subscribe({
-      next: (ies) => {
-        this.iesList = ies;
-      },
-      error: () => {
-        this.errMessage = 'Nao foi possivel carregar as IES cadastradas.';
-      },
-    });
+    this.carregarIes();
 
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
@@ -111,28 +105,34 @@ export class ShcoolCreate implements OnInit {
     this.coordenadores = this.coordenadorService.listarCoordenadores();
   }
 
+  carregarIes(): void {
+     this.iesList = this.iesService.listarIes();
+  }
+
   saveCoordenador(): void {
     if (this.coordenadorForm.invalid) {
       this.coordenadorForm.markAllAsTouched();
-      this.errMessage = 'Por favor, preencha todos os campos obrigatórios corretamente.';
-      return;
+      this.errMessage = 'Preencha todos os campos do coordenador.';
     }
 
-    const dadosCoordenador = this.coordenadorForm.getRawValue();
+    const value = this.coordenadorForm.getRawValue();
 
-    this.coordenadorService.cadastrar(dadosCoordenador).subscribe({
-      next: (coordenadorSalvo) => {
-        this.coordenadoresDTO = [...this.coordenadoresDTO, coordenadorSalvo];
+    const novoCoordenador: CoordenadorDTO = {
+      nome: value.nome.trim(),
+      email: value.email.trim(),
+      telefone: value.telefone.trim(),
+    };
 
+    this.coordenadorService.cadastrar(novoCoordenador).subscribe({
+      next: (criado) => {
+        this.coordenadoresDTO = [...this.coordenadoresDTO, criado];
+        this.schoolForm.patchValue({ coordenador: criado.nome });
         this.coordenadorDialogVisible = false;
         this.errMessage = '';
-
-        // Feedback opcional
-        console.log('Coordenador salvo com sucesso!');
+        this.carregarCoordenador();
       },
-      error: (err) => {
-        console.error('Erro ao salvar coordenador:', err);
-        this.errMessage = 'Ocorreu um erro ao salvar o coordenador no servidor.';
+      error: () => {
+        this.errMessage = 'Não foi possível salvar o coordenador.';
       },
     });
   }

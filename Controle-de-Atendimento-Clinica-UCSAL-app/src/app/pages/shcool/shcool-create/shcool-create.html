@@ -14,12 +14,7 @@
     <div class="field coordinator-field">
       <div class="coordinator-row">
         <p-floatLabel class="coordinator-select">
-          <select id="coordenador" formControlName="coordenador" class="select-input">
-            @for (coordenador of coordenadores | async; track coordenador) {
-              <option [value]="coordenador">{{ coordenador.nome }}</option>
-            }
-          </select>
-          <label for="coordenador">Selecione um coordenador</label>
+          <p-select [options]="coordenadores | async" formControlName="representativeName" optionLabel="nome" placeholder="Selecione um coordenador" class="w-full md:w-56" />
         </p-floatLabel>
 
         <p-button
@@ -38,12 +33,7 @@
 
     <div class="field">
       <p-floatLabel>
-        <select id="ies" formControlName="iesName" class="select-input">
-          @for (ies of iesList; track ies.id) {
-            <option [value]="ies.nome">{{ ies.nome }} ({{ ies.sigla }})</option>
-          }
-        </select>
-        <label for="ies">Selecione uma IES</label>
+        <p-select [options]="iesList | async" formControlName="iesName" optionLabel="nome" placeholder="Selecione a IES vinculada" class="w-full md:w-56" />
       </p-floatLabel>
 
       @if (schoolForm.controls.iesName.invalid && schoolForm.controls.iesName.touched) {
