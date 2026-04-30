@@ -9,10 +9,11 @@ import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
 import { Profissionals } from '../../../models/profissionals/profissionals-interface';
 import { ProfissionalsService } from '../../../services/profissionals.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profissionals-list',
-  imports: [CardModule, TableModule, ButtonModule, RouterModule, ConfirmDialogModule, ToastModule, TagModule],
+  imports: [CardModule, TableModule, ButtonModule, RouterModule, ConfirmDialogModule, ToastModule, TagModule, CommonModule],
   templateUrl: './profissionals-list.html',
   styleUrl: './profissionals-list.scss',
   providers: [ConfirmationService]

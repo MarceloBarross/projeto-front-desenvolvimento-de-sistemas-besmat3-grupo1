@@ -1,8 +1,11 @@
 export interface PatientDTO {
-    name: string;
-    category: 'Unidade' | 'Escola' | 'Aluno' | 'Externo';
-    cellphone: string;
+    nome: string;
+    categoria: 'COLABORADOR_UNIDADE' | 'COLABORADOR_ESCOLA' | 'ALUNO' | 'EXTERNO';
+    celular: string;
     email: string;
-    registrationDate: string;
-    status: 'Ativo' | 'Inativo';
+    dataCadastramento: string;
+    motivoRestricao: string;
+    status: 'ATIVO' | 'INATIVO';
+    escola_id?: number | null;   // ← adicione
+    unidade_id?: number | null;
 }

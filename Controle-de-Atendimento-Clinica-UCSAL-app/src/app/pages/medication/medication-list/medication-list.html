@@ -27,16 +27,16 @@
 
     <ng-template pTemplate="body" let-m>
       <tr>
-        <td>{{ m.name }}</td>
-        <td>{{ m.supplier }}</td>
-        <td>{{ getStorageLabel(m.storageType) }}</td>
-        <td>{{ m.quantity }}</td>
-        <td>{{ m.expirationDate }}</td>
-        <td>{{ m.acquisitionDate }}</td>
+        <td>{{ m.nome }}</td>
+        <td>{{ m.fornecedor }}</td>
+        <td>{{ getStorageLabel(m.formaArmazenamento) }}</td>
+        <td>{{ m.quantidadeEstoque }}</td>
+        <td>{{ m.dataValidade }}</td>
+        <td>{{ m.dataAquisicao }}</td>
         <td>
           <p-tag
-            [value]="m.isAtivo ? 'Ativo' : 'Inativo'"
-            [severity]="m.isAtivo ? 'success' : 'danger'"
+            [value]="m.status === 'ATIVO' ? 'Ativo' : 'Inativo'"
+            [severity]="m.status === 'ATIVO' ? 'success' : 'danger'"
           ></p-tag>
         </td>
         <td class="actions-column">
@@ -72,6 +72,6 @@
   [modal]="true"
   [style]="{ width: '520px' }"
 >
-  <p><strong>Medicacao:</strong> {{ selectedMedication?.name }}</p>
-  <p>{{ selectedMedication?.description || 'Sem descricao cadastrada.' }}</p>
+  <p><strong>Medicacao:</strong> {{ selectedMedication?.nome }}</p>
+  <p>{{ selectedMedication?.descricaoCompleta }}</p>
 </p-dialog>

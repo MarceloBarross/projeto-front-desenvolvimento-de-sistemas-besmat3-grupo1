@@ -11,7 +11,7 @@ import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MedicationService } from '../../../services/medication.service';
-import { Medication } from '../../../models/medication/medication-interface';
+import { MedicationResponse } from '../../../models/medication/medicamentoResponse';
 
 @Component({
   selector: 'app-consultation-continue',
@@ -38,7 +38,7 @@ export class ConsultationContinue implements OnInit {
     private medicamentosService: MedicationService
   ) {}
 
-  mediamentos: Medication[] = [];
+  mediamentos: MedicationResponse[] = [];
   medicacoesFiltradas: any[] = [];
 
   tiposAtendimento = [
@@ -66,7 +66,7 @@ export class ConsultationContinue implements OnInit {
   ngOnInit() {
     this.medicamentosService.listMedications().subscribe({
       next: (meds) => {
-        this.mediamentos = meds.filter(m => m.isAtivo); 
+        this.mediamentos = meds.filter(m => m.status === 'ATIVO'); 
       }
     })
 
@@ -102,7 +102,7 @@ export class ConsultationContinue implements OnInit {
   filtrarMedicacao(event: { query: string }) {
     const query = event.query.toLowerCase();
     this.medicacoesFiltradas = this.mediamentos
-      .map(m => m.name)
+      .map(m => m.nome)
       .filter(name => name.toLowerCase().includes(query));
   }
 

@@ -13,11 +13,12 @@
   <p-table [value]="profissionals" responsiveLayout="scroll">
     <ng-template pTemplate="header">
       <tr>
+        <th>ID</th>
         <th>Identificacao</th>
         <th>Nome</th>
+        <th>Formacao</th>
         <th>Especialidade</th>
-        <th>Dias de Atendimento</th>
-        <th>Turnos de Atendimento</th>
+        <th>Dias e Horarios</th>
         <th>Conselho Regional</th>
         <th>Registro no Conselho</th>
         <th>Data de Cadastramento</th>
@@ -28,18 +29,19 @@
 
     <ng-template pTemplate="body" let-p>
       <tr>
-        <td>{{ p.professionalCode }}</td>
-        <td>{{ p.name }}</td>
-        <td>{{ p.specialty }}</td>
-        <td>{{ p.attendanceDays }}</td>
-        <td>{{ p.attendanceShifts }}</td>
-        <td>{{ p.regionalCouncil }}</td>
-        <td>{{ p.councilRegistrationNumber }}</td>
-        <td>{{ p.registrationDate }}</td>
+        <td>{{p.id}}</td>
+        <td>{{ p.identificacaoProfissional }}</td>
+        <td>{{ p.nome }}</td>
+        <td>{{ p.formacao }}</td>
+        <td>{{ p.especialidade }}</td>
+        <td>{{ p.diasHorariosAtendimento }}</td>
+        <td>{{ p.conselhoRegional }}</td>
+        <td>{{ p.numeroRegistroConselho }}</td>
+        <td>{{ p.dataCadastramento | date: 'dd/MM/yyyy' }}</td>
         <td>
           <p-tag
             [value]="p.status"
-            [severity]="p.status === 'Ativo' ? 'success' : 'danger'"
+            [severity]="p.status === 'ATIVO' ? 'success' : 'danger'"
           ></p-tag>
         </td>
         <td>

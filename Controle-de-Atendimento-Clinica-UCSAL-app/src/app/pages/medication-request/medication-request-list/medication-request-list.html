@@ -1,10 +1,12 @@
 <p-card header="Solicitacoes de Medicamentos">
   <div class="actions">
-    <p-button
-      label="Nova Solicitacao"
-      icon="pi pi-plus"
-      [routerLink]="['/main-layout/medication-requests/create']"
-    ></p-button>
+    @if (role == 'PROFISSIONAL') {
+      <p-button
+        label="Nova Solicitacao"
+        icon="pi pi-plus"
+        [routerLink]="['/main-layout/medication-requests/create']"
+      ></p-button>
+    }
   </div>
 
   <p-table [value]="requests" responsiveLayout="scroll">
@@ -13,6 +15,7 @@
         <th>ID da Solicitacao</th>
         <th>ID da Medicacao</th>
         <th>Nome do Medicamento</th>
+        <th>Profissional</th>
         <th>Carater</th>
       </tr>
     </ng-template>
@@ -20,10 +23,11 @@
     <ng-template pTemplate="body" let-r>
       <tr>
         <td>{{ r.id }}</td>
-        <td>{{ r.medicationId }}</td>
-        <td>{{ r.medicationName }}</td>
+        <td>{{ r.medicacaoId }}</td>
+        <td>{{ r.nomeMedicacao }}</td>
+        <td>{{ r.nomeProfissional }}</td>
         <td>
-          <p-tag [value]="r.requestPriority" [severity]="getPrioritySeverity(r.requestPriority)"></p-tag>
+          <p-tag [value]="r.caraterSolicitacao" [severity]="getPrioritySeverity(r.caraterSolicitacao)"></p-tag>
         </td>
       </tr>
     </ng-template>

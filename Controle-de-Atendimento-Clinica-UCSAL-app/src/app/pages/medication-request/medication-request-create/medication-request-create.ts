@@ -6,10 +6,13 @@ import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { CommonModule } from '@angular/common';
 import { MedicationService } from '../../../services/medication.service';
-import { Medication } from '../../../models/medication/medication-interface';
+import { MedicationResponse } from '../../../models/medication/medicamentoResponse';
 import { MedicationRequestService } from '../../../services/medication-request.service';
-import { RequestPriority } from '../../../models/medication-request/medication-request-interface';
+import { MedicacaoSolicitacaoRequest, Priority } from '../../../models/medication-request/medicacaoSolicitacaoRequest';
+import { AuthService } from '../../../services/auth.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-medication-request-create',
@@ -21,6 +24,7 @@ import { RequestPriority } from '../../../models/medication-request/medication-r
     ButtonModule,
     RouterModule,
     MessageModule,
+    CommonModule,
   ],
   templateUrl: './medication-request-create.html',
   styleUrl: './medication-request-create.scss',
@@ -28,19 +32,27 @@ import { RequestPriority } from '../../../models/medication-request/medication-r
 export class MedicationRequestCreate implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
 
-  medications: Medication[] = [];
+  medications: MedicationResponse[] = [];
   errMessage = '';
+  selectedMedicationName = '';
+  prioridades: { label: string; value: Priority }[] = [
+    { label: 'URGENTE - estoque zerado', value: 'URGENTE' },
+    { label: 'CRÍTICO - estoque muito baixo', value: 'CRITICO' },
+    { label: 'PREVENTIVO - planejamento de consumo', value: 'PREVENTIVO' },
+  ];
 
   requestForm = this.fb.group({
-    medicationId: [0, [Validators.required, Validators.min(1)]],
-    medicationName: ['', Validators.required],
-    requestPriority: ['PREVENTIVO' as RequestPriority, Validators.required],
+    medicacaoId: [0, [Validators.required, Validators.min(1)]],
+    profissionalId: [0, Validators.required],
+    caraterSolicitacao: ['PREVENTIVO' as Priority, Validators.required],
   });
 
   constructor(
     private readonly medicationService: MedicationService,
     private readonly medicationRequestService: MedicationRequestService,
     private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -49,39 +61,39 @@ export class MedicationRequestCreate implements OnInit {
     });
   }
 
-  onMedicationChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    const selectedId = Number(select.value);
-
-    const selectedMedication = this.medications.find((medication) => medication.id === selectedId);
-    if (!selectedMedication) {
-      this.requestForm.patchValue({ medicationId: 0, medicationName: '' });
-      return;
-    }
-
-    this.requestForm.patchValue({
-      medicationId: selectedMedication.id,
-      medicationName: selectedMedication.name,
-    });
+  onMedicationChange(event: any): void {
+    const medicacaoId = event.target.value;
+    const medication = this.medications.find(m => m.id == medicacaoId);
+    this.selectedMedicationName = medication ? medication.nome : '';
+    this.requestForm.patchValue({ medicacaoId: parseInt(medicacaoId) });
   }
 
   save(): void {
     if (this.requestForm.invalid) {
       this.requestForm.markAllAsTouched();
-      this.errMessage = 'Preencha os campos obrigatorios.';
+      this.errMessage = 'Preencha os campos obrigatórios.';
       return;
     }
 
-    const payload = this.requestForm.getRawValue();
+    const form = this.requestForm.getRawValue();
+    const payload: MedicacaoSolicitacaoRequest = {
+      ...form,
+      profissionalId: this.authService.getProfissionalId()!,
+    }
 
-    this.medicationRequestService.createRequest(payload).subscribe((request) => {
-      if (!request) {
-        this.errMessage = 'Nao foi possivel salvar a solicitacao.';
-        return;
+    this.medicationRequestService.createRequest(payload).subscribe({
+      next: (request) => {
+        if (!request) {
+          this.errMessage = 'Não foi possível salvar a solicitação.';
+          return;
+        }
+
+        this.errMessage = '';
+        this.router.navigate(['/main-layout/medication-requests']);
+      },
+      error: (err) => {
+        this.errMessage = 'Erro ao salvar a solicitação: ' + err.message;
       }
-
-      this.errMessage = '';
-      this.router.navigate(['/main-layout/medication-requests']);
     });
   }
 

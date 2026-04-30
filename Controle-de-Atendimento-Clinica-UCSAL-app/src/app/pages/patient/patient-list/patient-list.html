@@ -27,11 +27,11 @@
 
     <ng-template pTemplate="body" let-p>
       <tr>
-        <td>{{ p.name }}</td>
-        <td>{{ p.category }}</td>
-        <td>{{ p.cellphone }}</td>
+        <td>{{ p.nome }}</td>
+        <td>{{ p.categoria }}</td>
+        <td>{{ p.celular }}</td>
         <td>{{ p.email }}</td>
-        <td>{{ p.registrationDate }}</td>
+        <td>{{ p.dataCadastramento | date: 'dd/MM/yyyy' }}</td>
         <td>{{ p.status }}</td>
         <td>
           <button
@@ -39,19 +39,22 @@
             icon="pi pi-file-edit"
             class="p-button-text p-button-info"
             pTooltip="Prontuários"
-            (click)="abrirProntuarios(p)"
+            (click)="abrirProntuarios(p.id)"
           ></button>
           <button
             pButton
-            icon="pi pi-pencil"
+            icon="pi pi-comments"
             class="p-button-text"
-            (click)="editarPaciente(p.id)"
+            pTooltip="Motivo de Restrição"
+            (click)="abrirDialogMotivo(p)"
           ></button>
           <button
             pButton
-            icon="pi pi-trash"
-            class="p-button-text p-button-danger"
-            (click)="deletePaciente(p.id)"
+            [icon]="p.status === 'ATIVO' ? 'pi pi-lock-open' : 'pi pi-lock'"
+            [class]="p.status === 'ATIVO' ? 'p-button-text p-button-warning' : 'p-button-text p-button-secondary'"
+            [disabled]="p.status === 'ATIVO' && !p.motivoRestricao"
+            [pTooltip]="p.status === 'ATIVO' && !p.motivoRestricao ? 'Adicione um motivo para desativar' : (p.status === 'ATIVO' ? 'Desativar' : 'Ativar')"
+            (click)="alterarStatus(p.id, p.status, p.motivoRestricao)"
           ></button>
         </td>
       </tr>
@@ -62,8 +65,8 @@
 </p-card>
 
 <!-- DIALOG PRONTUÁRIOS -->
-<p-dialog
-  [header]="'Prontuários — ' + (pacienteSelecionado?.name ?? '')"
+<!-- <p-dialog
+  [header]="'Prontuários — ' + (pacienteSelecionado?.nome ?? '')"
   [(visible)]="prontuariosDialogVisible"
   [modal]="true"
   [style]="{ width: '45rem' }"
@@ -73,17 +76,52 @@
   }
 
   @for (c of prontuariosPaciente; track c.id) {
-    <p-card [header]="(c.dataInicio | date:'dd/MM/yyyy HH:mm') + ' — ' + c.tipo" styleClass="mb-3">
-      <p><strong>Status:</strong> {{ c.status }}</p>
+    <p-card [header]="(c.dataHoraInicio| date:'dd/MM/yyyy HH:mm') + ' — ' + c.tipoAtendimento" styleClass="mb-3">
       <p><strong>Sintomas:</strong> {{ c.sintomas }}</p>
       <p><strong>Diagnóstico:</strong> {{ c.diagnostico }}</p>
-      @if (c.medicacao) {
-        <p><strong>Medicação:</strong> {{ c.medicacao }}</p>
-        <p><strong>Dosagem:</strong> {{ c.dosagem }}</p>
+      @if (c.medicacaoNome) {
+        <p><strong>Medicação:</strong> {{ c.medicacaoNome }}</p>
+        <p><strong>Dosagem:</strong> {{ c.medicaoDosagem }}</p>
       }
-      @if (c.tratamento) {
-        <p><strong>Tratamento:</strong> {{ c.tratamento }}</p>
+      @if (c.tratamentoIndicado) {
+        <p><strong>Tratamento:</strong> {{ c.tratamentoIndicado }}</p>
       }
     </p-card>
   }
+</p-dialog> -->
+
+<!-- DIALOG MOTIVO -->
+<p-dialog
+  [header]="'Motivo de Restrição — ' + (pacienteSelecionado?.nome ?? '')"
+  [(visible)]="motivoDialogVisible"
+  [modal]="true"
+  [style]="{ width: '35rem' }"
+>
+  <div class="field">
+    <label for="motivo">Motivo de Restrição</label>
+    <textarea 
+      id="motivo" 
+      [(ngModel)]="motivoRestricio" 
+      rows="4" 
+      class="w-full p-2 border border-gray-300 rounded"
+      placeholder="Digite o motivo da restrição..."
+    ></textarea>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button 
+      pButton 
+      label="Cancelar" 
+      icon="pi pi-times" 
+      (click)="motivoDialogVisible = false"
+      class="p-button-secondary"
+    ></button>
+    <button 
+      pButton 
+      label="Salvar" 
+      icon="pi pi-check" 
+      (click)="salvarMotivo()"
+      [disabled]="!motivoRestricio?.trim()"
+    ></button>
+  </ng-template>
 </p-dialog>

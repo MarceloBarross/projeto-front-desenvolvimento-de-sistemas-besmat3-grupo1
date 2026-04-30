@@ -31,19 +31,18 @@ import { ProfissionalsDTO } from '../../../models/profissionals/profissionals-dt
 export class ProfissionalsCreate implements OnInit {
   fb = inject(NonNullableFormBuilder);
   errMessage: string = '';
-  statusOptions: ProfissionalsDTO['status'][] = ['Ativo', 'Inativo'];
+  statusOptions: ProfissionalsDTO['status'][] = ['ATIVO', 'INATIVO'];
   regionalCouncilOptions: string[] = ['CRM', 'COREN', 'CREFITO', 'CRP', 'CRO', 'CFF'];
 
   formProfissionals = this.fb.group({
-    professionalCode: ['', Validators.required],
-    name: ['', Validators.required],
-    specialty: ['', Validators.required],
-    attendanceDays: ['', Validators.required],
-    attendanceShifts: ['', Validators.required],
-    regionalCouncil: ['CRM', Validators.required],
-    councilRegistrationNumber: ['', Validators.required],
-    registrationDate: ['', Validators.required],
-    status: ['Ativo' as ProfissionalsDTO['status'], Validators.required]
+    identificacaoProfissional: ['', Validators.required],
+    nome: ['', Validators.required],
+    formacao: ['', Validators.required],
+    especialidade: ['', Validators.required],
+    diasHorariosAtendimento: ['', Validators.required],
+    conselhoRegional: ['CRM', Validators.required],
+    numeroRegistroConselho: ['', Validators.required],
+    status: ['ATIVO' as ProfissionalsDTO['status'], Validators.required]
   });
 
   constructor(
@@ -100,7 +99,17 @@ export class ProfissionalsCreate implements OnInit {
           return;
         }
 
-        this.formProfissionals.patchValue(profissional);
+        const { identificacaoProfissional, nome, formacao, especialidade, diasHorariosAtendimento, conselhoRegional, numeroRegistroConselho, status } = profissional;
+        this.formProfissionals.patchValue({
+          identificacaoProfissional,
+          nome,
+          formacao,
+          especialidade,
+          diasHorariosAtendimento,
+          conselhoRegional,
+          numeroRegistroConselho,
+          status
+        });
         this.dtr.markForCheck();
       },
       error: (err) => {
@@ -113,10 +122,6 @@ export class ProfissionalsCreate implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-
-    if (!id) {
-      this.formProfissionals.patchValue({ registrationDate: new Date().toISOString().split('T')[0] });
-    }
 
     if (id) {
       this.loadProfissional(+id);

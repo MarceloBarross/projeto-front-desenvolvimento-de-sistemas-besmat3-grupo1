@@ -11,31 +11,31 @@ export class ProfissionalsService {
   profissionalsMock: Profissionals[] = [
     {
       id: 1,
-      professionalCode: 'PROF-001',
-      name: 'Ana Lima',
-      specialty: 'Cardiologia',
-      attendanceDays: 'Segunda, Quarta e Sexta',
-      attendanceShifts: 'Matutino',
-      regionalCouncil: 'CRM-BA',
-      councilRegistrationNumber: '12345',
-      registrationDate: '2026-04-10',
-      status: 'Ativo'
+      identificacaoProfissional: 'PROF-001',
+      nome: 'Ana Lima',
+      formacao: 'Medicina',
+      especialidade: 'Cardiologia',
+      diasHorariosAtendimento: 'Segunda, Quarta e Sexta - Matutino',
+      conselhoRegional: 'CRM-BA',
+      numeroRegistroConselho: '12345',
+      dataCadastramento: new Date('2026-04-10'),
+      status: 'ATIVO'
     },
     {
       id: 2,
-      professionalCode: 'PROF-002',
-      name: 'Carlos Santos',
-      specialty: 'Pediatria',
-      attendanceDays: 'Terca e Quinta',
-      attendanceShifts: 'Vespertino',
-      regionalCouncil: 'CRM-BA',
-      councilRegistrationNumber: '67890',
-      registrationDate: '2026-04-11',
-      status: 'Inativo'
+      identificacaoProfissional: 'PROF-002',
+      nome: 'Carlos Santos',
+      formacao: 'Medicina',
+      especialidade: 'Pediatria',
+      diasHorariosAtendimento: 'Terça e Quinta - Vespertino',
+      conselhoRegional: 'CRM-BA',
+      numeroRegistroConselho: '67890',
+      dataCadastramento: new Date('2026-04-11'),
+      status: 'INATIVO'
     }
   ];
 
-  isMock: boolean = true;
+  isMock: boolean = false;
 
   constructor(private http: HttpClient) {}
 
@@ -44,7 +44,7 @@ export class ProfissionalsService {
       return of(this.profissionalsMock).pipe(delay(500));
     }
 
-    return this.http.get<Profissionals[]>('/api/profissionals');
+    return this.http.get<Profissionals[]>("http://localhost:8080/profissionais-saude");
   }
 
   findById(id: number): Observable<Profissionals | undefined> {
@@ -52,33 +52,27 @@ export class ProfissionalsService {
       return of(this.profissionalsMock.find((p) => p.id === id)).pipe(delay(500));
     }
 
-    return this.http.get<Profissionals>(`/api/profissionals/${id}`);
+    return this.http.get<Profissionals>(`http://localhost:8080/profissionais-saude/${id}`);
   }
 
   cadastrarProfissionals(data: ProfissionalsDTO): Observable<Profissionals> {
     if (this.isMock) {
       const newProfissional: Profissionals = {
         id: this.profissionalsMock.length + 1,
-        ...data
+        ...data,
+        dataCadastramento: new Date(),
+        status: 'ATIVO'
       };
 
       this.profissionalsMock.push(newProfissional);
       return of(newProfissional).pipe(delay(500));
     }
 
-    return this.http.post<Profissionals>('/api/profissionals', data);
+    return this.http.post<Profissionals>("http://localhost:8080/profissionais-saude", data);
   }
 
   editarProfissionals(id: number, data: ProfissionalsDTO): Observable<boolean | object> {
-    if (this.isMock) {
-      this.profissionalsMock = this.profissionalsMock.map((p) =>
-        p.id === id ? { ...p, ...data } : p
-      );
-
-      return of(true).pipe(delay(500));
-    }
-
-    return this.http.put(`/api/profissionals/${id}`, data);
+    return this.http.patch(`http://localhost:8080/profissionais-saude/${id}/complementar-cadastro`, data);
   }
 
   deletarProfissionals(id: number): Observable<void> {

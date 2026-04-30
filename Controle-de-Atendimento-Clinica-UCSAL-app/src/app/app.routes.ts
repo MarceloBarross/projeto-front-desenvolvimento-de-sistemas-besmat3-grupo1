@@ -84,6 +84,24 @@ export const routes: Routes = [
           ]
         },
         {
+          path: 'prontuarios/:pacienteId',
+          loadComponent: () =>
+            import('./pages/prontuarios/prontuarios').then(m => m.Prontuarios),
+          canActivate: [authGuard],
+          data: {
+            roles: ['ADMIN', 'PROFISSIONAL']
+          }
+        },
+        {
+          path: 'atendimento/atendimento-create/:pacienteId',
+          loadComponent: () =>
+            import('./pages/atendimento/atendimento-create/atendimento-create').then(m => m.AtendimentoCreate),
+          canActivate: [authGuard],
+          data: {
+            roles: ['ADMIN', 'PROFISSIONAL']
+          }
+        },
+        {
           path: 'consultations',
           children: [
             {
@@ -176,12 +194,20 @@ export const routes: Routes = [
             {
               path: '',
               loadComponent: () =>
-                import('./pages/medication-request/medication-request-list/medication-request-list').then(m => m.MedicationRequestList)
+                import('./pages/medication-request/medication-request-list/medication-request-list').then(m => m.MedicationRequestList),
+              canActivate: [authGuard],
+              data: {
+                roles: ['ADMIN', 'PROFISSIONAL']
+              }
             },
             {
               path: 'create',
               loadComponent: () =>
-                import('./pages/medication-request/medication-request-create/medication-request-create').then(m => m.MedicationRequestCreate)
+                import('./pages/medication-request/medication-request-create/medication-request-create').then(m => m.MedicationRequestCreate),
+              canActivate: [authGuard],
+              data: {
+                roles: ['PROFISSIONAL']
+              }
             }
           ]
         },

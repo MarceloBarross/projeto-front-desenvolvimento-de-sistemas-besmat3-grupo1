@@ -12,6 +12,10 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
+import { School } from '../../../models/ schools/school-interface';
+import { IesResponse } from '../../../models/ies-unit/ies-unit-Response';
+import { SchoolService } from '../../../services/school.service';
+import { IesUnitService } from '../../../services/ies-unit.service';
 
 @Component({
   selector: 'app-patient-create',
@@ -25,20 +29,27 @@ export class PatientCreate implements OnInit {
 
   fb = inject(NonNullableFormBuilder);
   errMessage: string = '';
-  categories: PatientDTO['category'][] = ['Unidade', 'Escola', 'Aluno', 'Externo'];
-  statusOptions: PatientDTO['status'][] = ['Ativo', 'Inativo'];
+  categories: PatientDTO['categoria'][] = ['COLABORADOR_UNIDADE', 'COLABORADOR_ESCOLA', 'ALUNO', 'EXTERNO'];
+  statusOptions: PatientDTO['status'][] = ['ATIVO', 'INATIVO'];
 
   formPaciente = this.fb.group({
-    name: ['', Validators.required],
-    category: ['Aluno' as PatientDTO['category'], Validators.required],
-    cellphone: ['', Validators.required],
+    nome: ['', Validators.required],
+    categoria: ['ALUNO' as PatientDTO['categoria'], Validators.required],
+    celular: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    registrationDate: ['', Validators.required],
-    status: ['Ativo' as PatientDTO['status'], Validators.required],
-  })
+    motivoRestricao: [''],
+    status: ['ATIVO' as PatientDTO['status'], Validators.required],
+    escola_id: [null as number | null],
+    unidade_id: [null as number | null],
+    dataCadastramento: [new Date().toISOString().substring(0, 10), Validators.required]
+  });
+
+  escolas: School[] = [];
+  unidades: IesResponse[] = [];
+  categoriaAtual: PatientDTO['categoria'] = 'ALUNO';
 
   constructor(private patientService: PatientService, private router: Router, private dtr: ChangeDetectorRef,
-     private messageService: MessageService, private route: ActivatedRoute) {}
+     private messageService: MessageService, private route: ActivatedRoute, private schoolService: SchoolService, private unitService: IesUnitService) {}
 
   save(){
     if (this.formPaciente.invalid) {
@@ -82,9 +93,23 @@ export class PatientCreate implements OnInit {
   
 
   loadPatient(id: number) {
-    this.patientService.finById(id).subscribe({
+    this.patientService.findById(id).subscribe({
       next: (patient) => {
-        this.formPaciente.patchValue(patient!);
+        if (!patient) {
+          this.errMessage = 'Paciente não encontrado.';
+          this.dtr.markForCheck();
+          return;
+        }
+        const { nome, categoria, celular, email, status, motivoRestricao, dataCadastramento } = patient;
+        this.formPaciente.patchValue({
+          nome,
+          categoria,
+          celular,
+          email,
+          motivoRestricao,
+          status,
+          dataCadastramento
+        });
         this.dtr.markForCheck();
       },
       error: (err) => {
@@ -98,12 +123,16 @@ export class PatientCreate implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    if (!id) {
-      this.formPaciente.patchValue({ registrationDate: new Date().toISOString().split('T')[0] });
-    }
-
     if (id) {
       this.loadPatient(Number(+id));
     }
+
+    this.schoolService.listSchools().subscribe(e => this.escolas = e);
+    this.unitService.listUnits().subscribe(u => this.unidades = u);
+
+    this.formPaciente.get('categoria')?.valueChanges.subscribe(cat => {
+        this.categoriaAtual = cat;
+        this.formPaciente.patchValue({ escola_id: null, unidade_id: null });
+    });
   }
 }

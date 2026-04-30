@@ -9,8 +9,9 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { MedicationService } from '../../../services/medication.service';
-import { Medication } from '../../../models/medication/medication-interface';
+import { MedicationResponse } from '../../../models/medication/medicamentoResponse';
 import { AuthService } from '../../../services/auth.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-medication-list',
@@ -29,9 +30,9 @@ import { AuthService } from '../../../services/auth.service';
   providers: [ConfirmationService],
 })
 export class MedicationList implements OnInit {
-  medications: Medication[] = [];
+  medications: MedicationResponse[] = [];
   descriptionDialogVisible = false;
-  selectedMedication: Medication | null = null;
+  selectedMedication: MedicationResponse | null = null;
   role: string | null = null;
 
   constructor(
@@ -39,16 +40,18 @@ export class MedicationList implements OnInit {
     private readonly confirmationService: ConfirmationService,
     private readonly messageService: MessageService,
     private readonly authService: AuthService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.loadMedications();
-    this.role = this.authService.getRoles()[0];
+    this.role = this.authService.getRoles();
   }
 
   loadMedications(): void {
     this.medicationService.listMedications().subscribe((medications) => {
       this.medications = medications;
+      this.cdr.markForCheck();
     });
   }
 
@@ -85,16 +88,16 @@ export class MedicationList implements OnInit {
       this.messageService.add({
         severity: 'info',
         summary: 'Status atualizado',
-        detail: medication.isAtivo ? 'Medicacao ativada' : 'Medicacao inativada',
+        detail: medication.status === 'ATIVO' ? 'Medicacao ativada' : 'Medicacao inativada',
       });
     });
   }
 
-  getStorageLabel(type: Medication['storageType']): string {
+  getStorageLabel(type: MedicationResponse['formaArmazenamento']): string {
     return type === 'REFRIGERACAO' ? 'Refrigeracao' : 'Temperatura ambiente';
   }
 
-  openDescription(medication: Medication): void {
+  openDescription(medication: MedicationResponse): void {
     this.selectedMedication = medication;
     this.descriptionDialogVisible = true;
   }
