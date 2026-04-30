@@ -1,9 +1,15 @@
+import { School } from "../ schools/school-interface";
+import { IesResponse } from "../ies-unit/ies-unit-Response";
+
 export interface Patient {
     id: number;
-    name: string;
-    category: 'Unidade' | 'Escola' | 'Aluno' | 'Externo';
-    cellphone: string;
+    nome: string;
+    categoria: 'COLABORADOR_UNIDADE' | 'COLABORADOR_ESCOLA' | 'ALUNO' | 'EXTERNO';
+    celular: string;
     email: string;
-    registrationDate: string;
-    status: 'Ativo' | 'Inativo';
+    dataCadastramento: string;
+    motivoRestricao: string;
+    status: 'ATIVO' | 'INATIVO';
+    escola?: School;
+    unidade?: IesResponse;    
 }

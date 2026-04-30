@@ -12,12 +12,15 @@ import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { ConsultationService } from '../../../services/consultation.service';
 import { Consultation } from '../../../models/consultation/consultation-interface';
+import { FormsModule } from '@angular/forms';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-patient-list',
   imports: [
     CardModule, TableModule, ButtonModule, RouterModule,
-    ConfirmDialogModule, ToastModule, DialogModule, CommonModule
+    ConfirmDialogModule, ToastModule, DialogModule, CommonModule,
+    FormsModule, TooltipModule
   ],
   templateUrl: './patient-list.html',
   styleUrl: './patient-list.scss',
@@ -31,6 +34,10 @@ export class PatientList implements OnInit {
   prontuariosDialogVisible = false;
   pacienteSelecionado: Patient | null = null;
   prontuariosPaciente: Consultation[] = [];
+
+  motivoDialogVisible = false;
+  motivoRestricio = '';
+  pacienteEditandoMotivo: Patient | null = null;
 
   constructor(
     private patientService: PatientService,
@@ -62,40 +69,64 @@ export class PatientList implements OnInit {
     this.router.navigate(['/main-layout/patients/update/', id]);
   }
 
-  abrirProntuarios(paciente: Patient) {
-    this.pacienteSelecionado = paciente;
-    this.consultationService.listar().subscribe({
-      next: (consultas) => {
-        this.prontuariosPaciente = consultas.filter(
-          c => c.patientId === paciente.id && c.status === 'Finalizado'
-        );
-        this.prontuariosDialogVisible = true;
-        this.dtr.markForCheck();
+  abrirDialogMotivo(paciente: Patient) {
+    this.pacienteEditandoMotivo = paciente;
+    this.motivoRestricio = paciente.motivoRestricao || '';
+    this.motivoDialogVisible = true;
+    this.dtr.markForCheck();
+  }
+
+  salvarMotivo() {
+    if (!this.pacienteEditandoMotivo) return;
+    
+    this.patientService.atualizarMotivo(this.pacienteEditandoMotivo.id, this.motivoRestricio).subscribe({
+      next: () => {
+        this.listarPacientes();
+        this.motivoDialogVisible = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Motivo de restrição atualizado'
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Erro ao atualizar motivo'
+        });
       }
     });
   }
 
-  deletePaciente(id: number) {
+   abrirProntuarios(pacienteId: number) {
+    this.router.navigate(['/main-layout/prontuarios/', pacienteId]);
+  }
+
+  alterarStatus(id: number, statusAtual: 'ATIVO' | 'INATIVO', motivo?: string) {
+    const novoStatus = statusAtual === 'ATIVO' ? 'INATIVO' : 'ATIVO';
+    const mensagem = novoStatus === 'ATIVO' ? 'ativar' : 'desativar';
+    
     this.confirmationService.confirm({
-      message: 'Tem certeza que deseja deletar este paciente?',
+      message: `Tem certeza que deseja ${mensagem} este paciente?`,
       header: 'Confirmação',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        this.patientService.deletarPaciente(id).subscribe({
+        this.patientService.alterarStatus(id, novoStatus, motivo).subscribe({
           next: () => {
             this.listarPacientes();
             this.messageService.add({
               severity: 'success',
               summary: 'Sucesso',
-              detail: 'Paciente deletado com sucesso'
+              detail: `Paciente ${mensagem}do com sucesso`
             });
           }
         });
       },
-      reject: () => console.log('Ação de exclusão cancelada')
+      reject: () => console.log('Ação de mudança de status cancelada')
     });
   }
 }

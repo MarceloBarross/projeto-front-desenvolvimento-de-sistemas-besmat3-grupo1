@@ -50,6 +50,8 @@ export class Login implements OnInit {
     .subscribe({
       next: (resp: LoginResponse) => {
         this.authService.setSession(resp.token, resp.role);
+        this.authService.setProfissionalId(resp.profissionalId!);
+        this.authService.setUserId(resp.usuarioId!);
         this.router.navigate(['/main-layout/dashboard']);
       },
       error: (err) => {

@@ -1,0 +1,114 @@
+<div class="appointments">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h2>Prontuario de {{ nomePaciente }}</h2>
+      <span class="date">
+        <i class="pi pi-calendar"></i>
+        {{ today | date:'dd/MM/yyyy' }}
+      </span>
+    </div>
+
+    <button 
+      pButton 
+      label="Novo Atendimento"
+      icon="pi pi-plus"
+      class="p-button-success"
+      (click)="novoAtendimento()"
+    ></button>
+  </div>
+
+  <!-- TABELA -->
+  <p-card>
+
+    <p-table [value]="atendimentos">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Data</th>
+          <th>Paciente</th>
+          <th>Profissional</th>
+          <th>Tipo</th>
+          <th></th>
+          <th>Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-a>
+        <tr>
+            <td>{{ a.dataHoraInicio | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ a.pacienteNome }}</td>
+            <td>{{ a.profissionalNome }}</td>
+            <td>{{ a.tipoAtendimento }}</td>
+            <td></td>
+            <td>
+                <button
+                    pButton
+                    label="Visualizar Atendimento"
+                    size="small"
+                    (click)="visualizarAtendimento(a)"
+                ></button>
+            </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+  </p-card>
+</div>
+
+<!-- DIÁLOGO VISUALIZAR ATENDIMENTO -->
+@if (visualizacaoDialogVisible && atendimentoSelecionado) {
+  <p-dialog
+    header="Visualizar Atendimento"
+    [(visible)]="visualizacaoDialogVisible"
+    [modal]="true"
+    [maximizable]="true"
+    styleClass="attendance-dialog"
+  >
+    <div class="attendance-details">
+      <div class="detail-section">
+        <h3>Informações do Atendimento</h3>
+        <p><strong>Data/Hora Início:</strong> {{ atendimentoSelecionado.dataHoraInicio | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Data/Hora Encerramento:</strong> {{ atendimentoSelecionado.dataHoraEncerramento | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Tipo de Atendimento:</strong> {{ atendimentoSelecionado.tipoAtendimento }}</p>
+      </div>
+
+      <div class="detail-section">
+        <h3>Dados do Paciente</h3>
+        <p><strong>Paciente:</strong> {{ atendimentoSelecionado.pacienteNome }}</p>
+        <p><strong>Categoria:</strong> {{ atendimentoSelecionado.pacienteCategoria }}</p>
+      </div>
+
+      <div class="detail-section">
+        <h3>Dados do Profissional</h3>
+        <p><strong>Profissional:</strong> {{ atendimentoSelecionado.profissionalNome }}</p>
+      </div>
+
+      <div class="detail-section">
+        <h3>Medicação Utilizada</h3>
+        <p><strong>Medicação:</strong> {{ atendimentoSelecionado.medicacaoNome }}</p>
+        <p><strong>Quantidade:</strong> {{ atendimentoSelecionado.quantidadeMedicacaoUtilizada }}</p>
+        <p><strong>Dosagem:</strong> {{ atendimentoSelecionado.medicacaoDosagem }}</p>
+      </div>
+
+      <div class="detail-section">
+        <h3>Observações Clínicas</h3>
+        <p><strong>Sintomas:</strong> {{ atendimentoSelecionado.sintomas }}</p>
+        <p><strong>Diagnóstico:</strong> {{ atendimentoSelecionado.diagnostico }}</p>
+        <p><strong>Tratamento Indicado:</strong> {{ atendimentoSelecionado.tratamentoIndicado }}</p>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <button 
+        pButton 
+        label="Fechar" 
+        icon="pi pi-times" 
+        (click)="visualizacaoDialogVisible = false"
+        class="p-button-secondary"
+      ></button>
+    </ng-template>
+  </p-dialog>
+}

@@ -1,37 +1,53 @@
-<p-card header="Nova Solicitacao de Medicamento">
+<p-card header="Nova Solicitação de Medicamento">
   <form [formGroup]="requestForm" class="form">
     <div class="field">
+      <label for="medicacaoId">Medicação *</label>
       <p-floatLabel>
-        <select id="medicationSelect" class="select-input" (change)="onMedicationChange($event)">
-          <option value="">Selecione uma medicacao</option>
+        <select 
+          id="medicacaoId" 
+          formControlName="medicacaoId" 
+          class="select-input"
+          (change)="onMedicationChange($event)"
+        >
+          <option value="">Selecione uma medicação</option>
           @for (medication of medications; track medication.id) {
-            <option [value]="medication.id">{{ medication.id }} - {{ medication.name }}</option>
+            <option [value]="medication.id">{{ medication.id }} - {{ medication.nome }}</option>
           }
         </select>
-        <label for="medicationSelect">Identificacao da Medicacao</label>
+        <label for="medicacaoId">Medicação</label>
       </p-floatLabel>
 
-      @if (requestForm.controls.medicationId.invalid && requestForm.controls.medicationId.touched) {
-        <small class="p-error">Selecione uma medicacao valida.</small>
+      @if (requestForm.controls.medicacaoId.invalid && requestForm.controls.medicacaoId.touched) {
+        <small class="p-error">Selecione uma medicação válida.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="medicationName" formControlName="medicationName" readonly />
+        <input 
+          pInputText 
+          id="medicationName" 
+          [value]="selectedMedicationName"
+          readonly 
+        />
         <label for="medicationName">Nome do Medicamento</label>
       </p-floatLabel>
     </div>
 
     <div class="field">
+      <label for="caraterSolicitacao">Caráter da Solicitação *</label>
       <p-floatLabel>
-        <select id="requestPriority" formControlName="requestPriority" class="select-input">
-          <option value="URGENTE">URGENTE - estoque zerado</option>
-          <option value="CRITICO">CRITICO - estoque muito baixo</option>
-          <option value="PREVENTIVO">PREVENTIVO - planejamento de consumo</option>
+        <select id="caraterSolicitacao" formControlName="caraterSolicitacao" class="select-input">
+          @for (prioridade of prioridades; track prioridade.value) {
+            <option [value]="prioridade.value">{{ prioridade.label }}</option>
+          }
         </select>
-        <label for="requestPriority">Carater da Solicitacao</label>
+        <label for="caraterSolicitacao">Caráter</label>
       </p-floatLabel>
+
+      @if (requestForm.controls.caraterSolicitacao.invalid && requestForm.controls.caraterSolicitacao.touched) {
+        <small class="p-error">Selecione um caráter válido.</small>
+      }
     </div>
 
     @if (errMessage) {

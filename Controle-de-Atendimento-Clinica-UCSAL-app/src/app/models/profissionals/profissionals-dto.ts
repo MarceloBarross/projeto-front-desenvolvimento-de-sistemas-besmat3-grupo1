@@ -1,11 +1,10 @@
 export interface ProfissionalsDTO {
-  professionalCode: string;
-  name: string;
-  specialty: string;
-  attendanceDays: string;
-  attendanceShifts: string;
-  regionalCouncil: string;
-  councilRegistrationNumber: string;
-  registrationDate: string;
-  status: 'Ativo' | 'Inativo';
+  identificacaoProfissional: string;
+  nome: string;
+  formacao: string;
+  especialidade: string;
+  diasHorariosAtendimento: string;
+  conselhoRegional: string;
+  numeroRegistroConselho: string;
+  status: 'ATIVO' | 'INATIVO';  
 }

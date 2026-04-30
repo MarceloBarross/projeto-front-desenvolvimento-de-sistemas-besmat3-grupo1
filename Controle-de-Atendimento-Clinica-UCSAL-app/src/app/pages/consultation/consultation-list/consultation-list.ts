@@ -54,11 +54,11 @@ export class ConsultationList implements OnInit {
   }
 
   getNomePaciente(id: number): string {
-    return this.patients.find(p => p.id === id)?.name ?? '—';
+    return this.patients.find(p => p.id === id)?.nome ?? '—';
   }
 
   getNomeProfissional(id: number): string {
-    return this.profissionals.find(p => p.id === id)?.name ?? '—';
+    return this.profissionals.find(p => p.id === id)?.nome ?? '—';
   }
 
   countByStatus(status: string): number {

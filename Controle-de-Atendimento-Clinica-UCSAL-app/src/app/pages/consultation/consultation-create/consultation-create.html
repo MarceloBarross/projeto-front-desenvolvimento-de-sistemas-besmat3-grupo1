@@ -23,7 +23,7 @@
       >
         <option [ngValue]="null">Selecione um paciente</option>
         @for(patient of patients; track patient.id){
-          <option [value]="patient.id">{{ patient.name }}</option>
+          <option [value]="patient.id">{{ patient.nome }}</option>
         }
       </select>
 
@@ -59,7 +59,7 @@
         <option [ngValue]="null">Selecione um profissional</option>
         @for(profissional of profissionals; track profissional.id){
           <option [value]="profissional.id">
-            {{ profissional.name }} - {{ profissional.specialty }}
+            {{ profissional.nome }} - {{ profissional.especialidade }}
           </option>
         }
       </select>

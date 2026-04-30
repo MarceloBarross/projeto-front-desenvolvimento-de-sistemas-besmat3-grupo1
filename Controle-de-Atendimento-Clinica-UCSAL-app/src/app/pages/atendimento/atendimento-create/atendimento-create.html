@@ -1,0 +1,194 @@
+<p-card header="Novo Atendimento">
+  <form [formGroup]="form" class="form">
+
+    <!-- SEÇÃO: INFORMAÇÕES BÁSICAS DO ATENDIMENTO -->
+    <div class="form-section">
+      <h5>Informações Básicas</h5>
+
+
+      <!-- TIPO DE ATENDIMENTO -->
+      <div class="field">
+        <label for="tipoAtendimento">Tipo de Atendimento *</label>
+        <p-floatLabel>
+          <select id="tipoAtendimento" formControlName="tipoAtendimento" class="p-inputtext w-full">
+            @for(tipo of tiposAtendimento; track tipo.value){
+              <option [value]="tipo.value">{{ tipo.label }}</option>
+            }
+          </select>
+        </p-floatLabel>
+        @if(form.get('tipoAtendimento')?.invalid && form.get('tipoAtendimento')?.touched){
+          <small class="p-error">O tipo de atendimento é obrigatório.</small>
+        }
+      </div>
+
+      <!-- DATA/HORA DE INÍCIO -->
+      <div class="field">
+        <label for="dataHoraInicio">Data e Hora de Início *</label>
+        <p-floatLabel>
+          <input 
+            type="datetime-local" 
+            id="dataHoraInicio" 
+            formControlName="dataHoraInicio" 
+          />
+        </p-floatLabel>
+        @if(form.get('dataHoraInicio')?.invalid && form.get('dataHoraInicio')?.touched){
+          <small class="p-error">A data e hora de início são obrigatórias.</small>
+        }
+      </div>
+
+      <!-- DATA/HORA DE ENCERRAMENTO -->
+      <div class="field">
+        <label for="dataHoraEncerramento">Data e Hora de Encerramento</label>
+        <p-floatLabel>
+          <input 
+            type="datetime-local" 
+            id="dataHoraEncerramento" 
+            formControlName="dataHoraEncerramento" 
+          />
+        </p-floatLabel>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: PROFISSIONAL E MEDICAÇÃO -->
+    <div class="form-section">
+      <h5>Profissional e Medicação</h5>
+
+      <!-- PROFISSIONAL -->
+      <div class="field">
+        <label for="profissionalId">Profissional *</label>
+        <select
+          id="profissionalId"
+          class="p-inputtext p-component w-full"
+          formControlName="profissionalId"
+        >
+          <option [ngValue]="null">Selecione um profissional</option>
+          @for(profissional of profissionals; track profissional.id){
+            <option [value]="profissional.id">
+              {{ profissional.nome }} - {{ profissional.especialidade }}
+            </option>
+          }
+        </select>
+        @if(form.get('profissionalId')?.invalid && form.get('profissionalId')?.touched){
+          <small class="p-error">O profissional é obrigatório.</small>
+        }
+      </div>
+
+      <!-- MEDICAÇÃO -->
+      <div class="field">
+        <label for="medicacaoId">Medicação *</label>
+        <select
+          id="medicacaoId"
+          class="p-inputtext p-component w-full"
+          formControlName="medicacaoId"
+        >
+          <option [ngValue]="null">Selecione uma medicação</option>
+          @for(medicacao of medications; track medicacao.id){
+            <option [value]="medicacao.id">
+              {{ medicacao.nome }} (Estoque: {{ medicacao.quantidadeEstoque }})
+            </option>
+          }
+        </select>
+        @if(form.get('medicacaoId')?.invalid && form.get('medicacaoId')?.touched){
+          <small class="p-error">A medicação é obrigatória.</small>
+        }
+      </div>
+
+      <!-- QUANTIDADE DE MEDICAÇÃO UTILIZADA -->
+      <div class="field">
+        <label for="quantidadeMedicacaoUtilizada">Quantidade de Medicação Utilizada *</label>
+        <p-floatLabel>
+          <input 
+            type="number" 
+            id="quantidadeMedicacaoUtilizada" 
+            formControlName="quantidadeMedicacaoUtilizada"
+            min="1"
+          />
+        </p-floatLabel>
+        @if(form.get('quantidadeMedicacaoUtilizada')?.invalid && form.get('quantidadeMedicacaoUtilizada')?.touched){
+          <small class="p-error">A quantidade deve ser maior que zero.</small>
+        }
+      </div>
+
+      <!-- DOSAGEM DA MEDICAÇÃO -->
+      <div class="field">
+        <label for="medicacaoDosagem">Dosagem da Medicação *</label>
+        <p-floatLabel>
+          <input 
+            type="text" 
+            id="medicacaoDosagem" 
+            formControlName="medicacaoDosagem"
+            placeholder="Ex: 500mg, 10ml, 2 comprimidos"
+          />
+        </p-floatLabel>
+        @if(form.get('medicacaoDosagem')?.invalid && form.get('medicacaoDosagem')?.touched){
+          <small class="p-error">A dosagem é obrigatória.</small>
+        }
+      </div>
+    </div>
+
+    <!-- SEÇÃO: SINTOMAS E DIAGNÓSTICO -->
+    <div class="form-section">
+      <h5>Sintomas e Diagnóstico</h5>
+
+      <!-- SINTOMAS -->
+      <div class="field">
+        <p-floatLabel>
+          <textarea 
+            id="sintomas" 
+            formControlName="sintomas"
+            rows="3"
+            class="p-inputtext w-full"
+          ></textarea>
+          <label for="sintomas">Sintomas Relatados *</label>
+        </p-floatLabel>
+        @if(form.get('sintomas')?.invalid && form.get('sintomas')?.touched){
+          <small class="p-error">Os sintomas são obrigatórios.</small>
+        }
+      </div>
+
+      <!-- DIAGNÓSTICO -->
+      <div class="field">
+        <p-floatLabel>
+          <textarea 
+            id="diagnostico" 
+            formControlName="diagnostico"
+            rows="3"
+            class="p-inputtext w-full"
+          ></textarea>
+          <label for="diagnostico">Diagnóstico *</label>
+        </p-floatLabel>
+        @if(form.get('diagnostico')?.invalid && form.get('diagnostico')?.touched){
+          <small class="p-error">O diagnóstico é obrigatório.</small>
+        }
+      </div>
+
+      <!-- TRATAMENTO INDICADO -->
+      <div class="field">
+        <p-floatLabel>
+          <textarea 
+            id="tratamentoIndicado" 
+            formControlName="tratamentoIndicado"
+            rows="3"
+            class="p-inputtext w-full"
+          ></textarea>
+          <label for="tratamentoIndicado">Tratamento Indicado *</label>
+        </p-floatLabel>
+        @if(form.get('tratamentoIndicado')?.invalid && form.get('tratamentoIndicado')?.touched){
+          <small class="p-error">O tratamento indicado é obrigatório.</small>
+        }
+      </div>
+    </div>
+
+    <!-- ERRO -->
+    @if(errMessage){
+      <p-message severity="error" [text]="errMessage"></p-message>
+    }
+
+    <!-- BOTÕES -->
+    <div class="buttons">
+      <p-button label="Salvar" icon="pi pi-check" (click)="save()" [disabled]="form.invalid"></p-button>
+      <p-button severity="danger" label="Cancelar" icon="pi pi-times" (click)="cancel()"></p-button>
+    </div>
+
+  </form>
+</p-card>

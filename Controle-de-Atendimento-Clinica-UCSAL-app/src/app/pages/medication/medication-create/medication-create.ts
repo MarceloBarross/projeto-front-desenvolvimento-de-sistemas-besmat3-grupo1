@@ -7,7 +7,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MedicationService } from '../../../services/medication.service';
-import { StorageType } from '../../../models/medication/medication-interface';
+import { StorageType } from '../../../models/medication/medicamentoResponse';
+import { MedicationStatus } from '../../../models/medication/statusEnum';
 
 @Component({
   selector: 'app-medication-create',
@@ -25,25 +26,25 @@ import { StorageType } from '../../../models/medication/medication-interface';
 })
 export class MedicationCreate {
   private readonly fb = inject(NonNullableFormBuilder);
-
+  
   errMessage = '';
-
+  
   medicationForm = this.fb.group({
-    name: ['', Validators.required],
-    description: ['', Validators.required],
-    supplier: ['', Validators.required],
-    storageType: ['AMBIENTE' as StorageType, Validators.required],
-    quantity: [0, [Validators.required, Validators.min(1)]],
-    expirationDate: ['', Validators.required],
-    acquisitionDate: ['', Validators.required],
-    isAtivo: [true],
+    nome: ['', Validators.required],
+    descricaoCompleta: ['', Validators.required],
+    fornecedor: ['', Validators.required],
+    formaArmazenamento: ['AMBIENTE' as StorageType, Validators.required],
+    quantidadeEstoque: [0, [Validators.required, Validators.min(1)]],
+    dataValidade: ['', Validators.required],
+    dataAquisicao: ['', Validators.required],
+    status: [MedicationStatus.ATIVO, Validators.required],
   });
-
+  
   constructor(
     private readonly medicationService: MedicationService,
     private readonly router: Router,
   ) {}
-
+  
   save(): void {
     if (this.medicationForm.invalid) {
       this.medicationForm.markAllAsTouched();
@@ -51,6 +52,7 @@ export class MedicationCreate {
       return;
     }
 
+    
     const payload = this.medicationForm.getRawValue();
 
     this.medicationService.createMedication(payload).subscribe((result) => {

@@ -2,93 +2,82 @@
   <form [formGroup]="formProfissionals" class="form">
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="professionalCode" formControlName="professionalCode" />
-        <label for="professionalCode">Identificacao do Profissional</label>
+        <input pInputText id="identificacaoProfissional" formControlName="identificacaoProfissional" />
+        <label for="identificacaoProfissional">Identificacao do Profissional</label>
       </p-floatLabel>
 
-      @if(formProfissionals.get('professionalCode')?.invalid && formProfissionals.get('professionalCode')?.touched){
+      @if(formProfissionals.get('identificacaoProfissional')?.invalid && formProfissionals.get('identificacaoProfissional')?.touched){
       <small class="p-error">A identificacao e obrigatoria.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="name" formControlName="name" />
-        <label for="name">Nome</label>
+        <input pInputText id="nome" formControlName="nome" />
+        <label for="nome">Nome</label>
       </p-floatLabel>
 
-      @if(formProfissionals.get('name')?.invalid && formProfissionals.get('name')?.touched){
+      @if(formProfissionals.get('nome')?.invalid && formProfissionals.get('nome')?.touched){
       <small class="p-error">O nome e obrigatorio.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="specialty" formControlName="specialty" />
-        <label for="specialty">Especialidade</label>
+        <input pInputText id="formacao" formControlName="formacao" />
+        <label for="formacao">Formacao</label>
       </p-floatLabel>
 
-      @if(formProfissionals.get('specialty')?.invalid && formProfissionals.get('specialty')?.touched){
+      @if(formProfissionals.get('formacao')?.invalid && formProfissionals.get('formacao')?.touched){
+      <small class="p-error">A formacao e obrigatoria.</small>
+      }
+    </div>
+
+    <div class="field">
+      <p-floatLabel>
+        <input pInputText id="especialidade" formControlName="especialidade" />
+        <label for="especialidade">Especialidade</label>
+      </p-floatLabel>
+
+      @if(formProfissionals.get('especialidade')?.invalid && formProfissionals.get('especialidade')?.touched){
       <small class="p-error">A especialidade e obrigatoria.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="attendanceDays" formControlName="attendanceDays" />
-        <label for="attendanceDays">Dias de Atendimento</label>
+        <input pInputText id="diasHorariosAtendimento" formControlName="diasHorariosAtendimento" placeholder="Ex: Segunda a Sexta - Manha e Tarde" />
+        <label for="diasHorariosAtendimento">Dias e Horarios de Atendimento</label>
       </p-floatLabel>
 
-      @if(formProfissionals.get('attendanceDays')?.invalid && formProfissionals.get('attendanceDays')?.touched){
-      <small class="p-error">Os dias de atendimento sao obrigatorios.</small>
+      @if(formProfissionals.get('diasHorariosAtendimento')?.invalid && formProfissionals.get('diasHorariosAtendimento')?.touched){
+      <small class="p-error">Os dias e horarios de atendimento sao obrigatorios.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="attendanceShifts" formControlName="attendanceShifts" />
-        <label for="attendanceShifts">Turnos de Atendimento</label>
-      </p-floatLabel>
-
-      @if(formProfissionals.get('attendanceShifts')?.invalid && formProfissionals.get('attendanceShifts')?.touched){
-      <small class="p-error">Os turnos de atendimento sao obrigatorios.</small>
-      }
-    </div>
-
-    <div class="field">
-      <p-floatLabel>
-        <select id="regionalCouncil" class="p-inputtext p-component w-full" formControlName="regionalCouncil">
+        <select id="conselhoRegional" class="p-inputtext p-component w-full" formControlName="conselhoRegional">
           @for(council of regionalCouncilOptions; track council){
           <option [value]="council">{{ council }}</option>
           }
         </select>
-        <label for="regionalCouncil">Conselho Regional</label>
+        <label for="conselhoRegional">Conselho Regional</label>
       </p-floatLabel>
 
-      @if(formProfissionals.get('regionalCouncil')?.invalid && formProfissionals.get('regionalCouncil')?.touched){
+      @if(formProfissionals.get('conselhoRegional')?.invalid && formProfissionals.get('conselhoRegional')?.touched){
       <small class="p-error">O conselho regional e obrigatorio.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="councilRegistrationNumber" formControlName="councilRegistrationNumber" />
-        <label for="councilRegistrationNumber">Numero de Registro no Conselho</label>
+        <input pInputText id="numeroRegistroConselho" formControlName="numeroRegistroConselho" />
+        <label for="numeroRegistroConselho">Numero de Registro no Conselho</label>
       </p-floatLabel>
 
-      @if(formProfissionals.get('councilRegistrationNumber')?.invalid && formProfissionals.get('councilRegistrationNumber')?.touched){
+      @if(formProfissionals.get('numeroRegistroConselho')?.invalid && formProfissionals.get('numeroRegistroConselho')?.touched){
       <small class="p-error">O numero de registro e obrigatorio.</small>
-      }
-    </div>
-
-    <div class="field">
-      <p-floatLabel>
-        <input pInputText id="registrationDate" type="date" formControlName="registrationDate" />
-        <label for="registrationDate">Data de Cadastramento</label>
-      </p-floatLabel>
-
-      @if(formProfissionals.get('registrationDate')?.invalid && formProfissionals.get('registrationDate')?.touched){
-      <small class="p-error">A data de cadastramento e obrigatoria.</small>
       }
     </div>
 

@@ -4,37 +4,37 @@
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="name" formControlName="name" />
-        <label for="name">Nome</label>
+        <input pInputText id="nome" formControlName="nome" />
+        <label for="nome">Nome</label>
       </p-floatLabel>
 
-      @if(formPaciente.get('name')?.invalid && formPaciente.get('name')?.touched){
+      @if(formPaciente.get('nome')?.invalid && formPaciente.get('nome')?.touched){
         <small class="p-error">O nome é obrigatório.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <select id="category" class="p-inputtext p-component w-full" formControlName="category">
+        <select id="categoria" class="p-inputtext p-component w-full" formControlName="categoria">
           @for(category of categories; track category){
             <option [value]="category">{{ category }}</option>
           }
         </select>
-        <label for="category">Categoria</label>
+        <label for="categoria">Categoria</label>
       </p-floatLabel>
 
-      @if(formPaciente.get('category')?.invalid && formPaciente.get('category')?.touched){
+      @if(formPaciente.get('categoria')?.invalid && formPaciente.get('categoria')?.touched){
         <small class="p-error">A categoria é obrigatória.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <p-inputMask mask="(99) 99999-9999"  formControlName="cellphone" placeholder="Celular (WhatsApp)"></p-inputMask>
-        <label for="cellphone">Celular (WhatsApp)</label>
+        <p-inputMask mask="(99) 99999-9999"  formControlName="celular" placeholder="Celular (WhatsApp)"></p-inputMask>
+        <label for="celular">Celular (WhatsApp)</label>
       </p-floatLabel>
 
-      @if(formPaciente.get('cellphone')?.invalid && formPaciente.get('cellphone')?.touched){
+      @if(formPaciente.get('celular')?.invalid && formPaciente.get('celular')?.touched){
         <small class="p-error">O celular (WhatsApp) é obrigatório.</small>
       }
     </div>
@@ -52,13 +52,9 @@
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="registrationDate" type="date" formControlName="registrationDate" />
-        <label for="registrationDate">Data de Cadastramento</label>
+        <input pInputText id="motivoRestricao" formControlName="motivoRestricao" />
+        <label for="motivoRestricao">Motivo de Restrição (Opcional)</label>
       </p-floatLabel>
-
-      @if(formPaciente.get('registrationDate')?.invalid && formPaciente.get('registrationDate')?.touched){
-        <small class="p-error">A data de cadastramento é obrigatória.</small>
-      }
     </div>
 
     <div class="field">
@@ -75,6 +71,36 @@
         <small class="p-error">O status é obrigatório.</small>
       }
     </div>
+
+    @if(categoriaAtual === 'ALUNO' || categoriaAtual === 'COLABORADOR_ESCOLA') {
+      <div class="field">
+        <p-floatLabel>
+          <select id="escola_id" class="p-inputtext p-component w-full" formControlName="escola_id">
+            <option [value]="null">Selecione uma escola</option>
+            @for(escola of escolas; track escola.id) {
+              <option [value]="escola.id">{{ escola.name }}</option>
+            }
+          </select>
+          <label for="escola_id">Escola</label>
+        </p-floatLabel>
+      </div>
+    }
+
+    @if(categoriaAtual === 'COLABORADOR_UNIDADE') {
+      <div class="field">
+        <p-floatLabel>
+          <select id="unidade_id" class="p-inputtext p-component w-full" formControlName="unidade_id">
+            <option [value]="null">Selecione uma unidade</option>
+            @for(unidade of unidades; track unidade.id) {
+              <option [value]="unidade.id">{{ unidade.unitName }}</option>
+            }
+          </select>
+          <label for="unidade_id">Unidade</label>
+        </p-floatLabel>
+      </div>
+    }
+
+<!-- Unidade: aparece para COLABORADOR_UNIDADE -->
 
     @if(errMessage){
       <p-message severity="error" [text]="errMessage"></p-message>
