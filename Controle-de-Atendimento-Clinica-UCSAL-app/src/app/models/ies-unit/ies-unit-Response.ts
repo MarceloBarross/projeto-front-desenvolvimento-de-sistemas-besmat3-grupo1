@@ -4,8 +4,8 @@ import { Ies } from "../ies/ies-interface";
 
 export interface IesResponse {
   id: number;
-  unitName: string;
-  representative: Coordenador;
+  nome: string;
+  representante: Coordenador;
   ies: Ies;
-  isAtivo: boolean;
+  status: string;
 }

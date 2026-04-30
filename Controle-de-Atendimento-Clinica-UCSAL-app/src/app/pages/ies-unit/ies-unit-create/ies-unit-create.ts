@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -12,13 +12,12 @@ import { Ies } from '../../../models/ies/ies-interface';
 import { IesUnitService } from '../../../services/ies-unit.service';
 import { CoordenadorService } from '../../../services/coordenaor.service';
 import { CoordenadorDTO } from '../../../models/cordeador/coordenadorDTO';
+import { Coordenador } from '../../../models/cordeador/cordenador';
 import { Observable } from 'rxjs/internal/Observable';
 import { AsyncPipe } from '@angular/common';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { SelectModule } from 'primeng/select';
-import { Coordenador } from '../../../models/cordeador/cordenador';
-
 
 @Component({
   selector: 'app-ies-unit-create',
@@ -35,7 +34,6 @@ import { Coordenador } from '../../../models/cordeador/cordenador';
     InputGroupModule,
     InputGroupAddonModule,
     SelectModule,
-    FormsModule
   ],
   templateUrl: './ies-unit-create.html',
   styleUrl: './ies-unit-create.scss',
@@ -43,25 +41,24 @@ import { Coordenador } from '../../../models/cordeador/cordenador';
 export class IesUnitCreate implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
 
-  iesList: Observable<Ies[]> = new Observable();
-  representativesDTO: CoordenadorDTO[] = [];
-  representatives: Observable<Coordenador[]> = new Observable();
+  representatives: Observable<Coordenador[]> = new Observable<Coordenador[]>();
+  iesList: Observable<Ies[]> = new Observable<Ies[]>();
+
   representativeDialogVisible = false;
+  representativesDTO: CoordenadorDTO[] = [];
   errMessage = '';
-  isEditMode = false;
-  unitId: number | null = null;
 
   unitForm = this.fb.group({
-    unitName: ['', Validators.required],
-    representativeName: ['', Validators.required],
-    iesName: ['', Validators.required],
+    name: ['', Validators.required],
+    representative: [null as Coordenador | null, Validators.required],
+    ies: [null as Ies | null, Validators.required],
     isAtivo: [true],
   });
 
   representativeForm = this.fb.group({
     nome: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    telefone: ['', Validators.required],
+    email: [''],
+    telefone: [''],
   });
 
   constructor(
@@ -74,30 +71,7 @@ export class IesUnitCreate implements OnInit {
 
   ngOnInit(): void {
     this.carregarRepresentantes();
-
     this.carregarIes();
-
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      return;
-    }
-
-    this.unitId = Number(id);
-    this.isEditMode = true;
-
-    // this.iesUnitService.findById(this.unitId).subscribe((unit) => {
-    //   if (!unit) {
-    //     this.errMessage = 'Unidade nao encontrada.';
-    //     return;
-    //   }
-
-    //   this.unitForm.patchValue({
-    //     unitName: unit.unitName,
-    //     representativeName: unit.representative?.nome || '',
-    //     iesId: unit.iesId.toString(),
-    //     isAtivo: unit.isAtivo,
-    //   });
-    // });
   }
 
   openRepresentativeDialog(): void {
@@ -117,6 +91,7 @@ export class IesUnitCreate implements OnInit {
     if (this.representativeForm.invalid) {
       this.representativeForm.markAllAsTouched();
       this.errMessage = 'Preencha todos os campos do responsável.';
+      return;
     }
 
     const value = this.representativeForm.getRawValue();
@@ -130,7 +105,7 @@ export class IesUnitCreate implements OnInit {
     this.coordenadorService.cadastrar(novoCoordenador).subscribe({
       next: (criado) => {
         this.representativesDTO = [...this.representativesDTO, criado];
-        this.unitForm.patchValue({ representativeName: criado.nome });
+        this.unitForm.patchValue({ representative: criado });
         this.representativeDialogVisible = false;
         this.errMessage = '';
         this.carregarRepresentantes();
@@ -141,31 +116,38 @@ export class IesUnitCreate implements OnInit {
     });
   }
 
-  // save(): void {
-  //   if (this.unitForm.invalid) {
-  //     this.unitForm.markAllAsTouched();
-  //     this.errMessage = 'Preencha os campos obrigatorios.';
-  //     return;
-  //   }
+  save(): void {
+    if (this.unitForm.invalid) {
+      this.unitForm.markAllAsTouched();
+      this.errMessage = 'Preencha os campos obrigatorios.';
+      return;
+    }
 
-  //   const payload = this.unitForm.getRawValue();
+    const payload = this.unitForm.getRawValue();
 
-  //   const request = this.unitId
-  //     ? this.iesUnitService.updateUnit(this.unitId, payload)
-  //     : this.iesUnitService.createUnit(payload);
+    const novaUnidade = {
+      nome: payload.name.trim(),
+      representante_id: payload.representative?.id!,
+      ies_id: payload.ies?.id!,
+      status: payload.isAtivo ? 'ATIVO' : 'INATIVO',
+    };
 
-  //   request.subscribe((result) => {
-  //     if (!result) {
-  //       this.errMessage = 'Nao foi possivel salvar a unidade.';
-  //       return;
-  //     }
+    console.log(novaUnidade);
 
-  //     this.errMessage = '';
-  //     this.router.navigate(['/main-layout/ies-units']);
-  //   });
-  // }
+    const request = this.iesUnitService.cadastrar(novaUnidade);
 
-  // cancel(): void {
-  //   this.router.navigate(['/main-layout/ies-units']);
-  // }
+    request.subscribe((result) => {
+      if (!result) {
+        this.errMessage = 'Nao foi possivel salvar a unidade.';
+        return;
+      }
+
+      this.errMessage = '';
+      this.router.navigate(['/main-layout/ies-units']);
+    });
+  }
+
+  cancel(): void {
+    this.router.navigate(['/main-layout/ies-units']);
+  }
 }

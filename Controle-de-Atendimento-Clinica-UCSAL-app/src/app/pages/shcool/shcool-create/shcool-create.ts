@@ -43,14 +43,12 @@ import { SchoolRequest } from '../../../models/ schools/school-Request';
 export class ShcoolCreate implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
 
-  escolas: Observable<SchoolResponse[]> = new Observable<SchoolResponse[]>();
   coordenadores: Observable<Coordenador[]> = new Observable<Coordenador[]>();
   iesList: Observable<Ies[]> = new Observable<Ies[]>();
 
   coordenadorDialogVisible = false;
   coordenadoresDTO: CoordenadorDTO[] = [];
   errMessage = '';
-  isEditMode = false;
 
   schoolForm = this.fb.group({
     name: ['', Validators.required],
@@ -76,7 +74,6 @@ export class ShcoolCreate implements OnInit {
   ngOnInit(): void {
     this.carregarCoordenador();
     this.carregarIes();
-    this.carregarEscola();
   }
 
   openCoordenadorDialog(): void {
@@ -89,10 +86,6 @@ export class ShcoolCreate implements OnInit {
 
   carregarIes(): void {
     this.iesList = this.iesService.listarIes();
-  }
-
-  carregarEscola(): void {
-    this.escolas = this.schoolService.listarTodas();
   }
 
   saveCoordenador(): void {

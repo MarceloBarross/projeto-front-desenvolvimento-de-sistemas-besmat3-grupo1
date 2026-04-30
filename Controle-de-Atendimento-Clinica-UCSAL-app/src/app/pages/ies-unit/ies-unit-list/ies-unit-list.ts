@@ -9,6 +9,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { IesUnitService } from '../../../services/ies-unit.service';
 import { IesResponse } from '../../../models/ies-unit/ies-unit-Response';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-ies-unit-list',
@@ -20,13 +22,14 @@ import { IesResponse } from '../../../models/ies-unit/ies-unit-Response';
     RouterModule,
     ConfirmDialogModule,
     ToastModule,
+    AsyncPipe
   ],
   templateUrl: './ies-unit-list.html',
   styleUrl: './ies-unit-list.scss',
   providers: [ConfirmationService],
 })
 export class IesUnitList implements OnInit {
-  units: IesResponse[] = [];
+  units: Observable<IesResponse[]> = new Observable();
 
   constructor(
     private readonly iesUnitService: IesUnitService,
@@ -40,13 +43,7 @@ export class IesUnitList implements OnInit {
   }
 
   loadUnits(): void {
-    this.iesUnitService.listUnits().subscribe((units) => {
-      this.units = units;
-    });
-  }
-
-  editUnit(id: number): void {
-    this.router.navigate(['/main-layout/ies-units/update', id]);
+    this.units = this.iesUnitService.listarTodas();
   }
 
   deleteUnit(id: number): void {
@@ -58,32 +55,21 @@ export class IesUnitList implements OnInit {
       rejectLabel: 'Nao',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        this.iesUnitService.deleteUnit(id).subscribe((removed) => {
-          if (!removed) {
-            return;
-          }
-
+        this.iesUnitService.excluir(id).subscribe(() => {
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso',
             detail: 'Unidade excluida com sucesso',
           });
+          this.loadUnits();
         });
       },
     });
   }
 
   toggleStatus(id: number): void {
-    this.iesUnitService.toggleUnitStatus(id).subscribe((unit) => {
-      if (!unit) {
-        return;
-      }
-
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Status atualizado',
-        detail: unit.isAtivo ? 'Unidade ativada' : 'Unidade inativada',
-      });
+    this.iesUnitService.alternarStatus(id).subscribe(() => {
+      this.loadUnits();
     });
   }
 }
