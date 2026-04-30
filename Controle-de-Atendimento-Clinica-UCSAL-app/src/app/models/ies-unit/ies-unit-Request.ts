@@ -1,9 +1,8 @@
 
 
 export interface IesRequest {
-  id: number;
-  unitName: string;
-  representativeId: number;
-  iesId: number;
-  isAtivo: boolean;
+  nome: string;
+  representante_id: number;
+  ies_id: number;
+  status: string;
 }

@@ -1,5 +1,3 @@
-<p-confirmDialog></p-confirmDialog>
-
 <p-card header="Escolas">
   <div class="actions">
     <p-button
@@ -12,6 +10,7 @@
   <p-table [value]="(schools | async) ?? []" responsiveLayout="scroll">
     <ng-template pTemplate="header">
       <tr>
+        <th>ID</th>
         <th>Nome</th>
         <th>Coordenador</th>
         <th>IES</th>
@@ -22,6 +21,7 @@
 
     <ng-template pTemplate="body" let-s>
       <tr>
+        <td>{{ s.id }}</td>
         <td>{{ s.nome }}</td>
         <td>{{ s.coordenadorResponsavel?.nome }}</td>
         <td>{{ s.ies?.nome }}</td>

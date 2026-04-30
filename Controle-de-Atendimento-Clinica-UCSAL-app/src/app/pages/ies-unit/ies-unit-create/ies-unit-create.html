@@ -1,12 +1,12 @@
-<p-card [header]="isEditMode ? 'Editar Unidade de IES' : 'Nova Unidade de IES'">
+<p-card [header]="'Nova Unidade de IES'">
   <form [formGroup]="unitForm" class="form">
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="unitName" formControlName="unitName" />
+        <input pInputText id="unitName" formControlName="name" />
         <label for="unitName">Nome da Unidade</label>
       </p-floatLabel>
 
-      @if (unitForm.controls.unitName.invalid && unitForm.controls.unitName.touched) {
+      @if (unitForm.controls.name.invalid && unitForm.controls.name.touched) {
         <small class="p-error">Nome da unidade e obrigatorio.</small>
       }
     </div>
@@ -14,7 +14,7 @@
     <div class="field representative-field">
       <div class="representative-row">
         <p-floatLabel class="representative-select">
-          <p-select [options]="representatives | async" formControlName="representativeName" optionLabel="nome" placeholder="Selecione um representante" class="w-full md:w-56" />
+          <p-select [options]="representatives | async" formControlName="representative" optionLabel="nome" placeholder="Selecione um representante" class="w-full md:w-56" />
         </p-floatLabel>
 
         <p-button
@@ -26,17 +26,17 @@
         ></p-button>
       </div>
 
-      @if (unitForm.controls.representativeName.invalid && unitForm.controls.representativeName.touched) {
+      @if (unitForm.controls.representative.invalid && unitForm.controls.representative.touched) {
         <small class="p-error">Representante e obrigatorio.</small>
       }
     </div>
 
     <div class="field">
       <p-floatLabel>
-        <p-select [options]="iesList | async" formControlName="iesName" optionLabel="nome" placeholder="Selecione a IES vinculada" class="w-full md:w-56" />
+        <p-select [options]="iesList | async" formControlName="ies" optionLabel="nome" placeholder="Selecione a IES vinculada" class="w-full md:w-56" />
       </p-floatLabel>
 
-      @if (unitForm.controls.iesName.invalid && unitForm.controls.iesName.touched) {
+      @if (unitForm.controls.ies.invalid && unitForm.controls.ies.touched) {
         <small class="p-error">IES vinculada e obrigatoria.</small>
       }
     </div>
@@ -51,12 +51,12 @@
     }
 
     <div class="buttons">
-      <p-button label="Salvar" icon="pi pi-check" ></p-button>
+      <p-button label="Salvar" icon="pi pi-check" (click)="save()"></p-button>
       <p-button
         severity="danger"
         label="Cancelar"
         icon="pi pi-times"
-
+        (click)="cancel()"
       ></p-button>
     </div>
   </form>
@@ -114,7 +114,7 @@
       (onClick)="representativeDialogVisible = false"
     ></p-button>
     <p-button
-      label="Salvar Coordenador"
+      label="Salvar Representante"
       icon="pi pi-check"
       (onClick)="saveRepresentative()"
     ></p-button>

@@ -1,6 +1,4 @@
-<p-confirmDialog></p-confirmDialog>
-
-<p-card header="Unidades de IES">
+<p-card header="Unidades">
   <div class="actions">
     <p-button
       label="Nova Unidade"
@@ -9,13 +7,13 @@
     ></p-button>
   </div>
 
-  <p-table [value]="units" responsiveLayout="scroll">
+  <p-table [value]="(units | async) ?? []" responsiveLayout="scroll">
     <ng-template pTemplate="header">
       <tr>
         <th>ID</th>
-        <th>Nome da Unidade</th>
+        <th>Nome</th>
         <th>Representante</th>
-        <th>IES Vinculada</th>
+        <th>IES</th>
         <th>Status</th>
         <th>Acoes</th>
       </tr>
@@ -24,34 +22,28 @@
     <ng-template pTemplate="body" let-u>
       <tr>
         <td>{{ u.id }}</td>
-        <td>{{ u.unitName }}</td>
-        <td>{{ u.representativeName }}</td>
-        <td>{{ u.ies.name }}</td>
+        <td>{{ u.nome }}</td>
+        <td>{{ u.representante?.nome }}</td>
+        <td>{{ u.ies?.nome }}</td>
         <td>
           <p-tag
-            [value]="u.isAtivo ? 'Ativo' : 'Inativo'"
-            [severity]="u.isAtivo ? 'success' : 'danger'"
+            [value]="u.status"
+            [severity]="u.status === 'ATIVO' ? 'success' : 'danger'"
           ></p-tag>
         </td>
         <td class="actions-column">
           <button
             pButton
-            icon="pi pi-pencil"
-            class="p-button-text"
-            (click)="editUnit(u.id)"
-          ></button>
-          <button
-            pButton
-            [icon]="u.isAtivo ? 'pi pi-eye-slash' : 'pi pi-eye'"
+            [icon]="u.status === 'Ativo' ? 'pi pi-eye-slash' : 'pi pi-eye'"
             class="p-button-text"
             (click)="toggleStatus(u.id)"
           ></button>
-          <button
+          <!-- <button
             pButton
             icon="pi pi-trash"
             class="p-button-text p-button-danger"
-            (click)="deleteUnit(u.id)"
-          ></button>
+            (click)="deleteSchool(s.id)"
+          ></button> -->
         </td>
       </tr>
     </ng-template>
